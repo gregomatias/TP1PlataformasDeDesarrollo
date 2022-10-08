@@ -7,19 +7,29 @@ using System.Threading.Tasks;
 
 namespace TP1
 {
-    
+
     internal class Banco
     {
-      private  List<CajaDeAhorro> cajas = new List<CajaDeAhorro>();
-        private List<Usuario> usuarios = new List<Usuario>();
-        private List<PlazoFijo> pfs = new List<PlazoFijo>();
-        private List<TarjetaDeCredito> tarjetas = new List<TarjetaDeCredito>();
-        private List<Pago> pagos = new List<Pago>();
-        private List<Movimiento> movimientos = new List<Movimiento>();
+        private List<CajaDeAhorro> cajas;
+        private List<Usuario> usuarios;
+        private List<PlazoFijo> pfs;
+        private List<TarjetaDeCredito> tarjetas;
+        private List<Pago> pagos;
+        private List<Movimiento> movimientos;
+        private Usuario? usuarioLogueado;
 
+        public Banco()
+        {
+            this.cajas = new List<CajaDeAhorro>();
+            this.usuarios = new List<Usuario>();
+            this.pfs = new List<PlazoFijo>();
+            this.tarjetas = new List<TarjetaDeCredito>();
+            this.pagos = new List<Pago>();
+            this.movimientos = new List<Movimiento>();
 
+        }
 
-     public bool AltaUsuario(int dni, string nombre, string apellido, string mail, string password)
+        public bool AltaUsuario(int dni, string nombre, string apellido, string mail, string password)
         {
             
             try { 
@@ -327,6 +337,28 @@ namespace TP1
         {
 
             return tarjetas.ToList();
+        }
+
+        /*Operaciones Usuario*/
+
+       public bool IniciarSesion(int dni, string password)
+        {
+            try { 
+                foreach (Usuario usuario in usuarios){
+                    if (usuario._dni == dni && usuario._password==password) 
+                    {
+                        usuarioLogueado = usuario;
+                        return true;
+                    }
+                }
+                return false;
+            } catch(Exception ex) { return false; }
+        }
+
+        public bool CerrarSesion()
+        {
+            usuarioLogueado = null;
+            return true;
         }
     }
 }
