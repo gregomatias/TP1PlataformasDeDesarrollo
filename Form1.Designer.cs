@@ -37,11 +37,11 @@ namespace TP1
             this.lbl_Registrarse = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtB_contrasena = new System.Windows.Forms.TextBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtB_dni = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -61,11 +61,11 @@ namespace TP1
             this.panel1.Controls.Add(this.lbl_Registrarse);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.textBox2);
+            this.panel1.Controls.Add(this.txtB_contrasena);
             this.panel1.Controls.Add(this.pictureBox2);
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Controls.Add(this.txtB_dni);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel1.Location = new System.Drawing.Point(685, 0);
@@ -87,6 +87,7 @@ namespace TP1
             this.button3.TabIndex = 11;
             this.button3.Text = "Acceder";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // checkBox1
             // 
@@ -129,19 +130,19 @@ namespace TP1
             this.label3.TabIndex = 7;
             this.label3.Text = "Ingresá aquí para operar";
             // 
-            // textBox2
+            // txtB_contrasena
             // 
-            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox2.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox2.Location = new System.Drawing.Point(8, 219);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.textBox2.MaxLength = 10;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.PlaceholderText = "Tu clave Online Banking";
-            this.textBox2.Size = new System.Drawing.Size(236, 21);
-            this.textBox2.TabIndex = 5;
-            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox2.UseSystemPasswordChar = true;
+            this.txtB_contrasena.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtB_contrasena.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtB_contrasena.Location = new System.Drawing.Point(8, 219);
+            this.txtB_contrasena.Margin = new System.Windows.Forms.Padding(0);
+            this.txtB_contrasena.MaxLength = 10;
+            this.txtB_contrasena.Name = "txtB_contrasena";
+            this.txtB_contrasena.PlaceholderText = "Tu clave Online Banking";
+            this.txtB_contrasena.Size = new System.Drawing.Size(236, 21);
+            this.txtB_contrasena.TabIndex = 5;
+            this.txtB_contrasena.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtB_contrasena.UseSystemPasswordChar = true;
             // 
             // pictureBox2
             // 
@@ -184,20 +185,20 @@ namespace TP1
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // textBox1
+            // txtB_dni
             // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBox1.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox1.Location = new System.Drawing.Point(7, 159);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.textBox1.MaxLength = 10;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.PlaceholderText = "Tu número de documento";
-            this.textBox1.Size = new System.Drawing.Size(236, 21);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.txtB_dni.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtB_dni.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.txtB_dni.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtB_dni.Location = new System.Drawing.Point(7, 159);
+            this.txtB_dni.Margin = new System.Windows.Forms.Padding(0);
+            this.txtB_dni.MaxLength = 10;
+            this.txtB_dni.Name = "txtB_dni";
+            this.txtB_dni.PlaceholderText = "Tu número de documento";
+            this.txtB_dni.Size = new System.Drawing.Size(236, 21);
+            this.txtB_dni.TabIndex = 0;
+            this.txtB_dni.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtB_dni.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // pictureBox1
             // 
@@ -264,6 +265,7 @@ namespace TP1
             this.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -279,13 +281,13 @@ namespace TP1
 
         private Panel panel1;
         private Panel panel2;
-        private TextBox textBox1;
+        private TextBox txtB_dni;
         private Label label1;
         private Label label2;
         private Panel panel3;
         private Button button1;
         private Button button2;
-        private TextBox textBox2;
+        private TextBox txtB_contrasena;
         private PictureBox pictureBox2;
         private PictureBox pictureBox1;
         private Label lbl_Registrarse;

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,16 +15,23 @@ namespace TP1
     {
         private object[] argumentos;
         private  List<List<string>> datos;
-        private string usuario;
-        public Form3(string usuario)
+        private string usuarioLogueado;
+        public Form3(string usuarioLogueado)
         {
-            this.usuario = usuario;
+            
+            this.usuarioLogueado = usuarioLogueado;
+            InitializeComponent();
+            label2.Text = this.usuarioLogueado;
+      
+
+
         }
         public Form3(object[] args)
         {
             InitializeComponent();
             argumentos = args;
             label2.Text = (string)args[0];
+            
             datos = new List<List<string>>();
         }
 

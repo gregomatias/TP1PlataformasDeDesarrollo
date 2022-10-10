@@ -1,14 +1,24 @@
+using System.Net;
+using System.Windows.Forms;
+
 namespace TP1
 {
     internal partial class Form1 : Form
     {
         Form2 formDeRegistro;
-         Banco banco;
+        Form3 formUsuarioLogueado;
+        Banco banco;
         public Form1()
         {
             banco = new Banco();
-            formDeRegistro = new Form2(banco);
+            formDeRegistro = new Form2(banco, TransfDelegadoForm2);
             InitializeComponent();
+        }
+
+        private  void TransfDelegadoForm2(){
+            this.Show();
+            formDeRegistro.Close();
+        
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -24,9 +34,9 @@ namespace TP1
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if (System.Text.RegularExpressions.Regex.IsMatch(textBox1.Text, "[^0-9]"))
+            if (System.Text.RegularExpressions.Regex.IsMatch(txtB_dni.Text, "[^0-9]"))
             {
-                textBox1.Text = textBox1.Text.Remove(textBox1.Text.Length - 1);
+                txtB_dni.Text = txtB_dni.Text.Remove(txtB_dni.Text.Length - 1);
             }
         }
 
@@ -36,6 +46,21 @@ namespace TP1
             
             formDeRegistro.Show();
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            int dni = int.Parse(txtB_dni.Text);
+
+            //Si inicia sesion abre Form3
+            if (  banco.IniciarSesion(dni, txtB_contrasena.Text))
+            { 
+                formUsuarioLogueado = new Form3(banco.GetUsuarioLogueado());
+                formUsuarioLogueado.Show();
+                this.Hide();
+
+            }
+          else { MessageBox.Show("Error de logueo"); }
         }
     }
 

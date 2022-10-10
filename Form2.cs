@@ -13,13 +13,19 @@ namespace TP1
 {
     internal partial class Form2 : Form
     {
-         Banco banco;
+        private Banco banco;
+        private TransfDelegadoForm2 TransEvento;
 
-        public Form2(Banco banco)
+
+        public Form2(Banco banco, TransfDelegadoForm2 TransEvento)
         {
-            this.banco = banco; 
+            this.banco = banco;
+            this.TransEvento = TransEvento;
             InitializeComponent();
+
         }
+
+        public delegate void TransfDelegadoForm2();
 
         private void btn_AceptaRegistro_Click(object sender, EventArgs e)
         {
@@ -28,7 +34,8 @@ namespace TP1
 
             banco.AltaUsuario(dni, txtBox_nombres.Text, txtBox_apellidos.Text, txtBox_email.Text, txtBox_contrasena.Text);
 
-
+            //Traspaso a Form1
+            this.TransEvento();
         }
 
         private void button1_Click(object sender, EventArgs e)

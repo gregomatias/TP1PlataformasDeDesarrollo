@@ -19,7 +19,7 @@ namespace TP1
         private List<TarjetaDeCredito> tarjetas;
         private List<Pago> pagos;
         private List<Movimiento> movimientos;
-        private Usuario? usuarioLogueado;
+        private Usuario usuarioLogueado;
         
 
 
@@ -32,6 +32,13 @@ namespace TP1
             this.pagos = new List<Pago>();
             this.movimientos = new List<Movimiento>();
             
+        }
+
+        public string GetUsuarioLogueado() {
+            try {
+                return usuarioLogueado._nombre;
+            }
+            catch (Exception) { return "Indeterminado"; }
         }
         
         public bool IniciarSesion(int dni , string contrasena)

@@ -64,7 +64,7 @@
             this.txtBox_dni.MaxLength = 10;
             this.txtBox_dni.Name = "txtBox_dni";
             this.txtBox_dni.PlaceholderText = "Tu número de documento";
-            this.txtBox_dni.Size = new System.Drawing.Size(236, 16);
+            this.txtBox_dni.Size = new System.Drawing.Size(236, 19);
             this.txtBox_dni.TabIndex = 5;
             this.txtBox_dni.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -87,7 +87,7 @@
             this.txtBox_nombres.MaxLength = 10;
             this.txtBox_nombres.Name = "txtBox_nombres";
             this.txtBox_nombres.PlaceholderText = "Nombres";
-            this.txtBox_nombres.Size = new System.Drawing.Size(236, 16);
+            this.txtBox_nombres.Size = new System.Drawing.Size(236, 19);
             this.txtBox_nombres.TabIndex = 7;
             this.txtBox_nombres.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -110,7 +110,7 @@
             this.txtBox_apellidos.MaxLength = 10;
             this.txtBox_apellidos.Name = "txtBox_apellidos";
             this.txtBox_apellidos.PlaceholderText = "Apellidos";
-            this.txtBox_apellidos.Size = new System.Drawing.Size(236, 16);
+            this.txtBox_apellidos.Size = new System.Drawing.Size(236, 19);
             this.txtBox_apellidos.TabIndex = 9;
             this.txtBox_apellidos.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -133,7 +133,7 @@
             this.txtBox_email.MaxLength = 10;
             this.txtBox_email.Name = "txtBox_email";
             this.txtBox_email.PlaceholderText = "Correo electrónico";
-            this.txtBox_email.Size = new System.Drawing.Size(236, 16);
+            this.txtBox_email.Size = new System.Drawing.Size(236, 19);
             this.txtBox_email.TabIndex = 11;
             this.txtBox_email.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -194,7 +194,7 @@
             this.label2.ForeColor = System.Drawing.SystemColors.Window;
             this.label2.Location = new System.Drawing.Point(10, 15);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(139, 24);
+            this.label2.Size = new System.Drawing.Size(177, 29);
             this.label2.TabIndex = 0;
             this.label2.Text = "Online Banking";
             // 
@@ -217,7 +217,7 @@
             this.txtBox_contrasena.MaxLength = 10;
             this.txtBox_contrasena.Name = "txtBox_contrasena";
             this.txtBox_contrasena.PlaceholderText = "Contraseña";
-            this.txtBox_contrasena.Size = new System.Drawing.Size(236, 16);
+            this.txtBox_contrasena.Size = new System.Drawing.Size(236, 19);
             this.txtBox_contrasena.TabIndex = 16;
             this.txtBox_contrasena.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -240,7 +240,7 @@
             this.txtBox_RepContrasena.MaxLength = 10;
             this.txtBox_RepContrasena.Name = "txtBox_RepContrasena";
             this.txtBox_RepContrasena.PlaceholderText = "Repetí la contraseña";
-            this.txtBox_RepContrasena.Size = new System.Drawing.Size(236, 16);
+            this.txtBox_RepContrasena.Size = new System.Drawing.Size(236, 19);
             this.txtBox_RepContrasena.TabIndex = 18;
             this.txtBox_RepContrasena.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -276,6 +276,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form2";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form2";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();

@@ -150,10 +150,10 @@
             // 
             this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Controls.Add(this.dataGridView2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 27);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(598, 259);
+            this.tabPage2.Size = new System.Drawing.Size(598, 257);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Plazo Fijo";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -181,9 +181,9 @@
             // 
             this.tabPage3.Controls.Add(this.dataGridView4);
             this.tabPage3.Controls.Add(this.dataGridView3);
-            this.tabPage3.Location = new System.Drawing.Point(4, 27);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(598, 259);
+            this.tabPage3.Size = new System.Drawing.Size(598, 257);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Pagos";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -210,9 +210,9 @@
             // 
             // tabPage4
             // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 27);
+            this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(598, 259);
+            this.tabPage4.Size = new System.Drawing.Size(598, 257);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Tarjetas";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -227,8 +227,7 @@
             // 
             // Form3
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(238)))), ((int)(((byte)(236)))));
             this.ClientSize = new System.Drawing.Size(935, 451);
             this.Controls.Add(this.panel3);
@@ -241,7 +240,6 @@
             this.Name = "Form3";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form3";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
