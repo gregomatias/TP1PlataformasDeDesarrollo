@@ -38,6 +38,7 @@
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.btn_AceptaRegistro = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.txtBox_contrasena = new System.Windows.Forms.TextBox();
@@ -57,13 +58,13 @@
             // 
             this.txtBox_dni.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtBox_dni.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtBox_dni.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtBox_dni.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtBox_dni.Location = new System.Drawing.Point(676, 87);
             this.txtBox_dni.Margin = new System.Windows.Forms.Padding(0);
             this.txtBox_dni.MaxLength = 10;
             this.txtBox_dni.Name = "txtBox_dni";
             this.txtBox_dni.PlaceholderText = "Tu número de documento";
-            this.txtBox_dni.Size = new System.Drawing.Size(236, 21);
+            this.txtBox_dni.Size = new System.Drawing.Size(236, 16);
             this.txtBox_dni.TabIndex = 5;
             this.txtBox_dni.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -80,13 +81,13 @@
             // 
             this.txtBox_nombres.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtBox_nombres.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtBox_nombres.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtBox_nombres.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtBox_nombres.Location = new System.Drawing.Point(675, 143);
             this.txtBox_nombres.Margin = new System.Windows.Forms.Padding(0);
             this.txtBox_nombres.MaxLength = 10;
             this.txtBox_nombres.Name = "txtBox_nombres";
             this.txtBox_nombres.PlaceholderText = "Nombres";
-            this.txtBox_nombres.Size = new System.Drawing.Size(236, 21);
+            this.txtBox_nombres.Size = new System.Drawing.Size(236, 16);
             this.txtBox_nombres.TabIndex = 7;
             this.txtBox_nombres.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -103,13 +104,13 @@
             // 
             this.txtBox_apellidos.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtBox_apellidos.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtBox_apellidos.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtBox_apellidos.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtBox_apellidos.Location = new System.Drawing.Point(676, 198);
             this.txtBox_apellidos.Margin = new System.Windows.Forms.Padding(0);
             this.txtBox_apellidos.MaxLength = 10;
             this.txtBox_apellidos.Name = "txtBox_apellidos";
             this.txtBox_apellidos.PlaceholderText = "Apellidos";
-            this.txtBox_apellidos.Size = new System.Drawing.Size(236, 21);
+            this.txtBox_apellidos.Size = new System.Drawing.Size(236, 16);
             this.txtBox_apellidos.TabIndex = 9;
             this.txtBox_apellidos.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -126,13 +127,13 @@
             // 
             this.txtBox_email.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtBox_email.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtBox_email.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtBox_email.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtBox_email.Location = new System.Drawing.Point(677, 255);
             this.txtBox_email.Margin = new System.Windows.Forms.Padding(0);
             this.txtBox_email.MaxLength = 10;
             this.txtBox_email.Name = "txtBox_email";
             this.txtBox_email.PlaceholderText = "Correo electrónico";
-            this.txtBox_email.Size = new System.Drawing.Size(236, 21);
+            this.txtBox_email.Size = new System.Drawing.Size(236, 16);
             this.txtBox_email.TabIndex = 11;
             this.txtBox_email.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -150,7 +151,7 @@
             this.btn_AceptaRegistro.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(41)))), ((int)(((byte)(30)))));
             this.btn_AceptaRegistro.FlatAppearance.BorderSize = 0;
             this.btn_AceptaRegistro.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_AceptaRegistro.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_AceptaRegistro.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btn_AceptaRegistro.ForeColor = System.Drawing.SystemColors.Window;
             this.btn_AceptaRegistro.Location = new System.Drawing.Point(675, 410);
             this.btn_AceptaRegistro.Name = "btn_AceptaRegistro";
@@ -163,27 +164,44 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(41)))), ((int)(((byte)(30)))));
+            this.panel3.Controls.Add(this.button1);
             this.panel3.Controls.Add(this.label2);
             this.panel3.Location = new System.Drawing.Point(2, -6);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(930, 58);
             this.panel3.TabIndex = 14;
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Red;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button1.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.button1.Location = new System.Drawing.Point(882, 18);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(29, 29);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "X";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label2.ForeColor = System.Drawing.SystemColors.Window;
             this.label2.Location = new System.Drawing.Point(10, 15);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(172, 29);
+            this.label2.Size = new System.Drawing.Size(139, 24);
             this.label2.TabIndex = 0;
             this.label2.Text = "Online Banking";
             // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.BackgroundImage = global::TP1.Properties.Resources.hombre_con_laptop;
-            this.flowLayoutPanel1.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.flowLayoutPanel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 88);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(645, 351);
@@ -193,13 +211,13 @@
             // 
             this.txtBox_contrasena.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtBox_contrasena.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtBox_contrasena.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtBox_contrasena.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtBox_contrasena.Location = new System.Drawing.Point(677, 312);
             this.txtBox_contrasena.Margin = new System.Windows.Forms.Padding(0);
             this.txtBox_contrasena.MaxLength = 10;
             this.txtBox_contrasena.Name = "txtBox_contrasena";
             this.txtBox_contrasena.PlaceholderText = "Contraseña";
-            this.txtBox_contrasena.Size = new System.Drawing.Size(236, 21);
+            this.txtBox_contrasena.Size = new System.Drawing.Size(236, 16);
             this.txtBox_contrasena.TabIndex = 16;
             this.txtBox_contrasena.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -216,13 +234,13 @@
             // 
             this.txtBox_RepContrasena.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtBox_RepContrasena.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtBox_RepContrasena.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtBox_RepContrasena.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtBox_RepContrasena.Location = new System.Drawing.Point(674, 366);
             this.txtBox_RepContrasena.Margin = new System.Windows.Forms.Padding(0);
             this.txtBox_RepContrasena.MaxLength = 10;
             this.txtBox_RepContrasena.Name = "txtBox_RepContrasena";
             this.txtBox_RepContrasena.PlaceholderText = "Repetí la contraseña";
-            this.txtBox_RepContrasena.Size = new System.Drawing.Size(236, 21);
+            this.txtBox_RepContrasena.Size = new System.Drawing.Size(236, 16);
             this.txtBox_RepContrasena.TabIndex = 18;
             this.txtBox_RepContrasena.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -255,7 +273,7 @@
             this.Controls.Add(this.txtBox_dni);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.flowLayoutPanel1);
-            this.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form2";
             this.Text = "Form2";
@@ -290,5 +308,6 @@
         private PictureBox pictureBox5;
         private TextBox txtBox_RepContrasena;
         private PictureBox pictureBox6;
+        private Button button1;
     }
 }
