@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using TP1;
 
 namespace TP1
 {
@@ -17,6 +20,8 @@ namespace TP1
         private List<Pago> pagos;
         private List<Movimiento> movimientos;
         private Usuario? usuarioLogueado;
+        
+
 
         public Banco()
         {
@@ -26,10 +31,124 @@ namespace TP1
             this.tarjetas = new List<TarjetaDeCredito>();
             this.pagos = new List<Pago>();
             this.movimientos = new List<Movimiento>();
-
+            
+        }
+        
+        public bool IniciarSesion(int dni , string contrasena)
+        {
+            foreach (Usuario usuario in usuarios)
+            {
+                if(usuario._dni==dni && usuario._password==contrasena && usuario._intentosFallidos < 3)
+                {
+                    usuarioLogueado = usuario;
+                    return true;
+                }else if (usuarioLogueado._intentosFallidos>=3)
+                {
+                    usuarioLogueado._bloqueado = true;
+                    return false;
+                }
+            }
+            usuarioLogueado._intentosFallidos=usuarioLogueado._intentosFallidos+1;
+            return false;
         }
 
-        public bool AltaUsuario(int dni, string nombre, string apellido, string mail, string password)
+        public bool CerrarSesion()
+        {
+            usuarioLogueado=null;
+            return true;
+        }
+
+        public bool CrearCajaDeAhorro()
+        {
+            return false;
+        }
+
+        public bool Depositar(CajaDeAhorro caja,float monto)
+        {
+            caja._saldo=caja._saldo+monto;
+            return true;
+        }
+
+        public bool Retirar(CajaDeAhorro caja, float monto)
+        {
+            caja._saldo=caja._saldo-monto;
+            return true;
+        }
+
+        public bool Transferir(CajaDeAhorro emisor,CajaDeAhorro destino, float monto)
+        {
+            emisor._saldo=emisor._saldo-monto;
+            destino._saldo=destino._saldo+monto;
+            return true;
+        }
+
+        public List<Movimiento> BuscarMovimiento(CajaDeAhorro caja, string detalle, DateTime fecha,float monto)
+        {
+           List<Movimiento> move= new List<Movimiento>();
+            
+                    if (detalle != "default")
+                    {
+                         foreach (Movimiento movimiento in movimientos)
+                        {
+                             if (movimiento._cajaDeAhorro == caja && movimiento._detalle == detalle)
+                            {
+                                move.Add(movimiento);    
+                                
+                            }
+                        }
+                        return move;
+                            
+                    }
+                    else if(fecha != null)
+                    {
+                         foreach (Movimiento movimiento in movimientos)
+                        {
+                             if (movimiento._cajaDeAhorro == caja && movimiento._fecha == fecha)
+                            {
+                                move.Add(movimiento);    
+                                
+                            }
+                            return move;
+                            
+                        }
+                    }else if(monto != 0) {
+                        
+                         foreach (Movimiento movimiento in movimientos)
+                        {
+                             if (movimiento._cajaDeAhorro == caja && movimiento._monto == monto)
+                            {
+                                move.Add(movimiento);    
+                                
+                            }
+                            return move;
+                           
+                        }
+                    }
+        return move;
+            
+        }
+              
+
+        public bool PagarTarjeta(TarjetaDeCredito tarjeta, CajaDeAhorro caja){
+            float monto = tarjeta._consumos; 
+
+               if(caja._saldo>tarjeta._consumos){
+                    caja._saldo = caja._saldo-tarjeta._consumos;
+               
+        AltaMovimiento(caja,"Pago Tarjeta",monto);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+
+    }
+
+
+
+    public bool AltaUsuario(int dni, string nombre, string apellido, string mail, string password)
         {
             
             try { 
@@ -39,7 +158,7 @@ namespace TP1
             catch (Exception ex) { return false; }
 
 
-        }
+     }
 
       public bool ModificarUsuario(int id,int dni, string nombre, string apellido,string password,string mail)
         {
@@ -339,26 +458,7 @@ namespace TP1
             return tarjetas.ToList();
         }
 
-        /*Operaciones Usuario*/
 
-       public bool IniciarSesion(int dni, string password)
-        {
-            try { 
-                foreach (Usuario usuario in usuarios){
-                    if (usuario._dni == dni && usuario._password==password) 
-                    {
-                        usuarioLogueado = usuario;
-                        return true;
-                    }
-                }
-                return false;
-            } catch(Exception ex) { return false; }
-        }
-
-        public bool CerrarSesion()
-        {
-            usuarioLogueado = null;
-            return true;
-        }
     }
+
 }
