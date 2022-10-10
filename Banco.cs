@@ -19,8 +19,8 @@ namespace TP1
         private List<TarjetaDeCredito> tarjetas;
         private List<Pago> pagos;
         private List<Movimiento> movimientos;
-        private Usuario usuarioLogueado;
-        
+        private Usuario? usuarioLogueado;
+        private int cbuAutonumerado = 0;
 
 
         public Banco()
@@ -34,11 +34,11 @@ namespace TP1
             
         }
 
-        public string GetUsuarioLogueado() {
+        public string GetNombreUsuarioLogueado() {
             try {
-                return usuarioLogueado._nombre;
+                return usuarioLogueado._nombre + " " + usuarioLogueado._apellido;
             }
-            catch (Exception) { return "Indeterminado"; }
+            catch (Exception) { return "Usuario Indeterminado"; }
         }
         
         public bool IniciarSesion(int dni , string contrasena)
@@ -204,6 +204,9 @@ namespace TP1
     
         public void AltaCajaDeAhorro()
         {
+            CajaDeAhorro caja = new CajaDeAhorro(cbuAutonumerado= cbuAutonumerado + 1,usuarioLogueado) ; ;
+            cajas.Add(caja);
+            usuarioLogueado._Cajas.Add(caja);
 
         }
 
@@ -435,7 +438,8 @@ namespace TP1
         public List<CajaDeAhorro> MostrarCajasDeAhorro()
         {
        
-            return cajas.ToList();
+      
+            return usuarioLogueado.cajas.ToList();
         }
 
 

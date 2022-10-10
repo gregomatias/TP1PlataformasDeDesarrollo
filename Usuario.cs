@@ -83,7 +83,12 @@ namespace TP1
             set { bloqueado = value; }
         }
 
-       
+        public List<CajaDeAhorro> _Cajas
+        {
+            get { return cajas; }
+            set { cajas = value; }
+        }
+
 
     }
 }

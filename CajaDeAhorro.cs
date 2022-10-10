@@ -8,15 +8,17 @@ namespace TP1
 {
     internal class CajaDeAhorro
     {
-        public CajaDeAhorro(int cbu, List<Usuario> titulares)
+        public CajaDeAhorro(int cbu, Usuario usuario)
         {
 			_id = _id + 1;	
 			_cbu = cbu;
 			_titulares = new List<Usuario>();
-			_titulares = titulares;
+			_titulares.Add(usuario);
 			_saldo = 0;
 
         }
+
+ 
 
         static private int id = 0;
 

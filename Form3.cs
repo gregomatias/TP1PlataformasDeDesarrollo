@@ -15,13 +15,15 @@ namespace TP1
     {
         private object[] argumentos;
         private  List<List<string>> datos;
-        private string usuarioLogueado;
-        public Form3(string usuarioLogueado)
+        private string nombreUsuarioLogueado;
+        private Banco banco;
+        public Form3(string nombreUsuarioLogueado,Banco banco)
         {
-            
-            this.usuarioLogueado = usuarioLogueado;
+           
+            this.nombreUsuarioLogueado = nombreUsuarioLogueado;
+            this.banco = banco;
             InitializeComponent();
-            label2.Text = this.usuarioLogueado;
+            label2.Text = this.nombreUsuarioLogueado;
       
 
 
@@ -47,5 +49,26 @@ namespace TP1
             //agrego lo nuevo
             //   dataGridView1.Rows.Add(user.toArray());
         }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_crearCajaAhorro_Click(object sender, EventArgs e)
+        {
+            banco.AltaCajaDeAhorro();
+            dataGridView1.Rows.Clear();
+            foreach (CajaDeAhorro caja in banco.MostrarCajasDeAhorro())
+            {
+
+                int fila = dataGridView1.Rows.Add();
+                dataGridView1.Rows[fila].Cells[0].Value = caja._cbu;
+                dataGridView1.Rows[fila].Cells[1].Value = caja._saldo;
+
+            }
+
+        }
+
     }
 }

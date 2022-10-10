@@ -55,7 +55,7 @@ namespace TP1
             //Si inicia sesion abre Form3
             if (  banco.IniciarSesion(dni, txtB_contrasena.Text))
             { 
-                formUsuarioLogueado = new Form3(banco.GetUsuarioLogueado());
+                formUsuarioLogueado = new Form3(banco.GetNombreUsuarioLogueado(),banco);
                 formUsuarioLogueado.Show();
                 this.Hide();
 

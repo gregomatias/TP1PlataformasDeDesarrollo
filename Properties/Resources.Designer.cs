@@ -63,9 +63,39 @@ namespace TP1.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap account_circle_wght400 {
+            get {
+                object obj = ResourceManager.GetObject("account_circle_wght400", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap hombre_con_laptop {
             get {
                 object obj = ResourceManager.GetObject("hombre_con_laptop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap refresh_wght39 {
+            get {
+                object obj = ResourceManager.GetObject("refresh_wght39", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap refresh_wght400 {
+            get {
+                object obj = ResourceManager.GetObject("refresh_wght400", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
