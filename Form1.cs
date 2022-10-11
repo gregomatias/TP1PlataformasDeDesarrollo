@@ -21,6 +21,13 @@ namespace TP1
         
         }
 
+        private void TransfDelegadoForm3()
+        {
+            this.Show();
+            formDeRegistro.Close();
+
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -54,8 +61,8 @@ namespace TP1
 
             //Si inicia sesion abre Form3
             if (  banco.IniciarSesion(dni, txtB_contrasena.Text))
-            { 
-                formUsuarioLogueado = new Form3(banco.GetNombreUsuarioLogueado(),banco);
+            {
+                formUsuarioLogueado = new Form3(banco, TransfDelegadoForm3);
                 formUsuarioLogueado.Show();
                 this.Hide();
 

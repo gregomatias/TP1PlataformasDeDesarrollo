@@ -179,7 +179,7 @@ namespace TP1
             this.button1.Location = new System.Drawing.Point(221, 0);
             this.button1.Margin = new System.Windows.Forms.Padding(0);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(29, 29);
+            this.button1.Size = new System.Drawing.Size(28, 29);
             this.button1.TabIndex = 2;
             this.button1.Text = "X";
             this.button1.UseVisualStyleBackColor = false;

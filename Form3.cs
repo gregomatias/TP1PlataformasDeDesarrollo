@@ -8,6 +8,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TP1
 {
@@ -15,15 +16,17 @@ namespace TP1
     {
         private object[] argumentos;
         private  List<List<string>> datos;
-        private string nombreUsuarioLogueado;
         private Banco banco;
-        public Form3(string nombreUsuarioLogueado,Banco banco)
+        private TransfDelegadoForm2 transEvento;
+
+        public Form3(Banco banco, TransfDelegadoForm2 transEvento)
         {
-           
-            this.nombreUsuarioLogueado = nombreUsuarioLogueado;
+
+            this.transEvento = transEvento;
+            
             this.banco = banco;
             InitializeComponent();
-            label2.Text = this.nombreUsuarioLogueado;
+            label2.Text = banco.GetNombreUsuarioLogueado();
       
 
 
@@ -36,6 +39,10 @@ namespace TP1
             
             datos = new List<List<string>>();
         }
+
+
+        public delegate void TransfDelegadoForm2();
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -74,5 +81,42 @@ namespace TP1
 
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            banco.CerrarSesion();
+            this.transEvento();
+
+        }
+
+
+
+        private void comboBox1_Click(object sender, EventArgs e)
+        {
+            //comboBox1.Text = "";
+            comboBox1.Items.Clear();
+            comboBox1.Refresh();
+            List<CajaDeAhorro> listaCajaAhorro = new List<CajaDeAhorro>();
+            listaCajaAhorro = banco.MostrarCajasDeAhorro();
+
+            foreach (CajaDeAhorro caja in listaCajaAhorro)
+            {
+                comboBox1.Items.Add(caja._cbu);
+            }
+            
+
+        }
+
+        private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            //MessageBox.Show("Selected Item  ");
+            //selectedIndex.ToString());
+            int selectedIndex = comboBox1.SelectedIndex;
+            List<Movimiento> listaMovimientos = new List<Movimiento>();
+            listaMovimientos = banco.MostrarMovimientos(selectedIndex);
+
+
+
+        }
     }
 }

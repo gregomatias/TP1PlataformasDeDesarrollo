@@ -29,12 +29,27 @@ namespace TP1
 
         private void btn_AceptaRegistro_Click(object sender, EventArgs e)
         {
-            
-            int dni = int.Parse(txtBox_dni.Text);
-            banco.AltaUsuario(dni, txtBox_nombres.Text, txtBox_apellidos.Text, txtBox_email.Text, txtBox_contrasena.Text);
 
-            //Traspaso a Form1
-            this.TransEvento();
+             if (txtBox_dni.Text != "" && txtBox_nombres.Text != "" && txtBox_apellidos.Text != "" && txtBox_email.Text != "" && txtBox_contrasena.Text != "" && txtBox_RepContrasena.Text != "")
+            {
+                if ( txtBox_email.Text.Contains("@"))
+                {
+                    int dni = int.Parse(txtBox_dni.Text);
+                    banco.AltaUsuario(dni, txtBox_nombres.Text, txtBox_apellidos.Text, txtBox_email.Text, txtBox_contrasena.Text);
+                    MessageBox.Show("Se registrado el usuario");
+                    //Traspaso a Form1
+                    this.TransEvento();
+                }
+                else
+                {
+                    MessageBox.Show("el campo mail es incorrecto");
+                    
+                }
+            }
+            else
+            {
+                MessageBox.Show("hacen falta campos por llenar");
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

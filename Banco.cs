@@ -480,10 +480,17 @@ namespace TP1
         }
 
 
-        public List<Movimiento> MostrarMovimientos()
+        public List<Movimiento> MostrarMovimientos(int id_caja)
         {
-            
-            return movimientos.ToList();
+            List<Movimiento> movimientosCaja = new List<Movimiento>();
+            foreach (Movimiento movimiento in movimientos){
+                if (movimiento._cajaDeAhorro._cbu == id_caja)
+                {
+                    movimientosCaja.Add(movimiento);
+                }
+            }
+            return movimientosCaja;
+
         }
 
         public List<Pago> MostrarPago()
