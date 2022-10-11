@@ -29,9 +29,8 @@ namespace TP1
 
         private void btn_AceptaRegistro_Click(object sender, EventArgs e)
         {
+            
             int dni = int.Parse(txtBox_dni.Text);
-
-
             banco.AltaUsuario(dni, txtBox_nombres.Text, txtBox_apellidos.Text, txtBox_email.Text, txtBox_contrasena.Text);
 
             //Traspaso a Form1

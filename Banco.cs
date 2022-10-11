@@ -20,7 +20,7 @@ namespace TP1
         private List<Pago> pagos;
         private List<Movimiento> movimientos;
         private Usuario? usuarioLogueado;
-        private int cbuAutonumerado = 0;
+        private static int cbuAutonumerado = 0;
 
 
         public Banco()
@@ -43,19 +43,29 @@ namespace TP1
         
         public bool IniciarSesion(int dni , string contrasena)
         {
+            
             foreach (Usuario usuario in usuarios)
             {
-                if(usuario._dni==dni && usuario._password==contrasena && usuario._intentosFallidos < 3)
+                if(usuario._dni==dni)
                 {
                     usuarioLogueado = usuario;
-                    return true;
-                }else if (usuarioLogueado._intentosFallidos>=3)
-                {
-                    usuarioLogueado._bloqueado = true;
-                    return false;
+                    if (usuarioLogueado._intentosFallidos>=3)
+                    {
+                        usuarioLogueado._bloqueado=true;
+                        return false;
+                    }
+                    if (usuarioLogueado._password == contrasena)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        usuarioLogueado._intentosFallidos++;
+                        return false;
+                    }
                 }
             }
-            usuarioLogueado._intentosFallidos=usuarioLogueado._intentosFallidos+1;
+            
             return false;
         }
 
@@ -67,7 +77,17 @@ namespace TP1
 
         public bool CrearCajaDeAhorro()
         {
-            return false;
+            CajaDeAhorro caja=new CajaDeAhorro(cbuAutonumerado, usuarioLogueado);
+            cbuAutonumerado = cbuAutonumerado + 1;
+            AltaCajaDeAhorro(usuarioLogueado,caja);
+            cajas.Add(caja);
+            return true;
+        }
+
+        public void AltaCajaDeAhorro(Usuario usuario, CajaDeAhorro caja)
+        {
+            usuario._Cajas.Add(caja);
+
         }
 
         public bool Depositar(CajaDeAhorro caja,float monto)
@@ -202,23 +222,40 @@ namespace TP1
             catch(Exception ex) { return false; }
         }
     
-        public void AltaCajaDeAhorro()
-        {
-            CajaDeAhorro caja = new CajaDeAhorro(cbuAutonumerado= cbuAutonumerado + 1,usuarioLogueado) ; ;
-            cajas.Add(caja);
-            usuarioLogueado._Cajas.Add(caja);
 
-        }
 
-        public void ModificarCajaDeAhorro()
+        public void ModificarCajaDeAhorro(int id)
         {
             
+            foreach (CajaDeAhorro caja in cajas)
+            {
+                if(caja._id==id) {
+                    foreach (Usuario user in caja._titulares)
+                    {
+                        if (usuarioLogueado == user)
+                        {
+                            caja._titulares.Remove(user);
+                            
+                        }
 
+
+                    }
+                    caja._titulares.Add(usuarioLogueado);
+                }
+            }
         }
 
-        public void BajaCajaDeAhorro(int id)
+        public bool BajaCajaDeAhorro(int id)
         {
-            
+            foreach (CajaDeAhorro caja in cajas)
+            {
+                if (caja._id == id && caja._saldo==0)
+                {
+                    cajas.Remove(caja);
+                    return true;
+                }
+            }
+            return false;
 
         }
 

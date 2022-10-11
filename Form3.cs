@@ -57,9 +57,13 @@ namespace TP1
 
         private void btn_crearCajaAhorro_Click(object sender, EventArgs e)
         {
-            banco.AltaCajaDeAhorro();
+
             dataGridView1.Rows.Clear();
-            foreach (CajaDeAhorro caja in banco.MostrarCajasDeAhorro())
+            dataGridView1.Refresh();
+            banco.CrearCajaDeAhorro();
+            List<CajaDeAhorro> listaCajaAhorro = new List<CajaDeAhorro>();
+            listaCajaAhorro = banco.MostrarCajasDeAhorro();
+            foreach (CajaDeAhorro caja in listaCajaAhorro)
             {
 
                 int fila = dataGridView1.Rows.Add();
