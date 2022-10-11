@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,27 +32,29 @@ namespace TP1
             this.tarjetas = new List<TarjetaDeCredito>();
             this.pagos = new List<Pago>();
             this.movimientos = new List<Movimiento>();
-            
+
         }
 
-        public string GetNombreUsuarioLogueado() {
-            try {
+        public string GetNombreUsuarioLogueado()
+        {
+            try
+            {
                 return usuarioLogueado._nombre + " " + usuarioLogueado._apellido;
             }
             catch (Exception) { return "Usuario Indeterminado"; }
         }
-        
-        public bool IniciarSesion(int dni , string contrasena)
+
+        public bool IniciarSesion(int dni, string contrasena)
         {
-            
+
             foreach (Usuario usuario in usuarios)
             {
-                if(usuario._dni==dni)
+                if (usuario._dni == dni)
                 {
                     usuarioLogueado = usuario;
-                    if (usuarioLogueado._intentosFallidos>=3)
+                    if (usuarioLogueado._intentosFallidos >= 3)
                     {
-                        usuarioLogueado._bloqueado=true;
+                        usuarioLogueado._bloqueado = true;
                         return false;
                     }
                     if (usuarioLogueado._password == contrasena)
@@ -65,21 +68,21 @@ namespace TP1
                     }
                 }
             }
-            
+
             return false;
         }
 
         public bool CerrarSesion()
         {
-            usuarioLogueado=null;
+            usuarioLogueado = null;
             return true;
         }
 
         public bool CrearCajaDeAhorro()
         {
-            CajaDeAhorro caja=new CajaDeAhorro(cbuAutonumerado, usuarioLogueado);
+            CajaDeAhorro caja = new CajaDeAhorro(cbuAutonumerado, usuarioLogueado);
             cbuAutonumerado = cbuAutonumerado + 1;
-            AltaCajaDeAhorro(usuarioLogueado,caja);
+            AltaCajaDeAhorro(usuarioLogueado, caja);
             cajas.Add(caja);
             return true;
         }
@@ -90,104 +93,177 @@ namespace TP1
 
         }
 
-        public bool Depositar(CajaDeAhorro caja,float monto)
+        public bool Depositar(CajaDeAhorro caja, float monto)
         {
-            caja._saldo=caja._saldo+monto;
+            caja._saldo = caja._saldo + monto;
+            movimientos.Add(new Movimiento(caja,"Deposito",monto));
+            caja._movimientos.Add(new Movimiento(caja,"Deposito",monto));
             return true;
         }
+
+        public bool Depositar(int cbu, float monto)
+        {
+            try
+            {
+                foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
+                {
+                    if (caja._cbu == cbu)
+                    {
+                        Depositar(caja, monto);
+
+                    }
+                }
+            }
+            catch (Exception) { return false; }
+            return true;
+
+        }
+
+
 
         public bool Retirar(CajaDeAhorro caja, float monto)
         {
-            caja._saldo=caja._saldo-monto;
+            if (caja._saldo >= monto) { 
+            caja._saldo = caja._saldo - monto;
+            movimientos.Add(new Movimiento(caja,"Retiro",monto));
+            caja._movimientos.Add(new Movimiento(caja,"Retiro",monto));
+            return true;
+
+            }
+            else { return false; }
+        }
+
+        public bool Retirar(int cbu, float monto)
+        {
+
+            try
+            {
+                foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
+                {
+                    if (caja._cbu == cbu)
+                    {
+                        Retirar(caja, monto);
+
+                    }
+                }
+            }
+            catch (Exception) { return false; }
             return true;
         }
 
-        public bool Transferir(CajaDeAhorro emisor,CajaDeAhorro destino, float monto)
+        public bool Transferir(int emisor, int destino, float monto)
         {
-            emisor._saldo=emisor._saldo-monto;
-            destino._saldo=destino._saldo+monto;
-            return true;
+            bool encontro = false;
+            foreach(CajaDeAhorro caja in cajas){
+                if(caja._cbu==emisor && caja._saldo>=monto){
+                    caja._saldo=caja._saldo-monto;
+                    encontro = true;
+                    movimientos.Add(new Movimiento(caja,"Transferencia emitida",monto));
+                    caja._movimientos.Add(new Movimiento(caja,"Transferencia emitida",monto));
+                }
+            }
+
+            if (encontro) { 
+                foreach (CajaDeAhorro cajita in cajas)
+                {
+                    if (cajita._cbu == destino)
+                    {
+                        cajita._saldo = cajita._saldo + monto;
+                        movimientos.Add(new Movimiento(cajita,"Transferencia recibida",monto));
+                        cajita._movimientos.Add(new Movimiento(cajita,"Transferencia recibida",monto));
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
-        public List<Movimiento> BuscarMovimiento(CajaDeAhorro caja, string detalle, DateTime fecha,float monto)
+
+        public List<Movimiento> BuscarMovimiento(CajaDeAhorro caja, string detalle, DateTime fecha, float monto)
         {
-           List<Movimiento> move= new List<Movimiento>();
-            
-                    if (detalle != "default")
+            List<Movimiento> move = new List<Movimiento>();
+
+            if (detalle != "default")
+            {
+                foreach (Movimiento movimiento in movimientos)
+                {
+                    if (movimiento._cajaDeAhorro == caja && movimiento._detalle == detalle)
                     {
-                         foreach (Movimiento movimiento in movimientos)
-                        {
-                             if (movimiento._cajaDeAhorro == caja && movimiento._detalle == detalle)
-                            {
-                                move.Add(movimiento);    
-                                
-                            }
-                        }
-                        return move;
-                            
+                        move.Add(movimiento);
+
                     }
-                    else if(fecha != null)
+                }
+                return move;
+
+            }
+            else if (fecha != null)
+            {
+                foreach (Movimiento movimiento in movimientos)
+                {
+                    if (movimiento._cajaDeAhorro == caja && movimiento._fecha == fecha)
                     {
-                         foreach (Movimiento movimiento in movimientos)
-                        {
-                             if (movimiento._cajaDeAhorro == caja && movimiento._fecha == fecha)
-                            {
-                                move.Add(movimiento);    
-                                
-                            }
-                            return move;
-                            
-                        }
-                    }else if(monto != 0) {
-                        
-                         foreach (Movimiento movimiento in movimientos)
-                        {
-                             if (movimiento._cajaDeAhorro == caja && movimiento._monto == monto)
-                            {
-                                move.Add(movimiento);    
-                                
-                            }
-                            return move;
-                           
-                        }
+                        move.Add(movimiento);
+
                     }
-        return move;
-            
+                    return move;
+
+                }
+            }
+            else if (monto != 0)
+            {
+
+                foreach (Movimiento movimiento in movimientos)
+                {
+                    if (movimiento._cajaDeAhorro == caja && movimiento._monto == monto)
+                    {
+                        move.Add(movimiento);
+
+                    }
+                    return move;
+
+                }
+            }
+            return move;
+
         }
-              
-
-        public bool PagarTarjeta(TarjetaDeCredito tarjeta, CajaDeAhorro caja){
-            float monto = tarjeta._consumos; 
-
-               if(caja._saldo>tarjeta._consumos){
-                    caja._saldo = caja._saldo-tarjeta._consumos;
-               
-        AltaMovimiento(caja,"Pago Tarjeta",monto);
-        return true;
-    }
-    else
-    {
-        return false;
-    }
 
 
-    }
-
-
-
-    public bool AltaUsuario(int dni, string nombre, string apellido, string mail, string password)
+        public bool PagarTarjeta(TarjetaDeCredito tarjeta, CajaDeAhorro caja)
         {
-            
-            try { 
-            usuarios.Add(new Usuario(dni, nombre, apellido, mail, password));
+            float monto = tarjeta._consumos;
+
+            if (caja._saldo > tarjeta._consumos)
+            {
+                caja._saldo = caja._saldo - tarjeta._consumos;
+
+                AltaMovimiento(caja, "Pago Tarjeta", monto);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
+
+
+
+        public bool AltaUsuario(int dni, string nombre, string apellido, string mail, string password)
+        {
+
+            try
+            {
+                usuarios.Add(new Usuario(dni, nombre, apellido, mail, password));
                 return true;
             }
             catch (Exception ex) { return false; }
 
 
-     }
+        }
 
-      public bool ModificarUsuario(int id,int dni, string nombre, string apellido,string password,string mail)
+        public bool ModificarUsuario(int id, int dni, string nombre, string apellido, string password, string mail)
         {
             try
             {
@@ -204,38 +280,41 @@ namespace TP1
                 }
                 return true;
             }
-            catch(Exception ex) { return false; }
-        } 
+            catch (Exception ex) { return false; }
+        }
 
         public bool EliminarUsuario(int id)
         {
-            try { 
-            foreach (Usuario usuario in usuarios)
+            try
             {
-                if (usuario._id==id) {
-                    usuarios.Remove(usuario);
-                }
-                    
+                foreach (Usuario usuario in usuarios)
+                {
+                    if (usuario._id == id)
+                    {
+                        usuarios.Remove(usuario);
+                    }
+
                 }
                 return true;
             }
-            catch(Exception ex) { return false; }
+            catch (Exception ex) { return false; }
         }
-    
+
 
 
         public void ModificarCajaDeAhorro(int id)
         {
-            
+
             foreach (CajaDeAhorro caja in cajas)
             {
-                if(caja._id==id) {
+                if (caja._id == id)
+                {
                     foreach (Usuario user in caja._titulares)
                     {
                         if (usuarioLogueado == user)
                         {
                             caja._titulares.Remove(user);
-                            
+
                         }
 
 
@@ -249,7 +328,7 @@ namespace TP1
         {
             foreach (CajaDeAhorro caja in cajas)
             {
-                if (caja._id == id && caja._saldo==0)
+                if (caja._id == id && caja._saldo == 0)
                 {
                     cajas.Remove(caja);
                     return true;
@@ -271,7 +350,7 @@ namespace TP1
 
         public void ModificarMovimiento()
         {
-            
+
         }
 
         public void BajaMovimiento()
@@ -286,10 +365,10 @@ namespace TP1
                 pagos.Add(new Pago(usuario, monto, pagado, metodo));
                 return true;
             }
-            catch(Exception ex) { return false; }
+            catch (Exception ex) { return false; }
         }
 
-        public bool ModificarPago(int id,int id_user)
+        public bool ModificarPago(int id, int id_user)
 
         {
             try
@@ -317,11 +396,11 @@ namespace TP1
                 }
                 return true;
             }
-            catch(Exception ex) { return false; }
-            
+            catch (Exception ex) { return false; }
+
         }
 
-        public bool BajaPago(int id,int id_user)
+        public bool BajaPago(int id, int id_user)
         {
             try
             {
@@ -345,7 +424,7 @@ namespace TP1
                 }
                 return true;
             }
-            catch (Exception ex){ return false; }
+            catch (Exception ex) { return false; }
         }
 
         public bool AltaPlazoFijo(Usuario titular, float monto, DateTime fechaFin, float tasa)
@@ -355,7 +434,7 @@ namespace TP1
                 pfs.Add(new PlazoFijo(titular, monto, fechaFin, tasa));
                 return true;
             }
-            catch(Exception ex) { return false; }
+            catch (Exception ex) { return false; }
         }
 
         public void ModificarPlazoFijo()
@@ -396,8 +475,8 @@ namespace TP1
                 }
                 return true;
             }
-            catch(Exception ex) { return false; }
-           
+            catch (Exception ex) { return false; }
+
 
 
         }
@@ -409,10 +488,10 @@ namespace TP1
                 tarjetas.Add(new TarjetaDeCredito(titular, numero, codigoV, limite));
                 return true;
             }
-            catch(Exception ex) { return false; }
+            catch (Exception ex) { return false; }
         }
 
-        public bool ModificarTarjetaDeCredito(int id,  float limite)
+        public bool ModificarTarjetaDeCredito(int id, float limite)
         {
             try
             {
@@ -427,12 +506,13 @@ namespace TP1
                 }
 
                 return true;
-            }catch(Exception ex) { return false; }
-            
+            }
+            catch (Exception ex) { return false; }
+
 
         }
 
-        public bool BajaTarjetaDeCredito(int id,int id_user)
+        public bool BajaTarjetaDeCredito(int id, int id_user)
         {
 
             try
@@ -466,16 +546,16 @@ namespace TP1
                 }
                 return true;
             }
-            catch(Exception ex) { return false; }
-            
+            catch (Exception ex) { return false; }
+
 
         }
 
 
         public List<CajaDeAhorro> MostrarCajasDeAhorro()
         {
-       
-      
+
+
             return usuarioLogueado.cajas.ToList();
         }
 
@@ -483,7 +563,8 @@ namespace TP1
         public List<Movimiento> MostrarMovimientos(int id_caja)
         {
             List<Movimiento> movimientosCaja = new List<Movimiento>();
-            foreach (Movimiento movimiento in movimientos){
+            foreach (Movimiento movimiento in movimientos)
+            {
                 if (movimiento._cajaDeAhorro._cbu == id_caja)
                 {
                     movimientosCaja.Add(movimiento);
@@ -506,12 +587,15 @@ namespace TP1
         }
 
 
-          
-         public List<TarjetaDeCredito> MostrarTarjetasDeCredito()
+
+        public List<TarjetaDeCredito> MostrarTarjetasDeCredito()
         {
 
             return tarjetas.ToList();
         }
+
+
+
 
 
     }

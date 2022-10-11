@@ -30,7 +30,7 @@ namespace TP1
         private void btn_AceptaRegistro_Click(object sender, EventArgs e)
         {
 
-             if (txtBox_dni.Text != "" && txtBox_nombres.Text != "" && txtBox_apellidos.Text != "" && txtBox_email.Text != "" && txtBox_contrasena.Text != "" && txtBox_RepContrasena.Text != "")
+             if (txtBox_dni.Text != "" && txtBox_nombres.Text != "" && txtBox_apellidos.Text != "" && txtBox_email.Text != "" && txtBox_contrasena.Text != "" && txtBox_RepContrasena.Text != "" && txtBox_contrasena.Text == txtBox_RepContrasena.Text)
             {
                 if ( txtBox_email.Text.Contains("@"))
                 {
@@ -48,7 +48,7 @@ namespace TP1
             }
             else
             {
-                MessageBox.Show("hacen falta campos por llenar");
+                MessageBox.Show("formulario incompleto");
             }
         }
 

@@ -45,6 +45,15 @@ namespace TP1
 			set { titulares = value; }
 		}
 
+		private List<Movimiento> movimientos;
+
+		public List<Movimiento> _movimientos
+		{
+			get { return movimientos; }
+			set { movimientos = value; }
+		}
+		
+
 		private float saldo;
 
 
