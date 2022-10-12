@@ -45,12 +45,12 @@ namespace TP1
 			set { titulares = value; }
 		}
 
-		private List<Movimiento> movimientos;
+		private List<Movimiento> movimientos = new List<Movimiento>();
 
 		public List<Movimiento> _movimientos
 		{
 			get { return movimientos; }
-			set { movimientos = value; }
+			set { movimientos =value; }
 		}
 		
 

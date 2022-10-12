@@ -51,11 +51,6 @@
             this.btn_depositar = new System.Windows.Forms.Button();
             this.btn_extraer = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.dataGridView5 = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.txtb_cbu_destino = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -64,6 +59,19 @@
             this.txtb_monto_transferencia = new System.Windows.Forms.TextBox();
             this.btn_transferir = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.dateTimePicker_filtro = new System.Windows.Forms.DateTimePicker();
+            this.txtb_filtro_detalle = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtb_filtro_monto = new System.Windows.Forms.TextBox();
+            this.btn_busca_movimiento = new System.Windows.Forms.Button();
+            this.comboBox3_movimientos = new System.Windows.Forms.ComboBox();
+            this.dataGridView_movimiento = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -77,8 +85,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.tabPage5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
             this.tabPage6.SuspendLayout();
+            this.tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_movimiento)).BeginInit();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -151,12 +160,14 @@
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage6);
+            this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Location = new System.Drawing.Point(26, 104);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(667, 290);
             this.tabControl1.TabIndex = 4;
             this.tabControl1.TabStop = false;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -169,6 +180,7 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Caja de Ahorro";
             this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // btn_crearCajaAhorro
             // 
@@ -259,19 +271,18 @@
             this.tabPage5.Controls.Add(this.btn_depositar);
             this.tabPage5.Controls.Add(this.btn_extraer);
             this.tabPage5.Controls.Add(this.comboBox1);
-            this.tabPage5.Controls.Add(this.dataGridView5);
             this.tabPage5.Location = new System.Drawing.Point(4, 29);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage5.Size = new System.Drawing.Size(659, 257);
             this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Movimientos";
+            this.tabPage5.Text = "Transacciones";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(466, 76);
+            this.label5.Location = new System.Drawing.Point(374, 18);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(125, 18);
             this.label5.TabIndex = 7;
@@ -280,7 +291,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(466, 10);
+            this.label4.Location = new System.Drawing.Point(39, 18);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(151, 18);
             this.label4.TabIndex = 6;
@@ -289,7 +300,7 @@
             // txtb_monto
             // 
             this.txtb_monto.Enabled = false;
-            this.txtb_monto.Location = new System.Drawing.Point(501, 104);
+            this.txtb_monto.Location = new System.Drawing.Point(430, 43);
             this.txtb_monto.Name = "txtb_monto";
             this.txtb_monto.PlaceholderText = "Ingrese el monto";
             this.txtb_monto.Size = new System.Drawing.Size(125, 26);
@@ -299,7 +310,7 @@
             // btn_depositar
             // 
             this.btn_depositar.Enabled = false;
-            this.btn_depositar.Location = new System.Drawing.Point(559, 146);
+            this.btn_depositar.Location = new System.Drawing.Point(386, 145);
             this.btn_depositar.Name = "btn_depositar";
             this.btn_depositar.Size = new System.Drawing.Size(94, 29);
             this.btn_depositar.TabIndex = 4;
@@ -310,7 +321,7 @@
             // btn_extraer
             // 
             this.btn_extraer.Enabled = false;
-            this.btn_extraer.Location = new System.Drawing.Point(459, 146);
+            this.btn_extraer.Location = new System.Drawing.Point(152, 145);
             this.btn_extraer.Name = "btn_extraer";
             this.btn_extraer.Size = new System.Drawing.Size(94, 29);
             this.btn_extraer.TabIndex = 3;
@@ -321,59 +332,12 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(491, 35);
+            this.comboBox1.Location = new System.Drawing.Point(64, 43);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(151, 26);
             this.comboBox1.TabIndex = 2;
             this.comboBox1.SelectedValueChanged += new System.EventHandler(this.comboBox1_SelectedValueChanged);
             this.comboBox1.Click += new System.EventHandler(this.comboBox1_Click);
-            // 
-            // dataGridView5
-            // 
-            this.dataGridView5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView5.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn4});
-            this.dataGridView5.Location = new System.Drawing.Point(6, 6);
-            this.dataGridView5.Name = "dataGridView5";
-            this.dataGridView5.RowHeadersWidth = 51;
-            this.dataGridView5.RowTemplate.Height = 29;
-            this.dataGridView5.Size = new System.Drawing.Size(441, 232);
-            this.dataGridView5.TabIndex = 1;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Caja";
-            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Detalle";
-            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 160;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "Monto";
-            this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Width = 85;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "Fecha";
-            this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            this.dataGridViewTextBoxColumn4.Width = 90;
             // 
             // tabPage6
             // 
@@ -394,7 +358,7 @@
             // 
             // txtb_cbu_destino
             // 
-            this.txtb_cbu_destino.Location = new System.Drawing.Point(428, 48);
+            this.txtb_cbu_destino.Location = new System.Drawing.Point(121, 137);
             this.txtb_cbu_destino.Name = "txtb_cbu_destino";
             this.txtb_cbu_destino.Size = new System.Drawing.Size(125, 26);
             this.txtb_cbu_destino.TabIndex = 15;
@@ -402,7 +366,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(328, 18);
+            this.label8.Location = new System.Drawing.Point(21, 107);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(159, 18);
             this.label8.TabIndex = 14;
@@ -412,7 +376,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(51, 95);
+            this.label6.Location = new System.Drawing.Point(327, 75);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(202, 18);
             this.label6.TabIndex = 12;
@@ -430,7 +394,7 @@
             // txtb_monto_transferencia
             // 
             this.txtb_monto_transferencia.Enabled = false;
-            this.txtb_monto_transferencia.Location = new System.Drawing.Point(241, 116);
+            this.txtb_monto_transferencia.Location = new System.Drawing.Point(517, 96);
             this.txtb_monto_transferencia.Name = "txtb_monto_transferencia";
             this.txtb_monto_transferencia.PlaceholderText = "Ingrese el monto";
             this.txtb_monto_transferencia.Size = new System.Drawing.Size(125, 26);
@@ -455,6 +419,132 @@
             this.comboBox2.Size = new System.Drawing.Size(151, 26);
             this.comboBox2.TabIndex = 8;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            this.comboBox2.Click += new System.EventHandler(this.comboBox2_Click);
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.dateTimePicker_filtro);
+            this.tabPage7.Controls.Add(this.txtb_filtro_detalle);
+            this.tabPage7.Controls.Add(this.label9);
+            this.tabPage7.Controls.Add(this.label10);
+            this.tabPage7.Controls.Add(this.txtb_filtro_monto);
+            this.tabPage7.Controls.Add(this.btn_busca_movimiento);
+            this.tabPage7.Controls.Add(this.comboBox3_movimientos);
+            this.tabPage7.Controls.Add(this.dataGridView_movimiento);
+            this.tabPage7.Location = new System.Drawing.Point(4, 29);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage7.Size = new System.Drawing.Size(659, 257);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "Movimientos";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // dateTimePicker_filtro
+            // 
+            this.dateTimePicker_filtro.Location = new System.Drawing.Point(470, 184);
+            this.dateTimePicker_filtro.Name = "dateTimePicker_filtro";
+            this.dateTimePicker_filtro.Size = new System.Drawing.Size(183, 26);
+            this.dateTimePicker_filtro.TabIndex = 6;
+            // 
+            // txtb_filtro_detalle
+            // 
+            this.txtb_filtro_detalle.Location = new System.Drawing.Point(506, 143);
+            this.txtb_filtro_detalle.Name = "txtb_filtro_detalle";
+            this.txtb_filtro_detalle.PlaceholderText = "Detalle";
+            this.txtb_filtro_detalle.Size = new System.Drawing.Size(125, 26);
+            this.txtb_filtro_detalle.TabIndex = 14;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(471, 83);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(55, 18);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "Filtros:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(471, 17);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(151, 18);
+            this.label10.TabIndex = 12;
+            this.label10.Text = "Seleccione la cuenta:";
+            // 
+            // txtb_filtro_monto
+            // 
+            this.txtb_filtro_monto.Location = new System.Drawing.Point(506, 111);
+            this.txtb_filtro_monto.Name = "txtb_filtro_monto";
+            this.txtb_filtro_monto.PlaceholderText = "Monto";
+            this.txtb_filtro_monto.Size = new System.Drawing.Size(125, 26);
+            this.txtb_filtro_monto.TabIndex = 11;
+            // 
+            // btn_busca_movimiento
+            // 
+            this.btn_busca_movimiento.Location = new System.Drawing.Point(528, 216);
+            this.btn_busca_movimiento.Name = "btn_busca_movimiento";
+            this.btn_busca_movimiento.Size = new System.Drawing.Size(94, 29);
+            this.btn_busca_movimiento.TabIndex = 10;
+            this.btn_busca_movimiento.Text = "Buscar";
+            this.btn_busca_movimiento.UseVisualStyleBackColor = true;
+            this.btn_busca_movimiento.Click += new System.EventHandler(this.btn_busca_movimiento_Click);
+            // 
+            // comboBox3_movimientos
+            // 
+            this.comboBox3_movimientos.FormattingEnabled = true;
+            this.comboBox3_movimientos.Location = new System.Drawing.Point(496, 42);
+            this.comboBox3_movimientos.Name = "comboBox3_movimientos";
+            this.comboBox3_movimientos.Size = new System.Drawing.Size(151, 26);
+            this.comboBox3_movimientos.TabIndex = 9;
+            this.comboBox3_movimientos.Click += new System.EventHandler(this.comboBox3_movimientos_Click);
+            // 
+            // dataGridView_movimiento
+            // 
+            this.dataGridView_movimiento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_movimiento.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn5,
+            this.dataGridViewTextBoxColumn6,
+            this.dataGridViewTextBoxColumn7,
+            this.dataGridViewTextBoxColumn8});
+            this.dataGridView_movimiento.Location = new System.Drawing.Point(11, 13);
+            this.dataGridView_movimiento.Name = "dataGridView_movimiento";
+            this.dataGridView_movimiento.RowHeadersWidth = 51;
+            this.dataGridView_movimiento.RowTemplate.Height = 29;
+            this.dataGridView_movimiento.Size = new System.Drawing.Size(441, 232);
+            this.dataGridView_movimiento.TabIndex = 8;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.HeaderText = "Caja";
+            this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            this.dataGridViewTextBoxColumn5.Width = 50;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.HeaderText = "Detalle";
+            this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            this.dataGridViewTextBoxColumn6.Width = 160;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.HeaderText = "Monto";
+            this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            this.dataGridViewTextBoxColumn7.Width = 85;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.HeaderText = "Fecha";
+            this.dataGridViewTextBoxColumn8.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            this.dataGridViewTextBoxColumn8.Width = 90;
             // 
             // panel3
             // 
@@ -519,9 +609,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).EndInit();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_movimiento)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
@@ -551,11 +643,6 @@
         private Button btn_crearCajaAhorro;
         private Button button4;
         private TabPage tabPage5;
-        private DataGridView dataGridView5;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private ComboBox comboBox1;
         private Button btn_depositar;
         private Button btn_extraer;
@@ -570,6 +657,19 @@
         private Button btn_transferir;
         private ComboBox comboBox2;
         private TextBox txtb_cbu_destino;
+        private TabPage tabPage7;
+        private TextBox txtb_filtro_detalle;
+        private Label label9;
+        private Label label10;
+        private TextBox txtb_filtro_monto;
+        private Button btn_busca_movimiento;
+        private ComboBox comboBox3_movimientos;
+        private DataGridView dataGridView_movimiento;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private DateTimePicker dateTimePicker_filtro;
     }
 
 }

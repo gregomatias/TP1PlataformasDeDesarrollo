@@ -96,8 +96,9 @@ namespace TP1
         public bool Depositar(CajaDeAhorro caja, float monto)
         {
             caja._saldo = caja._saldo + monto;
-            movimientos.Add(new Movimiento(caja,"Deposito",monto));
-            caja._movimientos.Add(new Movimiento(caja,"Deposito",monto));
+            Movimiento movimiento = new Movimiento(caja, "Deposito", monto);
+            movimientos.Add(movimiento);
+            caja._movimientos.Add(movimiento);
             return true;
         }
 
@@ -123,11 +124,12 @@ namespace TP1
 
         public bool Retirar(CajaDeAhorro caja, float monto)
         {
-            if (caja._saldo >= monto) { 
-            caja._saldo = caja._saldo - monto;
-            movimientos.Add(new Movimiento(caja,"Retiro",monto));
-            caja._movimientos.Add(new Movimiento(caja,"Retiro",monto));
-            return true;
+            if (caja._saldo >= monto)
+            {
+                caja._saldo = caja._saldo - monto;
+                movimientos.Add(new Movimiento(caja, "Retiro", monto));
+                caja._movimientos.Add(new Movimiento(caja, "Retiro", monto));
+                return true;
 
             }
             else { return false; }
@@ -142,35 +144,38 @@ namespace TP1
                 {
                     if (caja._cbu == cbu)
                     {
-                        Retirar(caja, monto);
+                        return Retirar(caja, monto);
 
                     }
                 }
             }
             catch (Exception) { return false; }
-            return true;
+            return false;
         }
 
         public bool Transferir(int emisor, int destino, float monto)
         {
             bool encontro = false;
-            foreach(CajaDeAhorro caja in cajas){
-                if(caja._cbu==emisor && caja._saldo>=monto){
-                    caja._saldo=caja._saldo-monto;
+            foreach (CajaDeAhorro caja in cajas)
+            {
+                if (caja._cbu == emisor && caja._saldo >= monto)
+                {
+                    caja._saldo = caja._saldo - monto;
                     encontro = true;
-                    movimientos.Add(new Movimiento(caja,"Transferencia emitida",monto));
-                    caja._movimientos.Add(new Movimiento(caja,"Transferencia emitida",monto));
+                    movimientos.Add(new Movimiento(caja, "Transferencia emitida", monto));
+                    caja._movimientos.Add(new Movimiento(caja, "Transferencia emitida", monto));
                 }
             }
 
-            if (encontro) { 
+            if (encontro)
+            {
                 foreach (CajaDeAhorro cajita in cajas)
                 {
                     if (cajita._cbu == destino)
                     {
                         cajita._saldo = cajita._saldo + monto;
-                        movimientos.Add(new Movimiento(cajita,"Transferencia recibida",monto));
-                        cajita._movimientos.Add(new Movimiento(cajita,"Transferencia recibida",monto));
+                        movimientos.Add(new Movimiento(cajita, "Transferencia recibida", monto));
+                        cajita._movimientos.Add(new Movimiento(cajita, "Transferencia recibida", monto));
                         return true;
                     }
                 }
@@ -180,10 +185,22 @@ namespace TP1
         }
 
 
-        public List<Movimiento> BuscarMovimiento(CajaDeAhorro caja, string detalle, DateTime fecha, float monto)
+        public List<Movimiento> BuscarMovimiento(CajaDeAhorro caja, string detalle = "default", DateTime? fecha = null, float monto = 0)
         {
             List<Movimiento> move = new List<Movimiento>();
 
+            foreach (Movimiento movimiento in movimientos)
+            {
+                if (movimiento._cajaDeAhorro == caja)
+                {
+                    if (movimiento._detalle == detalle || movimiento._fecha.Date == fecha.Value.Date || movimiento._monto == monto)
+                    {
+                        move.Add(movimiento);
+                    }
+                }
+            }
+
+            /*
             if (detalle != "default")
             {
                 foreach (Movimiento movimiento in movimientos)
@@ -224,8 +241,26 @@ namespace TP1
 
                 }
             }
+            */
             return move;
 
+        }
+
+
+        public List<Movimiento> BuscarMovimiento(int cbu, string detalle = "default", DateTime? fecha = null, float monto = 0)
+        {
+            List<Movimiento> listaMovimientos = new List<Movimiento>();
+            foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
+            {
+                if (caja._cbu == cbu)
+                {
+
+                    listaMovimientos = BuscarMovimiento(caja, detalle, fecha, monto);
+
+
+                }
+            }
+            return listaMovimientos.ToList();
         }
 
 
@@ -558,6 +593,8 @@ namespace TP1
 
             return usuarioLogueado.cajas.ToList();
         }
+
+
 
 
         public List<Movimiento> MostrarMovimientos(int id_caja)
