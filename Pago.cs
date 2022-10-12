@@ -6,18 +6,21 @@ using System.Threading.Tasks;
 
 namespace TP1
 {
-    internal class Pago
-    {
-        public Pago(Usuario usuario, float monto, bool pagado, string metodo)
-        {
-			_id = _id + 1;
+	internal class Pago
+	{
+		public Pago(int id, Usuario usuario, float monto, string metodo, string detalle, int id_metodo)
+		{
+			_id = id;
 			_usuario = usuario;
 			_monto = monto;
-			_pagado = pagado;
+			_pagado = false;
 			_metodo = metodo;
-        }
+			_detalle = detalle;
+			_id_metodo = id_metodo;
 
-        static private int id;
+		}
+
+		private int id;
 
 		public int _id
 		{
@@ -56,6 +59,23 @@ namespace TP1
 			get { return metodo; }
 			set { metodo = value; }
 		}
+
+		private string detalle;
+
+		public string _detalle
+		{
+			get { return detalle; }
+			set { detalle = value; }
+		}
+
+		private int id_metodo;
+
+		public int _id_metodo
+		{
+			get { return id_metodo; }
+			set { id_metodo = value; }
+		}
+		
 
 
 	}

@@ -21,7 +21,8 @@ namespace TP1
         private List<Pago> pagos;
         private List<Movimiento> movimientos;
         private Usuario? usuarioLogueado;
-        private static int cbuAutonumerado = 0;
+        private  int cbuAutonumerado = 0;
+        private  int idPagoAutonumerado = 0;
 
 
         public Banco()
@@ -33,6 +34,38 @@ namespace TP1
             this.pagos = new List<Pago>();
             this.movimientos = new List<Movimiento>();
 
+        }
+
+        public bool Pagar(CajaDeAhorro caja, float monto)
+        {
+            if (caja._saldo >= monto)
+            {
+                caja._saldo = caja._saldo - monto;
+                Movimiento muvi = new Movimiento(caja, "Pago de servicio", monto);;
+                movimientos.Add(muvi);
+                caja._movimientos.Add(muvi);
+                return true;
+
+            }
+            else { return false; }
+        }
+
+        public bool Pagar(int cbu, float monto)
+        {
+
+            try
+            {
+                foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
+                {
+                    if (caja._cbu == cbu)
+                    {
+                        return Pagar(caja, monto);
+
+                    }
+                }
+            }
+            catch (Exception) { return false; }
+            return false;
         }
 
         public string GetNombreUsuarioLogueado()
@@ -127,8 +160,9 @@ namespace TP1
             if (caja._saldo >= monto)
             {
                 caja._saldo = caja._saldo - monto;
-                movimientos.Add(new Movimiento(caja, "Retiro", monto));
-                caja._movimientos.Add(new Movimiento(caja, "Retiro", monto));
+                Movimiento muvi = new Movimiento(caja, "Retiro", monto);
+                movimientos.Add(muvi);
+                caja._movimientos.Add(muvi);
                 return true;
 
             }
@@ -153,6 +187,8 @@ namespace TP1
             return false;
         }
 
+
+
         public bool Transferir(int emisor, int destino, float monto)
         {
             bool encontro = false;
@@ -162,8 +198,9 @@ namespace TP1
                 {
                     caja._saldo = caja._saldo - monto;
                     encontro = true;
-                    movimientos.Add(new Movimiento(caja, "Transferencia emitida", monto));
-                    caja._movimientos.Add(new Movimiento(caja, "Transferencia emitida", monto));
+                    Movimiento movi = new Movimiento(caja,"Transferencia emitida",monto);
+                    movimientos.Add(movi);
+                    caja._movimientos.Add(movi);
                 }
             }
 
@@ -174,8 +211,9 @@ namespace TP1
                     if (cajita._cbu == destino)
                     {
                         cajita._saldo = cajita._saldo + monto;
-                        movimientos.Add(new Movimiento(cajita, "Transferencia recibida", monto));
-                        cajita._movimientos.Add(new Movimiento(cajita, "Transferencia recibida", monto));
+                        Movimiento movi = new Movimiento(cajita, "Transferencia emitida", monto);
+                        movimientos.Add(movi);
+                        cajita._movimientos.Add(movi);
                         return true;
                     }
                 }
@@ -373,11 +411,13 @@ namespace TP1
 
         }
 
-        public bool AltaMovimiento(CajaDeAhorro cajaDeAhorro, string detalle, float monto)
+        public bool AltaMovimiento(CajaDeAhorro caja, string detalle, float monto)
         {
             try
             {
-                movimientos.Add(new Movimiento(cajaDeAhorro, detalle, monto));
+                Movimiento movi = new Movimiento(caja, detalle, monto);
+                caja._movimientos.Add(movi);
+                movimientos.Add(movi);
                 return true;
             }
             catch (Exception ex) { return false; }
@@ -393,17 +433,20 @@ namespace TP1
 
         }
 
-        public bool AltaPago(Usuario usuario, float monto, bool pagado, string metodo)
+        public bool AltaPago( float monto, string metodo,string detalle,int id_metodo)
         {
             try
             {
-                pagos.Add(new Pago(usuario, monto, pagado, metodo));
+                Pago pago = new Pago(idPagoAutonumerado,usuarioLogueado, monto, metodo, detalle,id_metodo);
+                idPagoAutonumerado = idPagoAutonumerado + 1;
+                this.pagos.Add(pago);
+                this.usuarioLogueado.pagos.Add(pago);
                 return true;
             }
-            catch (Exception ex) { return false; }
+            catch (Exception) { return false; }
         }
 
-        public bool ModificarPago(int id, int id_user)
+        public bool ModificarPago(int id)
 
         {
             try
@@ -412,24 +455,22 @@ namespace TP1
                 {
                     if (pago._id == id)
                     {
-                        pago._pagado = true;
-                    }
-                }
-
-                foreach (Usuario usuario in usuarios)
-                {
-                    if (usuario._id == id_user)
-                    {
-                        foreach (Pago pago in usuario.pagos)
+                        foreach(CajaDeAhorro caja in cajas)
                         {
-                            if (pago._id == id)
+                            if(pago._id_metodo == caja._cbu)
                             {
-                                pago._pagado = true;
+                                if(this.Pagar(caja, pago._monto))
+                                { 
+                                    pago._pagado = true;
+                                    return true;
+                                } 
                             }
+
                         }
                     }
                 }
-                return true;
+
+                return false;
             }
             catch (Exception ex) { return false; }
 
@@ -611,9 +652,20 @@ namespace TP1
 
         }
 
-        public List<Pago> MostrarPago()
+        public List<Pago> MostrarPago(bool pagado)
         {
-            return pagos.ToList();
+            List<Pago> pagosAux = new List<Pago>();
+            foreach (Pago pago in usuarioLogueado.pagos)
+            {
+                if (pago._pagado==pagado)
+                {
+                    pagosAux.Add(pago);
+                    MessageBox.Show("Id "+pago._id + " Detalle " + pago._detalle);
+
+                }
+
+            }
+            return pagosAux.ToList();
         }
 
 
