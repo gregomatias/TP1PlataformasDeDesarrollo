@@ -20,7 +20,7 @@ namespace TP1
         private List<List<string>> datos;
         private Banco banco;
         private TransfDelegadoForm2 transEvento;
-        private int celda = 0;
+        private int celda;
 
         public Form3(Banco banco, TransfDelegadoForm2 transEvento)
         {
@@ -455,33 +455,56 @@ namespace TP1
             if (banco.ModificarPago(this.celda))
             {
                 MessageBox.Show("El pago se realizo de manera exitosa");
+                this.cargaListaPagos(true);
+                this.cargaListaPagos(false);
             }
             else
             {
-                MessageBox.Show("El pago no puede realizarse en este momento");
+                MessageBox.Show("El pago no pudo realizarse");
             }
         }
 
-        /*
-        private void dataGridView3_CellClick(object sender, DataGridViewCellEventArgs e)
+       
+        private void dataGridView3_CellClick_1(object sender, DataGridViewCellEventArgs e)
         {
-            int index = e.RowIndex;
-            DataGridViewRow selectedRow = dataGridView3.Rows[index];
-            this.celda = int.Parse(selectedRow.Cells[0].Value.ToString());
-            MessageBox.Show("Celda: " + celda);
 
-        }
-        */
-        private void dataGridView3_SelectionChanged_1(object sender, EventArgs e)
-        {
-            this.celda = int.Parse(dataGridView3.SelectedRows.Count.ToString());
-            MessageBox.Show("Celda: " + celda);
+            if (Banco.IsNumeric(dataGridView3.CurrentCell.Value.ToString())) { 
+                MessageBox.Show("CellClick: " + dataGridView3.CurrentCell.Value.ToString());
+                this.celda = int.Parse(dataGridView3.CurrentCell.Value.ToString());
+            } else
+            {
+                MessageBox.Show("Debe seleccionar un ID de pago válido");
+            }
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
+            if (banco.EliminarPago(this.celda))
+            {
+                MessageBox.Show("El pago se elimino de manera exitosa");
+                this.cargaListaPagos(true);
+             //   this.cargaListaPagos(false);
+            }
+            else
+            {
+                MessageBox.Show("El pago no pudo eliminarse");
+            }
 
         }
 
+
+        private void dataGridView4_pagos_pendientes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (Banco.IsNumeric(dataGridView4_pagos_pendientes.CurrentCell.Value.ToString()))
+            {
+                MessageBox.Show("CellClick: " + dataGridView4_pagos_pendientes.CurrentCell.Value.ToString());
+                this.celda = int.Parse(dataGridView4_pagos_pendientes.CurrentCell.Value.ToString());
+            }
+            else
+            {
+                MessageBox.Show("Debe seleccionar un ID de pago válido");
+            }
+
+        }
     }
 }
