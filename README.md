@@ -2,17 +2,7 @@
 
 Integrantes:
 
-Alan Riva
-
-Nicolas Villegas
-
-Luis Duarte Carvhalosa
-
-Natalia Belen Espinosa
-
-Patricia Belen Cabrera
-
-Matias Grego
+Alan Riva, Nicolas Villegas, Luis Duarte Carvhalosa, Natalia Belen Espinosa, Patricia Belen Cabrera, Matias Grego
   
 1- Al abri la aplicación, el usuario visualiza una pantalla de login donde podrá:
 -	Ingresar usuario y contraseña para iniciar sesión.
