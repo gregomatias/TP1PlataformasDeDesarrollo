@@ -687,7 +687,6 @@ namespace TP1
                 if (pago._pagado==pagado)
                 {
                     pagosAux.Add(pago);
-                    MessageBox.Show("Id "+pago._id + " Detalle " + pago._detalle);
 
                 }
 

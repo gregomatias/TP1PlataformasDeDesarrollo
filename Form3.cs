@@ -469,7 +469,6 @@ namespace TP1
         {
 
             if (Banco.IsNumeric(dataGridView3.CurrentCell.Value.ToString())) { 
-                MessageBox.Show("CellClick: " + dataGridView3.CurrentCell.Value.ToString());
                 this.celda = int.Parse(dataGridView3.CurrentCell.Value.ToString());
             } else
             {
