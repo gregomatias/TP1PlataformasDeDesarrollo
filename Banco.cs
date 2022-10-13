@@ -459,11 +459,17 @@ namespace TP1
                         {
                             if(pago._id_metodo == caja._cbu)
                             {
-                                if(this.Pagar(caja, pago._monto))
-                                { 
-                                    pago._pagado = true;
-                                    return true;
-                                } 
+                                if (pago._pagado == false) {  
+                                    if(this.Pagar(caja, pago._monto))
+                                    { 
+                                        pago._pagado = true;
+                                        return true;
+                                    }
+                                } else
+                                {
+                                    MessageBox.Show("Debe seleccionar un ID de pago pendiente");
+                                    return false;
+                                }
                             }
 
                         }
@@ -475,6 +481,27 @@ namespace TP1
             catch (Exception ex) { return false; }
 
         }
+
+        public bool EliminarPago(int id)
+        {
+            try
+            {
+                foreach (Pago pago in pagos)
+                {
+                    if (pago._id == id)
+                    {
+                        pagos.Remove(pago);
+                        usuarioLogueado.pagos.Remove(pago);
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            catch (Exception ex) { return false; }
+
+        }
+
 
         public bool BajaPago(int id, int id_user)
         {
@@ -683,7 +710,11 @@ namespace TP1
             return tarjetas.ToList();
         }
 
-
+        public static bool IsNumeric(string input)
+        {
+            int test;
+            return int.TryParse(input, out test);
+        }
 
 
 
