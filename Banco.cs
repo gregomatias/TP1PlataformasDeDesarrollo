@@ -23,18 +23,25 @@ namespace TP1
         private Usuario? usuarioLogueado;
         private  int cbuAutonumerado = 0;
         private  int idPagoAutonumerado = 0;
+        /*TP2*/
+        DAL DB;
 
 
         public Banco()
         {
-            this.cajas = new List<CajaDeAhorro>();
-            this.usuarios = new List<Usuario>();
+
             this.pfs = new List<PlazoFijo>();
             this.tarjetas = new List<TarjetaDeCredito>();
             this.pagos = new List<Pago>();
             this.movimientos = new List<Movimiento>();
+            //TP2 Cargo Listas con la info de la DB
+            DB = new DAL();
+            this.usuarios = DB.inicializarUsuarios();
+            this.cajas = DB.inicializarCajasAhorro();
 
         }
+
+   
 
         public bool Pagar(CajaDeAhorro caja, float monto)
         {
@@ -80,24 +87,36 @@ namespace TP1
         public bool IniciarSesion(int dni, string contrasena)
         {
 
+           
             foreach (Usuario usuario in usuarios)
             {
-                if (usuario._dni == dni)
+                
+                if (usuario._dni == dni )
                 {
+
                     usuarioLogueado = usuario;
-                    if (usuarioLogueado._intentosFallidos >= 3)
+                    if (usuarioLogueado._bloqueado)
                     {
-                        usuarioLogueado._bloqueado = true;
                         return false;
-                    }
-                    if (usuarioLogueado._password == contrasena)
+
+                    } else if (usuarioLogueado._intentosFallidos >= 3)
                     {
+                        //Por referencia tanto en el logueado como en la lista
+                        usuarioLogueado._bloqueado = true;
+                        DB.bloquearUsuario(dni);
+                        return false;
+
+                    }else if (usuarioLogueado._password == contrasena)
+                    {
+                        usuarioLogueado._intentosFallidos=0;
+                        DB.actualizaIntentosDeLogueo(usuarioLogueado._dni,0);
                         return true;
                     }
                     else
                     {
                         usuarioLogueado._intentosFallidos++;
-                        return false;
+                        DB.actualizaIntentosDeLogueo(usuarioLogueado._dni,usuarioLogueado._intentosFallidos);
+                       
                     }
                 }
             }
@@ -326,15 +345,39 @@ namespace TP1
         public bool AltaUsuario(int dni, string nombre, string apellido, string mail, string password)
         {
 
-            try
+            //valida usuario Duplicado
+            bool esValido = true;
+            foreach (Usuario usuario in usuarios)
             {
-                usuarios.Add(new Usuario(dni, nombre, apellido, mail, password));
-                return true;
+                if (usuario._dni == dni)
+                    esValido = false;
             }
-            catch (Exception ex) { return false; }
+            if (esValido)
+            {
+                int idNuevoUsuario;
+                idNuevoUsuario = DB.agregarUsuario(dni, nombre,apellido, mail, password,false, false,0);
+                
+                if (idNuevoUsuario != -1)
+                {
+                    //Agrega a la lista con el ID obtenido de la DB
+                    Usuario nuevoUsuario = new Usuario(idNuevoUsuario, dni, nombre,apellido, mail, password, false, false,0);
+                    usuarios.Add(nuevoUsuario);
+                    
+                    return true;
+                    
+                }
+                else
+                {
+                    //No se genero el ID nuevo, por ende hay un error
+                    return false;
+                }
+            }
+            else
+                return false;
 
 
         }
+        
 
         public bool ModificarUsuario(int id, int dni, string nombre, string apellido, string password, string mail)
         {

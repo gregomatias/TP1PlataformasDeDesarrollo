@@ -125,15 +125,12 @@
     <value>..\Resources\account_circle_wght400.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="refresh_wght39" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\refresh_wght392.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="refresh_wght400" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\refresh_wght400.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="refresh_wght39" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\refresh_wght393.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="refresh_wght400" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\refresh_wght400.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stringDeConexion" xml:space="preserve">
+    <value>Data Source=DESKTOP-P8JAOV6\SQLEXPRESS;Initial Catalog=TP2_PLATAFORMAS;Integrated Security=True</value>
   </data>
 </root>

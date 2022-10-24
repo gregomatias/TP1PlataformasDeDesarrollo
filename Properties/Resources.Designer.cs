@@ -99,5 +99,14 @@ namespace TP1.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Data Source=DESKTOP-P8JAOV6\SQLEXPRESS;Initial Catalog=TP2_PLATAFORMAS;Integrated Security=True.
+        /// </summary>
+        internal static string stringDeConexion {
+            get {
+                return ResourceManager.GetString("stringDeConexion", resourceCulture);
+            }
+        }
     }
 }

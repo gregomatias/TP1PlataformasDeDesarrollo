@@ -35,8 +35,13 @@ namespace TP1
                 if ( txtBox_email.Text.Contains("@"))
                 {
                     int dni = int.Parse(txtBox_dni.Text);
-                    banco.AltaUsuario(dni, txtBox_nombres.Text, txtBox_apellidos.Text, txtBox_email.Text, txtBox_contrasena.Text);
-                    MessageBox.Show("Se registrado el usuario");
+                    if(banco.AltaUsuario(dni, txtBox_nombres.Text, txtBox_apellidos.Text, txtBox_email.Text, txtBox_contrasena.Text)){
+                        MessageBox.Show("Se registrado el usuario");
+                    }else
+                    {
+                        MessageBox.Show("Error de logueo");
+                    }
+                    
                     //Traspaso a Form1
                     this.TransEvento();
                 }
