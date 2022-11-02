@@ -8,7 +8,7 @@ namespace TP1
 {
 	internal class Pago
 	{
-		public Pago(int id, Usuario usuario, float monto, string metodo, string detalle, int id_metodo)
+		public Pago(int id, Usuario usuario, float monto, string metodo, string detalle, string id_metodo)
 		{
 			_id = id;
 			_usuario = usuario;
@@ -68,9 +68,9 @@ namespace TP1
 			set { detalle = value; }
 		}
 
-		private int id_metodo;
+		private string id_metodo;
 
-		public int _id_metodo
+		public string _id_metodo
 		{
 			get { return id_metodo; }
 			set { id_metodo = value; }

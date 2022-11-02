@@ -184,7 +184,238 @@ namespace TP1
 
         public List<CajaDeAhorro> inicializarCajasAhorro()
         {
-            return new List<CajaDeAhorro>();
+            List<CajaDeAhorro> cajasReturn = new List<CajaDeAhorro>();
+
+            //Creo la query que carga la lista TP2
+            string queryString = "select * from dbo.CAJA_AHORRO";
+
+            //Clic derecho en proyecto e instalar poryecto Nuget System.Data.SqlClient
+            //Creo una conexion con la DB
+            //string providerName = "System.Data. SqlClient";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                //Union entre la conexion y el query a ejecutar
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                try
+                {
+                    //Abro la conexion
+                    connection.Open();
+                    //Ejecuta la query :
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    //reader.Read() se para en cada fila de la query y mira si tene datos
+                    CajaDeAhorro aux;
+                    while (reader.Read())
+                    {
+                        //0:ID,1:DNI,2:NOMBRE;3:APELLIDO,4:MAIL,5:PASSWORD,6:BLOQUEADO,7:ADMINISTRADOR,8:INTENTOS_LOGUEO
+                        aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetFloat(3));
+                        cajasReturn.Add(aux);
+                    }
+                    //Luego de recorrer la query se libera la memoria:
+                    reader.Close();
+                }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+            }
+
+
+
+            return cajasReturn;
+        }
+
+
+        public List<CajaDeAhorro> buscaCajasAhorroDeUsuario(int id_usuario)
+        {
+            List<CajaDeAhorro> cajasReturn = new List<CajaDeAhorro>();
+
+            //Creo la query que carga la lista TP2
+            MessageBox.Show("Titular: " + id_usuario);
+            string queryString = "select * from dbo.[CAJA_AHORRO] WHERE [TITULAR]="+ id_usuario+";";
+            //WHERE [TITULAR]="+id_usuario+"
+
+            //Clic derecho en proyecto e instalar poryecto Nuget System.Data.SqlClient
+            //Creo una conexion con la DB
+            //string providerName = "System.Data. SqlClient";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                //Union entre la conexion y el query a ejecutar
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                try
+                {
+                    //Abro la conexion
+                    connection.Open();
+                    //Ejecuta la query :
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    //reader.Read() se para en cada fila de la query y mira si tene datos
+                    CajaDeAhorro aux;
+                    while (reader.Read())
+                    {
+                        //0:ID,1:DNI,2:NOMBRE;3:APELLIDO,4:MAIL,5:PASSWORD,6:BLOQUEADO,7:ADMINISTRADOR,8:INTENTOS_LOGUEO
+                        aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDouble(3));
+                        cajasReturn.Add(aux);
+                    }
+                    //Luego de recorrer la query se libera la memoria:
+                    reader.Close();
+                }
+                catch (Exception ex) { 
+                   
+                    MessageBox.Show(ex.Message);
+
+                }
+            }
+
+
+           
+            return cajasReturn;
+        }
+
+
+        public int agregarCajaAhorro(string cbu, int titular)
+        {
+
+            int resultadoQuery;
+            int idNuevaCaja = -1;
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "INSERT INTO [dbo].[CAJA_AHORRO] ([CBU],[TITULAR],[SALDO]) VALUES (@cbu,@titular,0);";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@titular", SqlDbType.Int));
+
+                command.Parameters["@cbu"].Value = cbu;
+                command.Parameters["@titular"].Value = titular;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    resultadoQuery = command.ExecuteNonQuery();
+
+                    //*******************************************
+                    //Ahora hago esta query para obtener el ID con un  where DNI por concurrencia
+                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[CAJA_AHORRO] WHERE [CBU]=@cbu AND [TITULAR]=@titular";
+                    command = new SqlCommand(ConsultaID, connection);
+                    command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.NVarChar));
+                    command.Parameters.Add(new SqlParameter("@titular", SqlDbType.Int));
+
+                    command.Parameters["@cbu"].Value = cbu;
+                    command.Parameters["@titular"].Value = titular;
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    idNuevaCaja = reader.GetInt32(0);
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return -1;
+                }
+                return idNuevaCaja;
+            }
+        }
+
+        public bool bajaCajaDeAhorro(int id)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "DELETE FROM [dbo].[CAJA_AHORRO] WHERE [ID]=@id;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.Int));
+                command.Parameters["@cbu"].Value = id;
+
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    resultadoQuery = command.ExecuteNonQuery();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+
+            }
+        }
+
+        public bool bajaTitularCajaDeAhorro(int id_titular)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "DELETE FROM [dbo].[CAJA_AHORRO] WHERE [TITULAR]=@id_titular;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_titular", SqlDbType.Int));
+                command.Parameters["@id_titular"].Value = id_titular;
+
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    resultadoQuery = command.ExecuteNonQuery();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+
+            }
+        }
+
+        public bool altaTitularCajaDeAhorro(int id_titular,string cbu)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "UPDATE [dbo].[CAJA_AHORRO] SET [TITULAR]=@id_titular WHERE [CBU]=@cbu;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_titular", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.NVarChar));
+                command.Parameters["@id_titular"].Value = id_titular;
+                command.Parameters["@cbu"].Value = cbu;
+
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    resultadoQuery = command.ExecuteNonQuery();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+
+            }
         }
 
 

@@ -8,17 +8,26 @@ namespace TP1
 {
     internal class CajaDeAhorro
     {
-        public CajaDeAhorro(int cbu, Usuario usuario)
+        private List<int> titulares = new List<int>();
+
+        public CajaDeAhorro(int id,string cbu, int usuario,double saldo)
         {
-			_id = _id + 1;	
-			_cbu = cbu;
-			_titulares = new List<Usuario>();
-			_titulares.Add(usuario);
-			_saldo = 0;
+            _id = id;
+            _cbu = cbu;
+
+            _titulares.Add(usuario);
+			_saldo = saldo;
 
         }
 
- 
+     
+
+        public List<int> _titulares
+
+        {
+            get { return titulares; }
+            set { titulares = value; }
+        }
 
         static private int id = 0;
 
@@ -28,22 +37,15 @@ namespace TP1
 			set { id = value; }
 		}
 
-		private int cbu;
+		private string cbu;
 
-		public int _cbu
+		public string _cbu
 		{
 			get { return cbu; }
 			set { cbu = value; }
 		}
 
-		private List<Usuario> titulares;
 
-		public List<Usuario>  _titulares
-
-		{
-			get { return titulares; }
-			set { titulares = value; }
-		}
 
 		private List<Movimiento> movimientos = new List<Movimiento>();
 
@@ -54,10 +56,10 @@ namespace TP1
 		}
 		
 
-		private float saldo;
+		private double saldo;
 
 
-		public float _saldo
+		public double _saldo
 		{
 			get { return saldo; }
 			set { saldo = value; }

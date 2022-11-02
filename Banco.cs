@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -21,8 +22,8 @@ namespace TP1
         private List<Pago> pagos;
         private List<Movimiento> movimientos;
         private Usuario? usuarioLogueado;
-        private  int cbuAutonumerado = 0;
-        private  int idPagoAutonumerado = 0;
+        //  private  int cbuAutonumerado = 0;
+        private int idPagoAutonumerado = 0;
         /*TP2*/
         DAL DB;
 
@@ -41,14 +42,14 @@ namespace TP1
 
         }
 
-   
+
 
         public bool Pagar(CajaDeAhorro caja, float monto)
         {
             if (caja._saldo >= monto)
             {
                 caja._saldo = caja._saldo - monto;
-                Movimiento muvi = new Movimiento(caja, "Pago de servicio", monto);;
+                Movimiento muvi = new Movimiento(caja, "Pago de servicio", monto); ;
                 movimientos.Add(muvi);
                 caja._movimientos.Add(muvi);
                 return true;
@@ -64,7 +65,7 @@ namespace TP1
             {
                 foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
                 {
-                    if (caja._cbu == cbu)
+                    if (caja._cbu.Equals(cbu))
                     {
                         return Pagar(caja, monto);
 
@@ -87,11 +88,11 @@ namespace TP1
         public bool IniciarSesion(int dni, string contrasena)
         {
 
-           
+
             foreach (Usuario usuario in usuarios)
             {
-                
-                if (usuario._dni == dni )
+
+                if (usuario._dni == dni)
                 {
 
                     usuarioLogueado = usuario;
@@ -99,24 +100,27 @@ namespace TP1
                     {
                         return false;
 
-                    } else if (usuarioLogueado._intentosFallidos >= 3)
+                    }
+                    else if (usuarioLogueado._intentosFallidos >= 3)
                     {
                         //Por referencia tanto en el logueado como en la lista
                         usuarioLogueado._bloqueado = true;
                         DB.bloquearUsuario(dni);
                         return false;
 
-                    }else if (usuarioLogueado._password == contrasena)
+                    }
+                    else if (usuarioLogueado._password == contrasena)
                     {
-                        usuarioLogueado._intentosFallidos=0;
-                        DB.actualizaIntentosDeLogueo(usuarioLogueado._dni,0);
+                        usuarioLogueado._intentosFallidos = 0;
+                        DB.actualizaIntentosDeLogueo(usuarioLogueado._dni, 0);
+                        usuarioLogueado._Cajas = DB.buscaCajasAhorroDeUsuario(usuarioLogueado._id);
                         return true;
                     }
                     else
                     {
                         usuarioLogueado._intentosFallidos++;
-                        DB.actualizaIntentosDeLogueo(usuarioLogueado._dni,usuarioLogueado._intentosFallidos);
-                       
+                        DB.actualizaIntentosDeLogueo(usuarioLogueado._dni, usuarioLogueado._intentosFallidos);
+
                     }
                 }
             }
@@ -132,11 +136,20 @@ namespace TP1
 
         public bool CrearCajaDeAhorro()
         {
-            CajaDeAhorro caja = new CajaDeAhorro(cbuAutonumerado, usuarioLogueado);
-            cbuAutonumerado = cbuAutonumerado + 1;
-            AltaCajaDeAhorro(usuarioLogueado, caja);
-            cajas.Add(caja);
-            return true;
+            DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
+            string cbuNuevo = now.ToString("yyyyMMddHHmmssfff");
+            int idCajaNueva = DB.agregarCajaAhorro(cbuNuevo, usuarioLogueado._id);
+            MessageBox.Show("IdResultadoSQL: " + idCajaNueva);
+
+            if (idCajaNueva != -1)
+            {
+                CajaDeAhorro caja = new CajaDeAhorro(idCajaNueva, cbuNuevo, usuarioLogueado._id, 0);
+                AltaCajaDeAhorro(usuarioLogueado, caja);
+                cajas.Add(caja);
+                return true;
+
+            }
+            else { return false; }
         }
 
         public void AltaCajaDeAhorro(Usuario usuario, CajaDeAhorro caja)
@@ -160,7 +173,7 @@ namespace TP1
             {
                 foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
                 {
-                    if (caja._cbu == cbu)
+                    if (caja._cbu.Equals(cbu))
                     {
                         Depositar(caja, monto);
 
@@ -195,7 +208,7 @@ namespace TP1
             {
                 foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
                 {
-                    if (caja._cbu == cbu)
+                    if (caja._cbu.Equals(cbu))
                     {
                         return Retirar(caja, monto);
 
@@ -213,11 +226,11 @@ namespace TP1
             bool encontro = false;
             foreach (CajaDeAhorro caja in cajas)
             {
-                if (caja._cbu == emisor && caja._saldo >= monto)
+                if (caja._cbu.Equals(emisor) && caja._saldo >= monto)
                 {
                     caja._saldo = caja._saldo - monto;
                     encontro = true;
-                    Movimiento movi = new Movimiento(caja,"Transferencia emitida",monto);
+                    Movimiento movi = new Movimiento(caja, "Transferencia emitida", monto);
                     movimientos.Add(movi);
                     caja._movimientos.Add(movi);
                 }
@@ -227,7 +240,7 @@ namespace TP1
             {
                 foreach (CajaDeAhorro cajita in cajas)
                 {
-                    if (cajita._cbu == destino)
+                    if (cajita._cbu.Equals(destino))
                     {
                         cajita._saldo = cajita._saldo + monto;
                         Movimiento movi = new Movimiento(cajita, "Transferencia emitida", monto);
@@ -309,7 +322,7 @@ namespace TP1
             List<Movimiento> listaMovimientos = new List<Movimiento>();
             foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
             {
-                if (caja._cbu == cbu)
+                if (caja._cbu.Equals(cbu))
                 {
 
                     listaMovimientos = BuscarMovimiento(caja, detalle, fecha, monto);
@@ -355,16 +368,16 @@ namespace TP1
             if (esValido)
             {
                 int idNuevoUsuario;
-                idNuevoUsuario = DB.agregarUsuario(dni, nombre,apellido, mail, password,false, false,0);
-                
+                idNuevoUsuario = DB.agregarUsuario(dni, nombre, apellido, mail, password, false, false, 0);
+
                 if (idNuevoUsuario != -1)
                 {
                     //Agrega a la lista con el ID obtenido de la DB
-                    Usuario nuevoUsuario = new Usuario(idNuevoUsuario, dni, nombre,apellido, mail, password, false, false,0);
+                    Usuario nuevoUsuario = new Usuario(idNuevoUsuario, dni, nombre, apellido, mail, password, false, false, 0);
                     usuarios.Add(nuevoUsuario);
-                    
+
                     return true;
-                    
+
                 }
                 else
                 {
@@ -377,7 +390,7 @@ namespace TP1
 
 
         }
-        
+
 
         public bool ModificarUsuario(int id, int dni, string nombre, string apellido, string password, string mail)
         {
@@ -418,26 +431,45 @@ namespace TP1
 
 
 
-        public void ModificarCajaDeAhorro(int id)
+        public bool ModificarCajaDeAhorro(string cbu, int Titular, int accion)
         {
-
-            foreach (CajaDeAhorro caja in cajas)
+            CajaDeAhorro? cajaBuscada = cajas.Find(caja => caja._cbu.Equals(cbu));
+            if (cajaBuscada != null)
             {
-                if (caja._id == id)
+                if (accion == 0)
                 {
-                    foreach (Usuario user in caja._titulares)
+
+
+                    if (cajaBuscada._titulares.Count() > 1)
                     {
-                        if (usuarioLogueado == user)
+                        foreach (int titular in cajaBuscada._titulares)
                         {
-                            caja._titulares.Remove(user);
+                            if (titular == Titular)
+                            {
 
+                                if (DB.bajaTitularCajaDeAhorro(titular))
+                                {
+                                    cajaBuscada._titulares.Remove(titular);
+                                    return true;
+                                }
+
+
+                            }
                         }
-
+                    }
+                }
+                else if (accion == 1)
+                {
+                    if (DB.altaTitularCajaDeAhorro(Titular, cajaBuscada._cbu))
+                    {
+                        cajaBuscada._titulares.Add(Titular);
+                        return true;
 
                     }
-                    caja._titulares.Add(usuarioLogueado);
+
                 }
             }
+            return false;
         }
 
         public bool BajaCajaDeAhorro(int id)
@@ -446,8 +478,13 @@ namespace TP1
             {
                 if (caja._id == id && caja._saldo == 0)
                 {
-                    cajas.Remove(caja);
-                    return true;
+
+                    if (DB.bajaCajaDeAhorro(id))
+                    {
+                        cajas.Remove(caja);
+                        return true;
+                    }
+
                 }
             }
             return false;
@@ -476,11 +513,11 @@ namespace TP1
 
         }
 
-        public bool AltaPago( float monto, string metodo,string detalle,int id_metodo)
+        public bool AltaPago(float monto, string metodo, string detalle, string id_metodo)
         {
             try
             {
-                Pago pago = new Pago(idPagoAutonumerado,usuarioLogueado, monto, metodo, detalle,id_metodo);
+                Pago pago = new Pago(idPagoAutonumerado, usuarioLogueado, monto, metodo, detalle, id_metodo);
                 idPagoAutonumerado = idPagoAutonumerado + 1;
                 this.pagos.Add(pago);
                 this.usuarioLogueado.pagos.Add(pago);
@@ -498,17 +535,19 @@ namespace TP1
                 {
                     if (pago._id == id)
                     {
-                        foreach(CajaDeAhorro caja in cajas)
+                        foreach (CajaDeAhorro caja in cajas)
                         {
-                            if(pago._id_metodo == caja._cbu)
+                            if (pago._id_metodo == caja._cbu)
                             {
-                                if (pago._pagado == false) {  
-                                    if(this.Pagar(caja, pago._monto))
-                                    { 
+                                if (pago._pagado == false)
+                                {
+                                    if (this.Pagar(caja, pago._monto))
+                                    {
                                         pago._pagado = true;
                                         return true;
                                     }
-                                } else
+                                }
+                                else
                                 {
                                     MessageBox.Show("Debe seleccionar un ID de pago pendiente");
                                     return false;
@@ -702,7 +741,7 @@ namespace TP1
         {
 
 
-            return usuarioLogueado.cajas.ToList();
+            return usuarioLogueado._Cajas.ToList();
         }
 
 
@@ -713,7 +752,7 @@ namespace TP1
             List<Movimiento> movimientosCaja = new List<Movimiento>();
             foreach (Movimiento movimiento in movimientos)
             {
-                if (movimiento._cajaDeAhorro._cbu == id_caja)
+                if (movimiento._cajaDeAhorro._id == id_caja)
                 {
                     movimientosCaja.Add(movimiento);
                 }
@@ -727,7 +766,7 @@ namespace TP1
             List<Pago> pagosAux = new List<Pago>();
             foreach (Pago pago in usuarioLogueado.pagos)
             {
-                if (pago._pagado==pagado)
+                if (pago._pagado == pagado)
                 {
                     pagosAux.Add(pago);
 

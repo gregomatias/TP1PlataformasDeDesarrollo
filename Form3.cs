@@ -31,6 +31,8 @@ namespace TP1
             InitializeComponent();
             label2.Text = banco.GetNombreUsuarioLogueado();
 
+            cargaCajasAhorro();
+
 
 
         }
@@ -72,17 +74,14 @@ namespace TP1
 
             dataGridView1.Rows.Clear();
             dataGridView1.Refresh();
-            banco.CrearCajaDeAhorro();
-            List<CajaDeAhorro> listaCajaAhorro = new List<CajaDeAhorro>();
-            listaCajaAhorro = banco.MostrarCajasDeAhorro();
-            foreach (CajaDeAhorro caja in listaCajaAhorro)
+            if (banco.CrearCajaDeAhorro())
             {
 
-                int fila = dataGridView1.Rows.Add();
-                dataGridView1.Rows[fila].Cells[0].Value = caja._cbu;
-                dataGridView1.Rows[fila].Cells[1].Value = caja._saldo;
+
+                cargaCajasAhorro();
 
             }
+            else { MessageBox.Show("No se pudo crear la caja de ahorro"); }
 
         }
 
@@ -318,7 +317,7 @@ namespace TP1
                     foreach (CajaDeAhorro caja in listaCajaAhorro)
                     {
 
-                         fila = dataGridView1.Rows.Add();
+                        fila = dataGridView1.Rows.Add();
                         dataGridView1.Rows[fila].Cells[0].Value = caja._cbu;
                         dataGridView1.Rows[fila].Cells[1].Value = caja._saldo;
 
@@ -362,13 +361,13 @@ namespace TP1
 
                     if (cBox_tarjeta.Text != "")
                     {
-                        banco.AltaPago(montoPago, "TJ", txtb_concepto_pago.Text, int.Parse(cBox_tarjeta.Text));
-                        
+                        banco.AltaPago(montoPago, "TJ", txtb_concepto_pago.Text, cBox_tarjeta.Text);
+
                         cargarPagos();
                     }
                     else if (cBox_caja_ahorro.Text != "")
                     {
-                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text, int.Parse(cBox_caja_ahorro.Text));
+                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text, cBox_caja_ahorro.Text);
                         MessageBox.Show("Pago ingresado");
                         cargarPagos();
                     }
@@ -438,7 +437,7 @@ namespace TP1
                 foreach (Pago pago in listaPago)
                 {
 
-                    fila= dataGridView4_pagos_pendientes.Rows.Add();
+                    fila = dataGridView4_pagos_pendientes.Rows.Add();
                     dataGridView4_pagos_pendientes.Rows[fila].Cells[0].Value = pago._id;
                     dataGridView4_pagos_pendientes.Rows[fila].Cells[1].Value = pago._metodo;
                     dataGridView4_pagos_pendientes.Rows[fila].Cells[2].Value = pago._detalle;
@@ -464,13 +463,15 @@ namespace TP1
             }
         }
 
-       
+
         private void dataGridView3_CellClick_1(object sender, DataGridViewCellEventArgs e)
         {
 
-            if (Banco.IsNumeric(dataGridView3.CurrentCell.Value.ToString())) { 
+            if (Banco.IsNumeric(dataGridView3.CurrentCell.Value.ToString()))
+            {
                 this.celda = int.Parse(dataGridView3.CurrentCell.Value.ToString());
-            } else
+            }
+            else
             {
                 MessageBox.Show("Debe seleccionar un ID de pago válido");
             }
@@ -482,7 +483,7 @@ namespace TP1
             {
                 MessageBox.Show("El pago se elimino de manera exitosa");
                 this.cargaListaPagos(true);
-             //   this.cargaListaPagos(false);
+                //   this.cargaListaPagos(false);
             }
             else
             {
@@ -504,6 +505,20 @@ namespace TP1
                 MessageBox.Show("Debe seleccionar un ID de pago válido");
             }
 
+        }
+
+        private void cargaCajasAhorro()
+        {
+            List<CajaDeAhorro> listaCajaAhorro = new List<CajaDeAhorro>();
+            listaCajaAhorro = banco.MostrarCajasDeAhorro();
+            foreach (CajaDeAhorro caja in listaCajaAhorro)
+            {
+
+                int fila = dataGridView1.Rows.Add();
+                dataGridView1.Rows[fila].Cells[0].Value = caja._cbu;
+                dataGridView1.Rows[fila].Cells[1].Value = caja._saldo;
+
+            }
         }
     }
 }
