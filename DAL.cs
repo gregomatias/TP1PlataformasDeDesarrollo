@@ -210,13 +210,16 @@ namespace TP1
                     while (reader.Read())
                     {
                         //0:ID,1:DNI,2:NOMBRE;3:APELLIDO,4:MAIL,5:PASSWORD,6:BLOQUEADO,7:ADMINISTRADOR,8:INTENTOS_LOGUEO
-                        aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetFloat(3));
+                        aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDouble(3));
                         cajasReturn.Add(aux);
                     }
                     //Luego de recorrer la query se libera la memoria:
                     reader.Close();
                 }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
+                catch (Exception ex) { Console.WriteLine(ex.Message);
+
+                    MessageBox.Show(ex.Message);
+                }
             }
 
 
