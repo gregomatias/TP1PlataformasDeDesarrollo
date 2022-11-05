@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.Intrinsics.X86;
 using System.Configuration.Provider;
+using System.Threading.Tasks;
 
 namespace TP1
 {
@@ -63,6 +64,9 @@ namespace TP1
             return usuariosReturn;
 
         }
+
+
+
         public int agregarUsuario(int Dni, string Nombre, string Apellido, string Mail, string Password, bool Bloqueado, bool EsADM,int IntentosLogueo)
         {
 
@@ -117,6 +121,7 @@ namespace TP1
                 return idNuevoUsuario;
             }
         }
+
 
         public void bloquearUsuario(int Dni)
         {
@@ -335,7 +340,7 @@ namespace TP1
             {
 
                 SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.NVarChar));
                 command.Parameters["@cbu"].Value = id;
 
                 try
@@ -354,6 +359,9 @@ namespace TP1
 
             }
         }
+
+       
+
 
         public bool bajaTitularCajaDeAhorro(int id_titular)
         {
@@ -416,6 +424,724 @@ namespace TP1
                 {
                     Console.WriteLine(ex.Message);
                     return false;
+                }
+
+            }
+        }
+
+        public bool cambioParametroCaja(int id_caja, String parametro,double valor)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "UPDATE [dbo].[CAJA_AHORRO] SET ["+parametro+"]=@valor WHERE [ID]=@caja;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_caja", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@valor", SqlDbType.Float));
+                command.Parameters["@id_caja"].Value = id_caja;
+                command.Parameters["@valor"].Value = valor;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+
+                }
+
+            }
+        }
+
+
+        public List<TarjetaDeCredito> inicializarTarjetaDeCredito()
+        {
+
+            List<TarjetaDeCredito> tarjetasReturn = new List<TarjetaDeCredito>();
+
+            string queryString = "select * from dbo.TARJETA_CREDITO";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                try
+                {
+
+                    connection.Open();
+                    //Ejecuta la query :
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    TarjetaDeCredito aux;
+                    while (reader.Read())
+                    {
+                        aux = new TarjetaDeCredito(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetDouble(4), reader.GetDouble(5));
+                        tarjetasReturn.Add(aux);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+            }
+
+
+
+            return tarjetasReturn;
+        }
+
+        public int agregarTarjetaDeCredito(int id_usuario, int numero, int codigov, double limite)
+        {
+            int resultadoQuery;
+            int idNuevaTarjeta = -1;
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "INSERT INTO [dbo].[TARJETA_CREDITO] ([ID_USUARIO],[NUMERO],[CODIGOV],[LIMITE],[CONSUMOS]) VALUES (@id_usuario,@numero,@codigov,@limite,@consumos);";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@numero", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@codigov", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@limite", SqlDbType.Float));
+                command.Parameters.Add(new SqlParameter("@consumos", SqlDbType.Float));
+
+                command.Parameters["@id_usuario"].Value = id_usuario;
+                command.Parameters["@numero"].Value = numero;
+                command.Parameters["@codigov"].Value = codigov;
+                command.Parameters["@limite"].Value = limite;
+                command.Parameters["@consumos"].Value = 0;
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+
+                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[TARJETA_CREDITO] WHERE [NUMERO]=@numero";
+                    command = new SqlCommand(ConsultaID, connection);
+                    command.Parameters.Add(new SqlParameter("@numero", SqlDbType.Int));
+                    command.Parameters["@numero"].Value = numero;
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    idNuevaTarjeta = reader.GetInt32(0);
+                    reader.Close();
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return -1;
+                }
+                return idNuevaTarjeta;
+            }
+        }
+
+
+        public bool bajaTarjetaDeCredito(int id)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "DELETE FROM [dbo].[TARJETA_CREDITO] WHERE [ID]=@id;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                command.Parameters["@id"].Value = id;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+
+            }
+        }
+
+
+        public bool cambioLimiteTarjeta(int id_tarjeta, float nuevoLimite)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "UPDATE [dbo].[TARJETA_CREDITO] SET [LIMITE]=@nuevoLimite WHERE [ID]=@id_tarjeta;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_tarjeta", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@nuevoLimite", SqlDbType.Float));
+                command.Parameters["@id_tarjeta"].Value = id_tarjeta;
+                command.Parameters["@nuevoLimite"].Value = nuevoLimite;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+
+                }
+
+            }
+        }
+
+
+        public List<TarjetaDeCredito> buscaTarjetasDeCreditoUsuario(int id_usuario)
+        {
+            List<TarjetaDeCredito> tarjetasReturn = new List<TarjetaDeCredito>();
+
+            MessageBox.Show("Titular: " + id_usuario);
+            string queryString = "select * from dbo.[TARJETA_CREDITO] WHERE [ID_USUARIO]= @id_usuario;";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters["@id_usuario"].Value=id_usuario;
+
+
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    TarjetaDeCredito aux;
+                    while (reader.Read())
+                    {
+                        aux = new TarjetaDeCredito(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetDouble(4), reader.GetDouble(5));
+                        tarjetasReturn.Add(aux);
+                    }
+                    reader.Close();
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message);
+
+                }
+            }
+
+
+
+            return tarjetasReturn;
+        }
+
+
+
+        public List<PlazoFijo> inicializarPlazoFijo()
+        {
+
+            List<PlazoFijo> plazoFijoReturn = new List<PlazoFijo>();
+
+            string queryString = "select * from dbo.PLAZO_FIJO";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                try
+                {
+
+                    connection.Open();
+                    //Ejecuta la query :
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    PlazoFijo aux;
+                    while (reader.Read())
+                    {
+                        aux = new PlazoFijo(reader.GetInt32(0),reader.GetInt32(1),reader.GetDouble(2),reader.GetDateTime(3),reader.GetDouble(4));
+                        plazoFijoReturn.Add(aux);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+            }
+
+
+
+            return plazoFijoReturn;
+        }
+
+        public int agregarPlazoFijo(int id_usuario, double monto,DateTime fechaFin,double tasa)
+        {
+            int resultadoQuery;
+            int idNuevoPlazoFijo = -1;
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "INSERT INTO [dbo].[PLAZO_FIJO] ([ID_USUARIO],[MONTO],[FECHA_FIN],[TASA] VALUES (@id_usuario,@monto,@fecha,@tasa);";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Float));
+                command.Parameters.Add(new SqlParameter("@fecha", SqlDbType.DateTime));
+                command.Parameters.Add(new SqlParameter("@tasa", SqlDbType.Float));
+
+                command.Parameters["@id_usuario"].Value = id_usuario;
+                command.Parameters["@monto"].Value = monto;
+                command.Parameters["@fecha"].Value = fechaFin;
+                command.Parameters["@tasa"].Value = tasa;
+                
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+
+                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[PLAZO_FIJO] WHERE [MONTO]=@monto";
+                    command = new SqlCommand(ConsultaID, connection);
+                    command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Float));
+                    command.Parameters["@monto"].Value = monto;
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    idNuevoPlazoFijo = reader.GetInt32(0);
+                    reader.Close();
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return -1;
+                }
+                return idNuevoPlazoFijo;
+            }
+        }
+
+        public bool bajaPlazoFijo(int id)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "DELETE FROM [dbo].[PLAZO_FIJO] WHERE [ID]=@id;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                command.Parameters["@id"].Value = id;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+
+            }
+        }
+
+
+        public List<PlazoFijo> buscaPlazoFijo(int id_usuario)
+        {
+            List<PlazoFijo> PlazoFijoReturn = new List<PlazoFijo>();
+
+            MessageBox.Show("Titular: " + id_usuario);
+            string queryString = "select * from dbo.[PLAZO_FIJO] WHERE [ID_USUARIO]= @id_usuario;";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters["@id_usuario"].Value = id_usuario;
+
+
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    PlazoFijo aux;
+                    while (reader.Read())
+                    {
+                        aux = new PlazoFijo(reader.GetInt32(0),reader.GetInt32(1),reader.GetDouble(2), reader.GetDateTime(3),reader.GetFloat(4));
+                        PlazoFijoReturn.Add(aux);
+                    }
+                    reader.Close();
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message);
+
+                }
+            }
+
+
+
+            return PlazoFijoReturn;
+        }
+
+
+        public List<Movimiento> inicializarMovimiento()
+        {
+
+            List<Movimiento> movimientoReturn = new List<Movimiento>();
+
+            string queryString = "select * from dbo.Movimiento";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                try
+                {
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    Movimiento aux;
+                    while (reader.Read())
+                    {
+                        aux = new Movimiento(reader.GetInt32(0),reader.GetInt32(1),reader.GetString(2),reader.GetDouble(3),reader.GetDateTime(4));
+                        movimientoReturn.Add(aux);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+            }
+
+
+
+            return movimientoReturn;
+        }
+
+
+        public int agregarMovimiento(int id_cajaDeAhorro, String detalle, double monto, DateTime fecha)
+        {
+            int resultadoQuery;
+            int idNuevoMovimiento = -1;
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "INSERT INTO [dbo].[MOVIMIENTO] ([id_caja_ahorro],[descripcion],[monto],[fecha] VALUES (@id_cajaDeAhorro,@detalle,@monto,@fecha);";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_cajaDeAhorro", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@detalle", SqlDbType.VarChar));
+                command.Parameters.Add(new SqlParameter("@fecha", SqlDbType.DateTime));
+                command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Float));
+
+                command.Parameters["@id_cajaDeAhorro"].Value = id_cajaDeAhorro;
+                command.Parameters["@monto"].Value = monto;
+                command.Parameters["@fecha"].Value = fecha;
+                command.Parameters["@detalle"].Value = detalle;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+
+                    string ConsultaID = "SELECT MAX([id]) FROM [dbo].[MOVIMIENTO] WHERE [monto]=@monto";
+                    command = new SqlCommand(ConsultaID, connection);
+                    command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Float));
+                    command.Parameters["@monto"].Value = monto;
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    idNuevoMovimiento = reader.GetInt32(0);
+                    reader.Close();
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return -1;
+                }
+                return idNuevoMovimiento;
+            }
+        }
+
+        public bool bajaMovimiento(int id)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "DELETE FROM [dbo].[MOVIMIENTO] WHERE [id]=@id;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                command.Parameters["@id"].Value = id;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+
+            }
+        }
+
+
+        public List<Movimiento> buscarMovimiento(int id_usuario)
+        {
+            List<Movimiento> movimientoReturn = new List<Movimiento>();
+
+            MessageBox.Show("Titular: " + id_usuario);
+            string queryString = "select * from dbo.[Movimiento] WHERE [ID_USUARIO]= @id_usuario;";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters["@id_usuario"].Value = id_usuario;
+
+
+
+                try
+                {
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    Movimiento aux;
+                    while (reader.Read())
+                    {
+                        aux = new Movimiento(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetDouble(3), reader.GetDateTime(4));
+                        movimientoReturn.Add(aux);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+            }
+
+
+
+            return movimientoReturn;
+        }
+
+
+        public List<Pago> inicializarPago()
+        {
+
+            List<Pago> pagoReturn = new List<Pago>();
+
+            string queryString = "select * from dbo.Pago";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                try
+                {
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    Pago aux;
+                    while (reader.Read())
+                    {
+                        aux = new Pago(reader.GetInt32(0),reader.GetInt32(1),reader.GetDouble(2) ,reader.GetInt32(3), reader.GetString(4), reader.GetString(5),reader.GetInt32(6));
+                        pagoReturn.Add(aux);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+            }
+
+
+
+            return pagoReturn;
+        }
+
+
+        public int agregarPago(int id_usuario, double monto,String metodo, String detalle, int id_metodo)
+        {
+            int resultadoQuery;
+            int idNuevoPago = -1;
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "INSERT INTO [dbo].[PAGO] ([ID_USUARIO],[MONTO],[PAGADO],[METODO],[DETALLE],[ID_METODO] VALUES (@id_usuario,@monto,@pagado,@metodo,@detalle,@id_metodo);";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Float));
+                command.Parameters.Add(new SqlParameter("@pagado", SqlDbType.Bit));
+                command.Parameters.Add(new SqlParameter("@metodo", SqlDbType.VarChar));
+                command.Parameters.Add(new SqlParameter("@detalle", SqlDbType.VarChar));
+                command.Parameters.Add(new SqlParameter("@id_metodo", SqlDbType.Int));
+
+                command.Parameters["@id_usuario"].Value = id_usuario;
+                command.Parameters["@monto"].Value = monto;
+                command.Parameters["@pagado"].Value = 0;
+                command.Parameters["@metodo"].Value = metodo;
+                command.Parameters["@detalle"].Value = detalle;
+                command.Parameters["@id_metodo"].Value = id_metodo;
+
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+
+                    string ConsultaID = "SELECT MAX([id]) FROM [dbo].[Pago] WHERE [monto]=@monto";
+                    command = new SqlCommand(ConsultaID, connection);
+                    command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Float));
+                    command.Parameters["@monto"].Value = monto;
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    idNuevoPago = reader.GetInt32(0);
+                    reader.Close();
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return -1;
+                }
+                return idNuevoPago;
+            }
+        }
+
+        public bool bajaPago(int id)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "DELETE FROM [dbo].[PAGO] WHERE [id]=@id;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                command.Parameters["@id"].Value = id;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+
+            }
+        }
+
+
+        public List<Pago> buscarPago(int id_usuario)
+        {
+            List<Pago> pagoReturn = new List<Pago>();
+
+            MessageBox.Show("Titular: " + id_usuario);
+            string queryString = "select * from dbo.[PAGO] WHERE [ID_USUARIO]= @id_usuario;";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters["@id_usuario"].Value = id_usuario;
+
+                try
+                {
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    Pago aux;
+                    while (reader.Read())
+                    {
+                        aux = new Pago(reader.GetInt32(0), reader.GetInt32(1), reader.GetDouble(2), reader.GetInt32(3), reader.GetString(4), reader.GetString(5), reader.GetInt32(6));
+                        pagoReturn.Add(aux);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+            }
+
+
+
+            return pagoReturn;
+        }
+
+
+        public bool cambioPago(int id_pago)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "UPDATE [dbo].[PAGO] SET [PAGADO]=@pagado WHERE [ID]=@id_pago;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_pago", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@pagado", SqlDbType.Int));
+                command.Parameters["@id_pago"].Value = id_pago;
+                command.Parameters["@pagado"].Value = 1;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+
                 }
 
             }

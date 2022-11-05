@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace TP1
 {
-    internal class TarjetaDeCredito
-    {
+	internal class TarjetaDeCredito
+	{
 
-        public TarjetaDeCredito(Usuario titular, int numero, int codigoV, float limite)
-        {
+		public TarjetaDeCredito(Usuario titular, int numero, int codigoV, double limite)
+		{
 			_id = _id + 1;
 			_titular = titular;
 			_numero = numero;
@@ -18,9 +18,19 @@ namespace TP1
 			_limite = limite;
 			_consumos = 0;
 
-        }
+		}
 
-        static private int id = 0;
+		public TarjetaDeCredito(int id, int id_usuario, int numero, int codigoV, double limite, double consumos)
+		{
+			_id = id;
+			_id_usuario = id_usuario;
+			_numero = numero;
+			_codigoV = codigoV;
+			_limite = limite;
+			_consumos = consumos;
+		}
+
+		static private int id = 0;
 
 		public int _id
 		{
@@ -35,6 +45,15 @@ namespace TP1
 			get { return titular; }
 			set { titular = value; }
 		}
+
+		private int id_usuario;
+
+		public int _id_usuario
+		{
+			get { return id_usuario; }
+			set { id_usuario = value; }
+		}
+
 
 		private int numero;
 
@@ -52,17 +71,17 @@ namespace TP1
 			set { codigoV = value; }
 		}
 
-		private float limite;
+		private double limite;
 
-		public float _limite
+		public double _limite
 		{
 			get { return limite; }
 			set { limite = value; }
 		}
 
-		private float consumos;
+		private double consumos;
 
-		public float _consumos
+		public double _consumos
 		{
 			get { return consumos; }
 			set { consumos = value; }

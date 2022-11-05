@@ -361,13 +361,13 @@ namespace TP1
 
                     if (cBox_tarjeta.Text != "")
                     {
-                        banco.AltaPago(montoPago, "TJ", txtb_concepto_pago.Text, cBox_tarjeta.Text);
+                        banco.AltaPago(montoPago, "TJ", txtb_concepto_pago.Text, int.Parse(cBox_tarjeta.Text));
 
                         cargarPagos();
                     }
                     else if (cBox_caja_ahorro.Text != "")
                     {
-                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text, cBox_caja_ahorro.Text);
+                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text,int.Parse( cBox_caja_ahorro.Text));
                         MessageBox.Show("Pago ingresado");
                         cargarPagos();
                     }

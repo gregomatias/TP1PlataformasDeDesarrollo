@@ -8,16 +8,28 @@ namespace TP1
 {
     internal class PlazoFijo
     {
-
-        public PlazoFijo(Usuario titular, float monto, DateTime fechaFin, float tasa)
+		
+        public PlazoFijo(Usuario titular, double monto, DateTime fechaFin, double tasa)
         {
 			_id = _id + 1;
 			_titular = titular;
 			_monto = monto;
-			_fechaFin = fechaFin;
+			_fechaIni= DateTime.Now;
+            _fechaFin = fechaFin;
 			_tasa = tasa;
 			_pagado = false;
         }
+		
+		public PlazoFijo(int id,int id_usuario,double monto,DateTime fechaFin,double tasa)
+		{
+			_id = id;
+			_id_usuario= id_usuario;
+			_monto = monto;
+            _fechaIni = DateTime.Now;
+            _fechaFin = fechaFin;
+			_tasa= tasa;
+			_pagado= false;
+		}
 
         static private int id;
 
@@ -27,6 +39,15 @@ namespace TP1
 			set { id = value; }
 		}
 
+		private int id_usuario;
+
+		public int _id_usuario
+		{
+			get { return id_usuario; }
+			set { id_usuario = value; }
+		} 
+
+
 		private Usuario titular;
 
 		public Usuario _titular
@@ -35,9 +56,9 @@ namespace TP1
 			set { titular = value; }
 		}
 
-		private float monto;
+		private double monto;
 
-		public float _monto
+		public double _monto
 		{
 			get { return monto; }
 			set { monto = value; }
@@ -59,9 +80,9 @@ namespace TP1
 			set { fechaFin = value; }
 		}
 
-		private float tasa;
+		private double tasa;
 
-		public float _tasa
+		public double _tasa
 		{
 			get { return tasa; }
 			set { tasa = value; }

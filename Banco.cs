@@ -39,15 +39,34 @@ namespace TP1
             DB = new DAL();
             this.usuarios = DB.inicializarUsuarios();
             this.cajas = DB.inicializarCajasAhorro();
-
+            this.pfs = DB.inicializarPlazoFijo();
+            this.tarjetas = DB.inicializarTarjetaDeCredito();
+            this.pagos = DB.inicializarPago();
+            this.movimientos = DB.inicializarMovimiento();
         }
 
 
+        public string obtieneSecuencia(Usuario usuario)
+        {
+            //Genera secuencia unica de CBU o Tarjeta
+            //El usuario se pasa porque el Admin podria crear TJ o CBU
+                DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
+                string fecha = now.ToString("yyyyMMddHHmmssfff");
 
-        public bool Pagar(CajaDeAhorro caja, float monto)
+            return usuario._id + fecha;
+
+
+            }
+
+
+
+            public bool Pagar(CajaDeAhorro caja, double monto)
         {
             if (caja._saldo >= monto)
             {
+                /*
+                 DB.agregarMovimiento(CajaDeAhorro.id,"Pago de servicio",monto,DateTime.Now());
+                 */
                 caja._saldo = caja._saldo - monto;
                 Movimiento muvi = new Movimiento(caja, "Pago de servicio", monto); ;
                 movimientos.Add(muvi);
@@ -56,6 +75,9 @@ namespace TP1
 
             }
             else { return false; }
+
+
+
         }
 
         public bool Pagar(int cbu, float monto)
@@ -75,6 +97,18 @@ namespace TP1
             catch (Exception) { return false; }
             return false;
         }
+        //////////////
+        public bool PagarTester(int id_cajaDeAhorro, double monto,int id_pago)
+        {
+            try {
+                DB.agregarMovimiento(id_cajaDeAhorro, "Pago de servicio", monto, DateTime.Now);
+                DB.cambioPago(id_pago);
+                return true;
+            }
+            catch (Exception) { return false; }
+            
+        }
+
 
         public string GetNombreUsuarioLogueado()
         {
@@ -136,10 +170,12 @@ namespace TP1
 
         public bool CrearCajaDeAhorro()
         {
-            DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
-            string cbuNuevo = now.ToString("yyyyMMddHHmmssfff");
+           
+            string  cbuNuevo =obtieneSecuencia( usuarioLogueado);
+
+
             int idCajaNueva = DB.agregarCajaAhorro(cbuNuevo, usuarioLogueado._id);
-            MessageBox.Show("IdResultadoSQL: " + idCajaNueva);
+            
 
             if (idCajaNueva != -1)
             {
@@ -150,7 +186,9 @@ namespace TP1
 
             }
             else { return false; }
+            
         }
+
 
         public void AltaCajaDeAhorro(Usuario usuario, CajaDeAhorro caja)
         {
@@ -158,16 +196,17 @@ namespace TP1
 
         }
 
-        public bool Depositar(CajaDeAhorro caja, float monto)
+        public bool Depositar(CajaDeAhorro caja, double monto)
         {
             caja._saldo = caja._saldo + monto;
             Movimiento movimiento = new Movimiento(caja, "Deposito", monto);
             movimientos.Add(movimiento);
             caja._movimientos.Add(movimiento);
             return true;
+            /*actualizar saldo en la base de datos directamente y actualizar cajas*/
         }
 
-        public bool Depositar(int cbu, float monto)
+        public bool Depositar(int cbu, double monto)
         {
             try
             {
@@ -187,7 +226,7 @@ namespace TP1
 
 
 
-        public bool Retirar(CajaDeAhorro caja, float monto)
+        public bool Retirar(CajaDeAhorro caja, double monto)
         {
             if (caja._saldo >= monto)
             {
@@ -199,9 +238,10 @@ namespace TP1
 
             }
             else { return false; }
+            
         }
 
-        public bool Retirar(int cbu, float monto)
+        public bool Retirar(int cbu, double monto)
         {
 
             try
@@ -252,6 +292,8 @@ namespace TP1
             }
 
             return false;
+
+            /*Modificar de la base de datos 2 campos*/
         }
 
 
@@ -269,6 +311,8 @@ namespace TP1
                     }
                 }
             }
+
+            
 
             /*
             if (detalle != "default")
@@ -336,7 +380,7 @@ namespace TP1
 
         public bool PagarTarjeta(TarjetaDeCredito tarjeta, CajaDeAhorro caja)
         {
-            float monto = tarjeta._consumos;
+            double monto = tarjeta._consumos;
 
             if (caja._saldo > tarjeta._consumos)
             {
@@ -491,13 +535,14 @@ namespace TP1
 
         }
 
-        public bool AltaMovimiento(CajaDeAhorro caja, string detalle, float monto)
+        public bool AltaMovimiento(CajaDeAhorro caja, string detalle, double monto)
         {
             try
             {
                 Movimiento movi = new Movimiento(caja, detalle, monto);
                 caja._movimientos.Add(movi);
                 movimientos.Add(movi);
+                /*DB.agregarMovimiento(caja._id,detalle,monto,DateTime.Now)*/
                 return true;
             }
             catch (Exception ex) { return false; }
@@ -513,7 +558,7 @@ namespace TP1
 
         }
 
-        public bool AltaPago(float monto, string metodo, string detalle, string id_metodo)
+        public bool AltaPago(float monto, string metodo, string detalle, int id_metodo)
         {
             try
             {
@@ -521,13 +566,13 @@ namespace TP1
                 idPagoAutonumerado = idPagoAutonumerado + 1;
                 this.pagos.Add(pago);
                 this.usuarioLogueado.pagos.Add(pago);
+                //DB.agregarPago(usuarioLogeado._id,monto,metodo,detalle,id_metodo);
                 return true;
             }
             catch (Exception) { return false; }
         }
 
         public bool ModificarPago(int id)
-
         {
             try
             {
@@ -537,13 +582,14 @@ namespace TP1
                     {
                         foreach (CajaDeAhorro caja in cajas)
                         {
-                            if (pago._id_metodo == caja._cbu)
+                            if (pago._id_metodo == caja._id)
                             {
                                 if (pago._pagado == false)
                                 {
                                     if (this.Pagar(caja, pago._monto))
                                     {
                                         pago._pagado = true;
+                                        //DB.cambioPago(id);
                                         return true;
                                     }
                                 }
@@ -574,6 +620,7 @@ namespace TP1
                     {
                         pagos.Remove(pago);
                         usuarioLogueado.pagos.Remove(pago);
+                        //DB.bajaPago(id);
                         return true;
                     }
                 }
@@ -612,11 +659,12 @@ namespace TP1
             catch (Exception ex) { return false; }
         }
 
-        public bool AltaPlazoFijo(Usuario titular, float monto, DateTime fechaFin, float tasa)
+        public bool AltaPlazoFijo(Usuario titular, double monto, DateTime fechaFin, double tasa)
         {
             try
             {
                 pfs.Add(new PlazoFijo(titular, monto, fechaFin, tasa));
+                //DB.agregarPlazoFijo(UsuarioLogeado._id,monto,fechaFin,tasa);
                 return true;
             }
             catch (Exception ex) { return false; }
@@ -638,6 +686,7 @@ namespace TP1
                         if (pf._pagado = true && (System.DateTime.Now - pf._fechaFin).TotalDays > 30)
                         {
                             pfs.Remove(pf);
+                            //DB.bajaPlazoFijo(id);
                         }
                     }
                 }
@@ -671,6 +720,7 @@ namespace TP1
             try
             {
                 tarjetas.Add(new TarjetaDeCredito(titular, numero, codigoV, limite));
+                //DB.agragarTarjetaDeCredito((usuarioLogueado._id,numero,codigov, limite);
                 return true;
             }
             catch (Exception ex) { return false; }
@@ -686,7 +736,7 @@ namespace TP1
                     {
 
                         tarjeta._limite = limite;
-
+                        //DB.cambioLimiteTarjeta(id,limite);
                     }
                 }
 
@@ -709,6 +759,7 @@ namespace TP1
                         if (tarjeta._consumos == 0)
                         {
                             tarjetas.Remove(tarjeta);
+                            //DB.bajaTarjetaDeCredito(tarjeta._id);
                         }
                     }
                 }
@@ -740,7 +791,7 @@ namespace TP1
         public List<CajaDeAhorro> MostrarCajasDeAhorro()
         {
 
-
+            //usuaioLogueado._Cajas= DB.buscarCajasDeAhorroDeUsuario(usuarioLogueado._id);
             return usuarioLogueado._Cajas.ToList();
         }
 
@@ -759,6 +810,11 @@ namespace TP1
             }
             return movimientosCaja;
 
+            /*
+             movimientosCaja = DB.buscarMovimientos(id_caja);
+             return movimientosCaja.ToList();
+             */
+
         }
 
         public List<Pago> MostrarPago(bool pagado)
@@ -773,6 +829,7 @@ namespace TP1
                 }
 
             }
+            //pagosAux = DB.buscarPago(usuarioLogeado._id);
             return pagosAux.ToList();
         }
 
@@ -780,6 +837,16 @@ namespace TP1
 
         public List<PlazoFijo> MostrarPf()
         {
+
+            /*
+            
+            if(usuarioLogeado.esUsuarioAdmin==true){
+                return pfs.ToList();
+            }else{
+                List<PlazoFijo> plazoAux = new List <PlazoFijo>();
+                plazoAux= DB.buscarPlazoFijo(usuarioLogueado._id);
+            }
+             */
             return pfs.ToList();
         }
 
@@ -787,8 +854,17 @@ namespace TP1
 
         public List<TarjetaDeCredito> MostrarTarjetasDeCredito()
         {
-
+           
             return tarjetas.ToList();
+            /*
+            
+            if(usuarioLogeado.esUsuarioAdmin==true){
+                return tarjetas.ToList();
+            }else{
+                List<TarjetaDeCredito> tarjetaAux = new List <PlazoFijo>();
+                tarjetaAux= DB.buscarTarjetasDeCredito(usuarioLogueado._id);
+            }
+             */
         }
 
         public static bool IsNumeric(string input)
@@ -796,6 +872,8 @@ namespace TP1
             int test;
             return int.TryParse(input, out test);
         }
+
+
 
 
 

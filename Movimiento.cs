@@ -8,7 +8,7 @@ namespace TP1
 {
     internal class Movimiento
     {
-        public Movimiento(CajaDeAhorro cajaDeAhorro, string detalle, float monto)
+        public Movimiento(CajaDeAhorro cajaDeAhorro, string detalle, double monto)
         {
 			_id = _id + 1;
 			_cajaDeAhorro = cajaDeAhorro;
@@ -16,6 +16,23 @@ namespace TP1
 			_monto = monto;
 			_fecha = DateTime.Now;
         }
+
+		public Movimiento(int id,int id_CajaDeAhorro,String detalle, double monto, DateTime fecha)
+		{
+			_id = id;
+			_id_CajaDeAhorro = id_CajaDeAhorro;
+			_detalle = detalle;
+			_monto = monto;
+			_fecha= fecha;
+		}
+
+		private int id_CajaDeAhorro;
+
+		public int _id_CajaDeAhorro
+		{
+			get { return id_CajaDeAhorro; }
+			set { id_CajaDeAhorro = value; }
+		}
 
         static private int id;
 
@@ -41,9 +58,9 @@ namespace TP1
 			set { detalle = value; }
 		}
 
-		private float monto;
+		private double monto;
 
-		public float _monto
+		public double _monto
 		{
 			get { return monto; }
 			set { monto = value; }
