@@ -50,17 +50,17 @@ namespace TP1
         {
             //Genera secuencia unica de CBU o Tarjeta
             //El usuario se pasa porque el Admin podria crear TJ o CBU
-                DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
-                string fecha = now.ToString("yyyyMMddHHmmssfff");
+            DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
+            string fecha = now.ToString("yyyyMMddHHmmssfff");
 
             return usuario._id + fecha;
 
 
-            }
+        }
 
 
 
-            public bool Pagar(CajaDeAhorro caja, double monto)
+        public bool Pagar(CajaDeAhorro caja, double monto)
         {
             if (caja._saldo >= monto)
             {
@@ -98,15 +98,16 @@ namespace TP1
             return false;
         }
         //////////////
-        public bool PagarTester(int id_cajaDeAhorro, double monto,int id_pago)
+        public bool PagarTester(int id_cajaDeAhorro, double monto, int id_pago)
         {
-            try {
+            try
+            {
                 DB.agregarMovimiento(id_cajaDeAhorro, "Pago de servicio", monto, DateTime.Now);
                 DB.cambioPago(id_pago);
                 return true;
             }
             catch (Exception) { return false; }
-            
+
         }
 
 
@@ -170,12 +171,12 @@ namespace TP1
 
         public bool CrearCajaDeAhorro()
         {
-           
-            string  cbuNuevo =obtieneSecuencia( usuarioLogueado);
+
+            string cbuNuevo = obtieneSecuencia(usuarioLogueado);
 
 
             int idCajaNueva = DB.agregarCajaAhorro(cbuNuevo, usuarioLogueado._id);
-            
+
 
             if (idCajaNueva != -1)
             {
@@ -186,7 +187,7 @@ namespace TP1
 
             }
             else { return false; }
-            
+
         }
 
 
@@ -196,104 +197,94 @@ namespace TP1
 
         }
 
-        public bool Depositar(CajaDeAhorro caja, double monto)
+        public bool Depositar(string cbu, double monto)
         {
-            caja._saldo = caja._saldo + monto;
-            Movimiento movimiento = new Movimiento(caja, "Deposito", monto);
-            movimientos.Add(movimiento);
-            caja._movimientos.Add(movimiento);
-            return true;
-            /*actualizar saldo en la base de datos directamente y actualizar cajas*/
-        }
-
-        public bool Depositar(int cbu, double monto)
-        {
-            try
-            {
-                foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
-                {
-                    if (caja._cbu.Equals(cbu))
-                    {
-                        Depositar(caja, monto);
-
-                    }
-                }
-            }
-            catch (Exception) { return false; }
-            return true;
-
-        }
-
-
-
-        public bool Retirar(CajaDeAhorro caja, double monto)
-        {
-            if (caja._saldo >= monto)
-            {
-                caja._saldo = caja._saldo - monto;
-                Movimiento muvi = new Movimiento(caja, "Retiro", monto);
-                movimientos.Add(muvi);
-                caja._movimientos.Add(muvi);
-                return true;
-
-            }
-            else { return false; }
-            
-        }
-
-        public bool Retirar(int cbu, double monto)
-        {
-
-            try
-            {
-                foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
-                {
-                    if (caja._cbu.Equals(cbu))
-                    {
-                        return Retirar(caja, monto);
-
-                    }
-                }
-            }
-            catch (Exception) { return false; }
-            return false;
-        }
-
-
-
-        public bool Transferir(int emisor, int destino, float monto)
-        {
-            bool encontro = false;
             foreach (CajaDeAhorro caja in cajas)
             {
-                if (caja._cbu.Equals(emisor) && caja._saldo >= monto)
+
+                if (caja._cbu == cbu)
                 {
-                    caja._saldo = caja._saldo - monto;
-                    encontro = true;
-                    Movimiento movi = new Movimiento(caja, "Transferencia emitida", monto);
-                    movimientos.Add(movi);
-                    caja._movimientos.Add(movi);
+                    double saldoActualizado = caja._saldo + monto;
+
+                    DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
+                    caja._saldo = saldoActualizado;
+                    Movimiento movimiento = new Movimiento(caja, "Deposito", monto);
+                    movimientos.Add(movimiento);
+                    caja._movimientos.Add(movimiento);
+                    return true;
                 }
+            }
+            return false;
+
+
+
+        }
+
+
+
+
+
+
+
+        public bool Retirar(string cbu, double monto)
+        {
+
+            foreach (CajaDeAhorro caja in cajas)
+            {
+
+                if (caja._cbu == cbu)
+                {
+                    double saldoActualizado = caja._saldo - monto;
+
+                    DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
+                    caja._saldo = saldoActualizado;
+                    Movimiento movimiento = new Movimiento(caja, "Retiro", monto);
+                    movimientos.Add(movimiento);
+                    caja._movimientos.Add(movimiento);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+
+        public bool Transferir(string cbuEmisor, string cbuDestino, float monto)
+        {
+
+
+            CajaDeAhorro? cajaEmisor = cajas.Where(caja => caja._cbu == cbuEmisor && caja._saldo >= monto).FirstOrDefault();
+            CajaDeAhorro? cajaDestino = cajas.Where(caja => caja._cbu == cbuDestino && caja._saldo >= monto).FirstOrDefault();
+
+
+            if (cajaEmisor != null && cajaDestino != null)
+            {
+
+                try
+                {
+                    double saldoEmisor = cajaEmisor._saldo - monto;
+                    double saldoDestino = cajaDestino._saldo + monto;
+                    cajaEmisor._saldo = saldoEmisor;
+                    cajaDestino._saldo = saldoDestino;
+
+                    Movimiento movimientoEmisor = new Movimiento(cajaEmisor, "Transferencia emitida", monto);
+                    Movimiento movimientoDestino = new Movimiento(cajaDestino, "Transferencia emitida", monto);
+                    movimientos.Add(movimientoEmisor);
+                    movimientos.Add(movimientoDestino);
+                    DB.actualizaSaldoCajaAhorro(cbuEmisor, saldoEmisor);
+                    DB.actualizaSaldoCajaAhorro(cbuDestino, saldoDestino);
+                    return true;
+
+                }
+                catch (Exception ex) { MessageBox.Show(ex.Message); }
+
             }
 
-            if (encontro)
-            {
-                foreach (CajaDeAhorro cajita in cajas)
-                {
-                    if (cajita._cbu.Equals(destino))
-                    {
-                        cajita._saldo = cajita._saldo + monto;
-                        Movimiento movi = new Movimiento(cajita, "Transferencia emitida", monto);
-                        movimientos.Add(movi);
-                        cajita._movimientos.Add(movi);
-                        return true;
-                    }
-                }
-            }
+
 
             return false;
 
-            /*Modificar de la base de datos 2 campos*/
+
         }
 
 
@@ -312,7 +303,7 @@ namespace TP1
                 }
             }
 
-            
+
 
             /*
             if (detalle != "default")
@@ -791,8 +782,7 @@ namespace TP1
         public List<CajaDeAhorro> MostrarCajasDeAhorro()
         {
 
-            //usuaioLogueado._Cajas= DB.buscarCajasDeAhorroDeUsuario(usuarioLogueado._id);
-            return usuarioLogueado._Cajas.ToList();
+            return DB.buscaCajasAhorroDeUsuario(usuarioLogueado._id).ToList();
         }
 
 
@@ -854,7 +844,7 @@ namespace TP1
 
         public List<TarjetaDeCredito> MostrarTarjetasDeCredito()
         {
-           
+
             return tarjetas.ToList();
             /*
             

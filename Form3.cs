@@ -31,7 +31,7 @@ namespace TP1
             InitializeComponent();
             label2.Text = banco.GetNombreUsuarioLogueado();
 
-            cargaCajasAhorro();
+            this.cargaCajasAhorro();
 
 
 
@@ -116,8 +116,7 @@ namespace TP1
             txtb_monto.Enabled = true;
             btn_extraer.Enabled = true;
             btn_depositar.Enabled = true;
-            //MessageBox.Show("Selected Item  ");
-            //selectedIndex.ToString());
+    
             int selectedIndex = comboBox1.SelectedIndex;
             List<Movimiento> listaMovimientos = new List<Movimiento>();
             listaMovimientos = banco.MostrarMovimientos(selectedIndex);
@@ -135,7 +134,8 @@ namespace TP1
                 {
 
 
-                    if (banco.Depositar(comboBox1.SelectedIndex, monto))
+
+                    if (banco.Depositar(comboBox1.SelectedItem.ToString(), monto))
                     {
                         MessageBox.Show("Deposito efectuado");
                         txtb_monto.Text = "";
@@ -178,7 +178,7 @@ namespace TP1
                 {
 
 
-                    if (banco.Retirar(comboBox1.SelectedIndex, monto))
+                    if (banco.Retirar(comboBox1.SelectedItem.ToString(), monto))
                     {
                         MessageBox.Show("Retiro efectuado");
                         txtb_monto.Text = "";
@@ -216,12 +216,12 @@ namespace TP1
             if (txtb_monto_transferencia.Text != "" && txtb_cbu_destino.Text != "")
             {
                 float monto = float.Parse(txtb_monto_transferencia.Text);
-                int cbu_destino = int.Parse(txtb_cbu_destino.Text);
+                string cbu_destino = txtb_cbu_destino.Text;
                 if (monto > 0)
                 {
 
 
-                    if (banco.Transferir(comboBox2.SelectedIndex, cbu_destino, monto))
+                    if (banco.Transferir(comboBox2.SelectedItem.ToString(), cbu_destino, monto))
                     {
                         MessageBox.Show("transferencia efectiva");
                         txtb_monto_transferencia.Text = "";
@@ -519,6 +519,11 @@ namespace TP1
                 dataGridView1.Rows[fila].Cells[1].Value = caja._saldo;
 
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

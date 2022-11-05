@@ -9,12 +9,12 @@ namespace TP1
     internal class CajaDeAhorro
     {
         private List<int> titulares = new List<int>();
+        private List<Movimiento> movimientos = new List<Movimiento>();
 
         public CajaDeAhorro(int id,string cbu, int usuario,double saldo)
         {
             _id = id;
             _cbu = cbu;
-
             _titulares.Add(usuario);
 			_saldo = saldo;
 
@@ -46,9 +46,6 @@ namespace TP1
 		}
 
 
-
-		private List<Movimiento> movimientos = new List<Movimiento>();
-
 		public List<Movimiento> _movimientos
 		{
 			get { return movimientos; }
@@ -65,6 +62,12 @@ namespace TP1
 			set { saldo = value; }
 		}
 
+        public override string ToString()
+        {
+            return "Id: " + _id + " CBU: " + _cbu + " Titulares: " + _titulares.ToString() + " Saldo: " + _saldo;
+        }
 
-	}
+
+
+    }
 }

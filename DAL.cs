@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Runtime.Intrinsics.X86;
 using System.Configuration.Provider;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace TP1
 {
@@ -192,11 +193,10 @@ namespace TP1
             List<CajaDeAhorro> cajasReturn = new List<CajaDeAhorro>();
 
             //Creo la query que carga la lista TP2
-            string queryString = "select * from dbo.CAJA_AHORRO";
+            string queryString = "select C.ID,C.CBU,UC.ID_USUARIO,C.SALDO from dbo.[CAJA_AHORRO] AS C " +
+                " INNER JOIN dbo.[USUARIO_CAJA_AHORRO] AS UC ON C.ID=UC.ID_CAJA_AHORRO";
 
-            //Clic derecho en proyecto e instalar poryecto Nuget System.Data.SqlClient
-            //Creo una conexion con la DB
-            //string providerName = "System.Data. SqlClient";
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
@@ -214,7 +214,7 @@ namespace TP1
                     CajaDeAhorro aux;
                     while (reader.Read())
                     {
-                        //0:ID,1:DNI,2:NOMBRE;3:APELLIDO,4:MAIL,5:PASSWORD,6:BLOQUEADO,7:ADMINISTRADOR,8:INTENTOS_LOGUEO
+                       
                         aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDouble(3));
                         cajasReturn.Add(aux);
                     }
@@ -238,18 +238,18 @@ namespace TP1
             List<CajaDeAhorro> cajasReturn = new List<CajaDeAhorro>();
 
             //Creo la query que carga la lista TP2
-            MessageBox.Show("Titular: " + id_usuario);
-            string queryString = "select * from dbo.[CAJA_AHORRO] WHERE [TITULAR]="+ id_usuario+";";
-            //WHERE [TITULAR]="+id_usuario+"
+ 
+            string queryString = "select C.ID,C.CBU,UC.ID_USUARIO,C.SALDO from dbo.[CAJA_AHORRO] AS C " +
+                " INNER JOIN dbo.[USUARIO_CAJA_AHORRO] AS UC ON C.ID=UC.ID_CAJA_AHORRO  WHERE UC.ID_USUARIO=@idUsuario;";
+            
 
-            //Clic derecho en proyecto e instalar poryecto Nuget System.Data.SqlClient
-            //Creo una conexion con la DB
-            //string providerName = "System.Data. SqlClient";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
                 //Union entre la conexion y el query a ejecutar
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@idUsuario", SqlDbType.Int));
+                command.Parameters["@idUsuario"].Value = id_usuario;
 
                 try
                 {
@@ -288,17 +288,17 @@ namespace TP1
             int resultadoQuery;
             int idNuevaCaja = -1;
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "INSERT INTO [dbo].[CAJA_AHORRO] ([CBU],[TITULAR],[SALDO]) VALUES (@cbu,@titular,0);";
+            string queryString = "INSERT INTO [dbo].[CAJA_AHORRO] ([CBU],[SALDO]) VALUES (@cbu,0);";
+
+           
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
 
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.NVarChar));
-                command.Parameters.Add(new SqlParameter("@titular", SqlDbType.Int));
-
                 command.Parameters["@cbu"].Value = cbu;
-                command.Parameters["@titular"].Value = titular;
+
                 try
                 {
                     connection.Open();
@@ -307,17 +307,28 @@ namespace TP1
 
                     //*******************************************
                     //Ahora hago esta query para obtener el ID con un  where DNI por concurrencia
-                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[CAJA_AHORRO] WHERE [CBU]=@cbu AND [TITULAR]=@titular";
+                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[CAJA_AHORRO] WHERE [CBU]=@cbu";
                     command = new SqlCommand(ConsultaID, connection);
                     command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.NVarChar));
-                    command.Parameters.Add(new SqlParameter("@titular", SqlDbType.Int));
 
                     command.Parameters["@cbu"].Value = cbu;
-                    command.Parameters["@titular"].Value = titular;
+ 
                     SqlDataReader reader = command.ExecuteReader();
                     reader.Read();
                     idNuevaCaja = reader.GetInt32(0);
                     reader.Close();
+                    //Agrega TITULAR a USUARIO_CAJA_AHORRO 
+
+                    string insertaUsuarioCaja = "INSERT INTO [dbo].[USUARIO_CAJA_AHORRO] ([ID_USUARIO],[ID_CAJA_AHORRO]) VALUES (@titular,@idCajaNueva);";
+                    command = new SqlCommand(insertaUsuarioCaja, connection);
+                    command.Parameters.Add(new SqlParameter("@titular", SqlDbType.Int));
+                    command.Parameters.Add(new SqlParameter("@idCajaNueva", SqlDbType.Int));
+
+                    command.Parameters["@titular"].Value = titular;
+                    command.Parameters["@idCajaNueva"].Value = idNuevaCaja;
+                    resultadoQuery = command.ExecuteNonQuery();
+  
+                    connection.Close();
                 }
                 catch (Exception ex)
                 {
@@ -326,6 +337,42 @@ namespace TP1
                 }
                 return idNuevaCaja;
             }
+        }
+
+        public bool actualizaSaldoCajaAhorro(string cbu,double saldo)
+        {
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "UPDATE [dbo].[CAJA_AHORRO] SET [SALDO]=@saldo WHERE [CBU]=@cbu;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@saldo", SqlDbType.Float));
+                command.Parameters["@cbu"].Value = cbu;
+                command.Parameters["@saldo"].Value = saldo;
+                
+
+                try
+                {
+                    connection.Open();
+                   
+                    resultadoQuery = command.ExecuteNonQuery();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                }
+
+            }
+            return false;
+
         }
 
         public bool bajaCajaDeAhorro(int id)
@@ -348,12 +395,15 @@ namespace TP1
                     connection.Open();
                     //esta consulta NO espera un resultado para leer, es del tipo NON Query
                     resultadoQuery = command.ExecuteNonQuery();
+
+                    connection.Close();
                     return true;
 
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    connection.Close();
                     return false;
                 }
 
