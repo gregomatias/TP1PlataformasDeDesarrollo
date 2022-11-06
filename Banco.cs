@@ -254,7 +254,7 @@ namespace TP1
 
 
             CajaDeAhorro? cajaEmisor = cajas.Where(caja => caja._cbu == cbuEmisor && caja._saldo >= monto).FirstOrDefault();
-            CajaDeAhorro? cajaDestino = cajas.Where(caja => caja._cbu == cbuDestino && caja._saldo >= monto).FirstOrDefault();
+            CajaDeAhorro? cajaDestino = cajas.Where(caja => caja._cbu == cbuDestino).FirstOrDefault();
 
 
             if (cajaEmisor != null && cajaDestino != null)

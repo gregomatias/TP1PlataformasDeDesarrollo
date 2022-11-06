@@ -557,6 +557,7 @@ namespace TP1
         {
            if( banco.PagarTarjeta(dataGView_Tarjetas.CurrentCell.Value.ToString(), cbx_lista_CajasAhorro.SelectedItem.ToString()))
             {
+                
                 MessageBox.Show("Se ha cancelado el saldo de su tarjeta");
                 this.cargaTarjetasDeCredito();
             }
@@ -577,6 +578,11 @@ namespace TP1
             {
                 cbx_lista_CajasAhorro.Items.Add(caja._cbu);
             }
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
 
         }
     }
