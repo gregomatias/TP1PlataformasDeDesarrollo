@@ -32,6 +32,7 @@ namespace TP1
             label2.Text = banco.GetNombreUsuarioLogueado();
 
             this.cargaCajasAhorro();
+            this.cargaTarjetasDeCredito();
 
 
 
@@ -72,8 +73,7 @@ namespace TP1
         private void btn_crearCajaAhorro_Click(object sender, EventArgs e)
         {
 
-            dataGridView1.Rows.Clear();
-            dataGridView1.Refresh();
+
             if (banco.CrearCajaDeAhorro())
             {
 
@@ -116,7 +116,7 @@ namespace TP1
             txtb_monto.Enabled = true;
             btn_extraer.Enabled = true;
             btn_depositar.Enabled = true;
-    
+
             int selectedIndex = comboBox1.SelectedIndex;
             List<Movimiento> listaMovimientos = new List<Movimiento>();
             listaMovimientos = banco.MostrarMovimientos(selectedIndex);
@@ -244,7 +244,7 @@ namespace TP1
 
         private void comboBox3_movimientos_Click(object sender, EventArgs e)
         {
-            //comboBox1.Text = "";
+
             comboBox3_movimientos.Items.Clear();
             comboBox3_movimientos.Refresh();
             List<CajaDeAhorro> listaCajaAhorro = new List<CajaDeAhorro>();
@@ -264,7 +264,7 @@ namespace TP1
                 if (txtb_filtro_monto.Text != "")
                 {
                     montoFiltro = float.Parse(txtb_filtro_monto.Text);
-                    //comboBox3_movimientos.SelectedIndex
+
                 }
                 else { montoFiltro = 0; }
 
@@ -296,34 +296,28 @@ namespace TP1
 
 
 
-        private void tabPage1_Click(object sender, EventArgs e)
-        {
 
-
-
-        }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
             switch ((sender as TabControl).SelectedIndex)
             {
                 case 0:
                     // Do nothing here (let's suppose that TabPage index 0 is the address information which is already loaded.
-                    dataGridView1.Rows.Clear();
-                    dataGridView1.Refresh();
-                    List<CajaDeAhorro> listaCajaAhorro = new List<CajaDeAhorro>();
-                    listaCajaAhorro = banco.MostrarCajasDeAhorro();
-                    int fila;
-                    foreach (CajaDeAhorro caja in listaCajaAhorro)
-                    {
 
-                        fila = dataGridView1.Rows.Add();
-                        dataGridView1.Rows[fila].Cells[0].Value = caja._cbu;
-                        dataGridView1.Rows[fila].Cells[1].Value = caja._saldo;
-
-                    }
+                    cargaCajasAhorro();
+                  
                     break;
                 case 1:
+                    // PLazo Fijo
+                    break;
+                case 3:
+
+                    cargaTarjetasDeCredito();
+
+                    break;
+                case 6:
                     // Let's suppose TabPage index 1 is the one for the transactions.
                     // Assuming you have put a DataGridView control so that the transactions can be listed.
                     // currentCustomer.Id can be obtained through the CurrencyManager of your BindingSource object used to data bind your data to your Windows form controls.
@@ -367,7 +361,7 @@ namespace TP1
                     }
                     else if (cBox_caja_ahorro.Text != "")
                     {
-                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text,int.Parse( cBox_caja_ahorro.Text));
+                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text, int.Parse(cBox_caja_ahorro.Text));
                         MessageBox.Show("Pago ingresado");
                         cargarPagos();
                     }
@@ -509,21 +503,55 @@ namespace TP1
 
         private void cargaCajasAhorro()
         {
+            int fila;
+            dataGridView1.Rows.Clear();
+            dataGridView1.Refresh();
             List<CajaDeAhorro> listaCajaAhorro = new List<CajaDeAhorro>();
             listaCajaAhorro = banco.MostrarCajasDeAhorro();
             foreach (CajaDeAhorro caja in listaCajaAhorro)
             {
 
-                int fila = dataGridView1.Rows.Add();
+                fila = dataGridView1.Rows.Add();
                 dataGridView1.Rows[fila].Cells[0].Value = caja._cbu;
                 dataGridView1.Rows[fila].Cells[1].Value = caja._saldo;
 
             }
         }
 
+        private void cargaTarjetasDeCredito(){
+            int fila;
+            dataGView_Tarjetas.Rows.Clear();
+            dataGView_Tarjetas.Refresh();
+            List<TarjetaDeCredito> tarjetasCredito = new List<TarjetaDeCredito>();
+            tarjetasCredito = banco.MostrarTarjetasDeCredito();
+
+            foreach (TarjetaDeCredito tarjeta in tarjetasCredito)
+            {
+
+                fila = dataGView_Tarjetas.Rows.Add();
+                dataGView_Tarjetas.Rows[fila].Cells[0].Value = tarjeta._numero;
+                dataGView_Tarjetas.Rows[fila].Cells[1].Value = tarjeta._limite;
+                dataGView_Tarjetas.Rows[fila].Cells[2].Value = tarjeta._consumos;
+
+            }
+
+        }
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_Crear_Tarjeta_Click(object sender, EventArgs e)
+        {
+            if (banco.AltaTarjetaDeCredito()){
+                MessageBox.Show("Tarjeta Creada exitosamente");
+                cargaTarjetasDeCredito();
+            }
+            else
+            {
+                MessageBox.Show("Hubo un error al crear la tarjeta");
+            }
         }
     }
 }

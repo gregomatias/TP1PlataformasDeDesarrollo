@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column_cbu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column_SaldoCaja = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -95,6 +95,12 @@
             this.button4 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.btn_Crear_Tarjeta = new System.Windows.Forms.Button();
+            this.dataGView_Tarjetas = new System.Windows.Forms.DataGridView();
+            this.DGV_ColumnNumeroTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DGV_ColumnLimiteTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DGV_ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btn_PagarTarjeta = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -103,19 +109,21 @@
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4_pagos_pendientes)).BeginInit();
+            this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_movimiento)).BeginInit();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGView_Tarjetas)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2});
+            this.Column_cbu,
+            this.Column_SaldoCaja});
             this.dataGridView1.Location = new System.Drawing.Point(6, 5);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
@@ -123,21 +131,21 @@
             this.dataGridView1.Size = new System.Drawing.Size(441, 232);
             this.dataGridView1.TabIndex = 0;
             // 
-            // Column1
+            // Column_cbu
             // 
-            this.Column1.HeaderText = "CBU";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 125;
+            this.Column_cbu.HeaderText = "CBU";
+            this.Column_cbu.MinimumWidth = 6;
+            this.Column_cbu.Name = "Column_cbu";
+            this.Column_cbu.ReadOnly = true;
+            this.Column_cbu.Width = 125;
             // 
-            // Column2
+            // Column_SaldoCaja
             // 
-            this.Column2.HeaderText = "Saldo";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 125;
+            this.Column_SaldoCaja.HeaderText = "Saldo";
+            this.Column_SaldoCaja.MinimumWidth = 6;
+            this.Column_SaldoCaja.Name = "Column_SaldoCaja";
+            this.Column_SaldoCaja.ReadOnly = true;
+            this.Column_SaldoCaja.Width = 125;
             // 
             // label1
             // 
@@ -199,7 +207,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Caja de Ahorro";
             this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // btn_crearCajaAhorro
             // 
@@ -215,10 +222,10 @@
             // 
             this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Controls.Add(this.dataGridView2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
+            this.tabPage2.Location = new System.Drawing.Point(4, 27);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(793, 289);
+            this.tabPage2.Size = new System.Drawing.Size(793, 291);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Plazo Fijo";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -257,9 +264,9 @@
             this.tabPage3.Controls.Add(this.label12);
             this.tabPage3.Controls.Add(this.label11);
             this.tabPage3.Controls.Add(this.dataGridView4_pagos_pendientes);
-            this.tabPage3.Location = new System.Drawing.Point(4, 29);
+            this.tabPage3.Location = new System.Drawing.Point(4, 27);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(793, 289);
+            this.tabPage3.Size = new System.Drawing.Size(793, 291);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Pagos";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -453,9 +460,12 @@
             // 
             // tabPage4
             // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 29);
+            this.tabPage4.Controls.Add(this.btn_PagarTarjeta);
+            this.tabPage4.Controls.Add(this.btn_Crear_Tarjeta);
+            this.tabPage4.Controls.Add(this.dataGView_Tarjetas);
+            this.tabPage4.Location = new System.Drawing.Point(4, 27);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(793, 289);
+            this.tabPage4.Size = new System.Drawing.Size(793, 291);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Tarjetas";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -546,10 +556,10 @@
             this.tabPage6.Controls.Add(this.txtb_monto_transferencia);
             this.tabPage6.Controls.Add(this.btn_transferir);
             this.tabPage6.Controls.Add(this.comboBox2);
-            this.tabPage6.Location = new System.Drawing.Point(4, 29);
+            this.tabPage6.Location = new System.Drawing.Point(4, 27);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(793, 289);
+            this.tabPage6.Size = new System.Drawing.Size(793, 291);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Transferencia";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -627,10 +637,10 @@
             this.tabPage7.Controls.Add(this.btn_busca_movimiento);
             this.tabPage7.Controls.Add(this.comboBox3_movimientos);
             this.tabPage7.Controls.Add(this.dataGridView_movimiento);
-            this.tabPage7.Location = new System.Drawing.Point(4, 29);
+            this.tabPage7.Location = new System.Drawing.Point(4, 27);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(793, 289);
+            this.tabPage7.Size = new System.Drawing.Size(793, 291);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "Movimientos";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -781,6 +791,65 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Online Banking";
             // 
+            // btn_Crear_Tarjeta
+            // 
+            this.btn_Crear_Tarjeta.Location = new System.Drawing.Point(608, 42);
+            this.btn_Crear_Tarjeta.Name = "btn_Crear_Tarjeta";
+            this.btn_Crear_Tarjeta.Size = new System.Drawing.Size(138, 46);
+            this.btn_Crear_Tarjeta.TabIndex = 4;
+            this.btn_Crear_Tarjeta.Text = " Solicitar Tarjeta";
+            this.btn_Crear_Tarjeta.UseVisualStyleBackColor = true;
+            this.btn_Crear_Tarjeta.Click += new System.EventHandler(this.btn_Crear_Tarjeta_Click);
+            // 
+            // dataGView_Tarjetas
+            // 
+            this.dataGView_Tarjetas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGView_Tarjetas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DGV_ColumnNumeroTarjeta,
+            this.DGV_ColumnLimiteTarjeta,
+            this.DGV_ColumnConsumosTarjeta});
+            this.dataGView_Tarjetas.Location = new System.Drawing.Point(34, 29);
+            this.dataGView_Tarjetas.Name = "dataGView_Tarjetas";
+            this.dataGView_Tarjetas.RowHeadersWidth = 51;
+            this.dataGView_Tarjetas.RowTemplate.Height = 29;
+            this.dataGView_Tarjetas.Size = new System.Drawing.Size(503, 232);
+            this.dataGView_Tarjetas.TabIndex = 3;
+            // 
+            // DGV_ColumnNumeroTarjeta
+            // 
+            this.DGV_ColumnNumeroTarjeta.Frozen = true;
+            this.DGV_ColumnNumeroTarjeta.HeaderText = "Numero";
+            this.DGV_ColumnNumeroTarjeta.MinimumWidth = 6;
+            this.DGV_ColumnNumeroTarjeta.Name = "DGV_ColumnNumeroTarjeta";
+            this.DGV_ColumnNumeroTarjeta.ReadOnly = true;
+            this.DGV_ColumnNumeroTarjeta.Width = 200;
+            // 
+            // DGV_ColumnLimiteTarjeta
+            // 
+            this.DGV_ColumnLimiteTarjeta.Frozen = true;
+            this.DGV_ColumnLimiteTarjeta.HeaderText = "Limite";
+            this.DGV_ColumnLimiteTarjeta.MinimumWidth = 6;
+            this.DGV_ColumnLimiteTarjeta.Name = "DGV_ColumnLimiteTarjeta";
+            this.DGV_ColumnLimiteTarjeta.ReadOnly = true;
+            this.DGV_ColumnLimiteTarjeta.Width = 125;
+            // 
+            // DGV_ColumnConsumosTarjeta
+            // 
+            this.DGV_ColumnConsumosTarjeta.HeaderText = "Consumos";
+            this.DGV_ColumnConsumosTarjeta.MinimumWidth = 6;
+            this.DGV_ColumnConsumosTarjeta.Name = "DGV_ColumnConsumosTarjeta";
+            this.DGV_ColumnConsumosTarjeta.ReadOnly = true;
+            this.DGV_ColumnConsumosTarjeta.Width = 125;
+            // 
+            // btn_PagarTarjeta
+            // 
+            this.btn_PagarTarjeta.Location = new System.Drawing.Point(606, 137);
+            this.btn_PagarTarjeta.Name = "btn_PagarTarjeta";
+            this.btn_PagarTarjeta.Size = new System.Drawing.Size(138, 46);
+            this.btn_PagarTarjeta.TabIndex = 5;
+            this.btn_PagarTarjeta.Text = "Pagar Tarjeta";
+            this.btn_PagarTarjeta.UseVisualStyleBackColor = true;
+            // 
             // Form3
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -804,6 +873,7 @@
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4_pagos_pendientes)).EndInit();
+            this.tabPage4.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             this.tabPage6.ResumeLayout(false);
@@ -813,6 +883,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_movimiento)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGView_Tarjetas)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -830,8 +901,8 @@
         private DataGridView dataGridView2;
         private TabPage tabPage3;
         private TabPage tabPage4;
-        private DataGridViewTextBoxColumn Column1;
-        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column_cbu;
+        private DataGridViewTextBoxColumn Column_SaldoCaja;
         private DataGridView dataGridView4_pagos_pendientes;
         private Panel panel3;
         private Label label3;
@@ -887,6 +958,12 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private DataGridViewTextBoxColumn columnaMonto;
+        private Button btn_Crear_Tarjeta;
+        private DataGridView dataGView_Tarjetas;
+        private DataGridViewTextBoxColumn DGV_ColumnNumeroTarjeta;
+        private DataGridViewTextBoxColumn DGV_ColumnLimiteTarjeta;
+        private DataGridViewTextBoxColumn DGV_ColumnConsumosTarjeta;
+        private Button btn_PagarTarjeta;
     }
 
 }

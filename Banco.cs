@@ -706,28 +706,30 @@ namespace TP1
 
         }
 
-        public bool AltaTarjetaDeCredito(Usuario titular, int numero, int codigoV, float limite)
+        public bool AltaTarjetaDeCredito()
+
         {
             try
             {
-                tarjetas.Add(new TarjetaDeCredito(titular, numero, codigoV, limite));
-                //DB.agragarTarjetaDeCredito((usuarioLogueado._id,numero,codigov, limite);
+                string idNuevaTarjeta = this.obtieneSecuencia(usuarioLogueado);
+                tarjetas.Add(new TarjetaDeCredito(1, usuarioLogueado, idNuevaTarjeta, 1, 500000));
+                DB.agregarTarjetaDeCredito(usuarioLogueado._id, idNuevaTarjeta, 1, 500000);
                 return true;
             }
             catch (Exception ex) { return false; }
         }
 
-        public bool ModificarTarjetaDeCredito(int id, float limite)
+        public bool ModificarTarjetaDeCredito(string numeroTarjeta, float limite)
         {
             try
             {
                 foreach (TarjetaDeCredito tarjeta in tarjetas)
                 {
-                    if (tarjeta._id == id)
+                    if (tarjeta._numero == numeroTarjeta)
                     {
 
                         tarjeta._limite = limite;
-                        //DB.cambioLimiteTarjeta(id,limite);
+                        DB.cambioLimiteTarjeta(numeroTarjeta, limite);
                     }
                 }
 
@@ -738,42 +740,33 @@ namespace TP1
 
         }
 
-        public bool BajaTarjetaDeCredito(int id, int id_user)
+        public bool BajaTarjetaDeCredito(string numeroTarjeta)
         {
 
             try
             {
                 foreach (TarjetaDeCredito tarjeta in tarjetas)
                 {
-                    if (tarjeta._id == id)
+                    if (tarjeta._numero == numeroTarjeta)
                     {
                         if (tarjeta._consumos == 0)
                         {
                             tarjetas.Remove(tarjeta);
-                            //DB.bajaTarjetaDeCredito(tarjeta._id);
+                            DB.bajaTarjetaDeCredito(numeroTarjeta);
+                            return true;
                         }
                     }
                 }
 
-                foreach (Usuario usuario in usuarios)
-                {
-                    if (usuario._id == id_user)
-                    {
-                        foreach (TarjetaDeCredito tarjeta in tarjetas)
-                        {
-                            if (tarjeta._id == id)
-                            {
-                                if (tarjeta._consumos == 0)
-                                {
-                                    tarjetas.Remove(tarjeta);
-                                }
-                            }
-                        }
-                    }
-                }
-                return true;
+                return false;
+
             }
-            catch (Exception ex) { return false; }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+                return false;
+            }
 
 
         }
@@ -846,15 +839,7 @@ namespace TP1
         {
 
             return tarjetas.ToList();
-            /*
-            
-            if(usuarioLogeado.esUsuarioAdmin==true){
-                return tarjetas.ToList();
-            }else{
-                List<TarjetaDeCredito> tarjetaAux = new List <PlazoFijo>();
-                tarjetaAux= DB.buscarTarjetasDeCredito(usuarioLogueado._id);
-            }
-             */
+
         }
 
         public static bool IsNumeric(string input)

@@ -536,7 +536,7 @@ namespace TP1
                     TarjetaDeCredito aux;
                     while (reader.Read())
                     {
-                        aux = new TarjetaDeCredito(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetDouble(4), reader.GetDouble(5));
+                        aux = new TarjetaDeCredito(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetInt32(3), reader.GetDouble(4), reader.GetDouble(5));
                         tarjetasReturn.Add(aux);
                     }
                     reader.Close();
@@ -549,24 +549,24 @@ namespace TP1
             return tarjetasReturn;
         }
 
-        public int agregarTarjetaDeCredito(int id_usuario, int numero, int codigov, double limite)
+        public int agregarTarjetaDeCredito(int id_usuario, string numeroTarjeta, int codigov, double limite)
         {
             int resultadoQuery;
             int idNuevaTarjeta = -1;
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "INSERT INTO [dbo].[TARJETA_CREDITO] ([ID_USUARIO],[NUMERO],[CODIGOV],[LIMITE],[CONSUMOS]) VALUES (@id_usuario,@numero,@codigov,@limite,@consumos);";
+            string queryString = "INSERT INTO [dbo].[TARJETA_CREDITO] ([ID_USUARIO],[NUMERO],[CODIGOV],[LIMITE],[CONSUMOS]) VALUES (@id_usuario,@numeroTarjeta,@codigov,@limite,@consumos);";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
-                command.Parameters.Add(new SqlParameter("@numero", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@numeroTarjeta", SqlDbType.NVarChar));
                 command.Parameters.Add(new SqlParameter("@codigov", SqlDbType.Int));
                 command.Parameters.Add(new SqlParameter("@limite", SqlDbType.Float));
                 command.Parameters.Add(new SqlParameter("@consumos", SqlDbType.Float));
 
                 command.Parameters["@id_usuario"].Value = id_usuario;
-                command.Parameters["@numero"].Value = numero;
+                command.Parameters["@numeroTarjeta"].Value = numeroTarjeta;
                 command.Parameters["@codigov"].Value = codigov;
                 command.Parameters["@limite"].Value = limite;
                 command.Parameters["@consumos"].Value = 0;
@@ -575,10 +575,10 @@ namespace TP1
                     connection.Open();
                     resultadoQuery = command.ExecuteNonQuery();
 
-                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[TARJETA_CREDITO] WHERE [NUMERO]=@numero";
+                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[TARJETA_CREDITO] WHERE [NUMERO]=@numeroTarjeta";
                     command = new SqlCommand(ConsultaID, connection);
                     command.Parameters.Add(new SqlParameter("@numero", SqlDbType.Int));
-                    command.Parameters["@numero"].Value = numero;
+                    command.Parameters["@numeroTarjeta"].Value = numeroTarjeta;
                     SqlDataReader reader = command.ExecuteReader();
                     reader.Read();
                     idNuevaTarjeta = reader.GetInt32(0);
@@ -595,20 +595,20 @@ namespace TP1
         }
 
 
-        public bool bajaTarjetaDeCredito(int id)
+        public bool bajaTarjetaDeCredito(string numeroTarjeta)
         {
 
             int resultadoQuery;
 
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "DELETE FROM [dbo].[TARJETA_CREDITO] WHERE [ID]=@id;";
+            string queryString = "DELETE FROM [dbo].[TARJETA_CREDITO] WHERE [NUMERO]=@numeroTarjeta;";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
 
                 SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
-                command.Parameters["@id"].Value = id;
+                command.Parameters.Add(new SqlParameter("@numeroTarjeta", SqlDbType.NVarChar));
+                command.Parameters["@numeroTarjeta"].Value = numeroTarjeta;
 
                 try
                 {
@@ -628,21 +628,21 @@ namespace TP1
         }
 
 
-        public bool cambioLimiteTarjeta(int id_tarjeta, float nuevoLimite)
+        public bool cambioLimiteTarjeta(string numeroTarjeta, float nuevoLimite)
         {
 
             int resultadoQuery;
 
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "UPDATE [dbo].[TARJETA_CREDITO] SET [LIMITE]=@nuevoLimite WHERE [ID]=@id_tarjeta;";
+            string queryString = "UPDATE [dbo].[TARJETA_CREDITO] SET [LIMITE]=@nuevoLimite WHERE [NUMERO]=@numeroTarjeta;";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
 
                 SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.Add(new SqlParameter("@id_tarjeta", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@id_tarjeta", SqlDbType.NVarChar));
                 command.Parameters.Add(new SqlParameter("@nuevoLimite", SqlDbType.Float));
-                command.Parameters["@id_tarjeta"].Value = id_tarjeta;
+                command.Parameters["@numeroTarjeta"].Value = numeroTarjeta;
                 command.Parameters["@nuevoLimite"].Value = nuevoLimite;
 
                 try
@@ -667,7 +667,7 @@ namespace TP1
         {
             List<TarjetaDeCredito> tarjetasReturn = new List<TarjetaDeCredito>();
 
-            MessageBox.Show("Titular: " + id_usuario);
+         
             string queryString = "select * from dbo.[TARJETA_CREDITO] WHERE [ID_USUARIO]= @id_usuario;";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -685,7 +685,7 @@ namespace TP1
                     TarjetaDeCredito aux;
                     while (reader.Read())
                     {
-                        aux = new TarjetaDeCredito(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetDouble(4), reader.GetDouble(5));
+                        aux = new TarjetaDeCredito(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetInt32(3), reader.GetDouble(4), reader.GetDouble(5));
                         tarjetasReturn.Add(aux);
                     }
                     reader.Close();
