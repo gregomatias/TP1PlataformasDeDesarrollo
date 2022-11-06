@@ -300,14 +300,14 @@ namespace TP1
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
             switch ((sender as TabControl).SelectedIndex)
             {
                 case 0:
                     // Do nothing here (let's suppose that TabPage index 0 is the address information which is already loaded.
 
                     cargaCajasAhorro();
-                  
+
                     break;
                 case 1:
                     // PLazo Fijo
@@ -518,7 +518,8 @@ namespace TP1
             }
         }
 
-        private void cargaTarjetasDeCredito(){
+        private void cargaTarjetasDeCredito()
+        {
             int fila;
             dataGView_Tarjetas.Rows.Clear();
             dataGView_Tarjetas.Refresh();
@@ -537,14 +538,12 @@ namespace TP1
 
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
-        }
 
         private void btn_Crear_Tarjeta_Click(object sender, EventArgs e)
         {
-            if (banco.AltaTarjetaDeCredito()){
+            if (banco.AltaTarjetaDeCredito())
+            {
                 MessageBox.Show("Tarjeta Creada exitosamente");
                 cargaTarjetasDeCredito();
             }
@@ -553,5 +552,33 @@ namespace TP1
                 MessageBox.Show("Hubo un error al crear la tarjeta");
             }
         }
+
+        private void btn_PagarTarjeta_Click(object sender, EventArgs e)
+        {
+           if( banco.PagarTarjeta(dataGView_Tarjetas.CurrentCell.Value.ToString(), cbx_lista_CajasAhorro.SelectedItem.ToString()))
+            {
+                MessageBox.Show("Se ha cancelado el saldo de su tarjeta");
+                this.cargaTarjetasDeCredito();
+            }
+            else
+            {
+                MessageBox.Show("No se realizo el pago, verifique su saldo");
+            }
+        }
+
+        private void cbx_lista_CajasAhorro_Click(object sender, EventArgs e)
+        {
+            cbx_lista_CajasAhorro.Items.Clear();
+            cbx_lista_CajasAhorro.Refresh();
+            List<CajaDeAhorro> listaCajaAhorro = new List<CajaDeAhorro>();
+            listaCajaAhorro = banco.MostrarCajasDeAhorro();
+
+            foreach (CajaDeAhorro caja in listaCajaAhorro)
+            {
+                cbx_lista_CajasAhorro.Items.Add(caja._cbu);
+            }
+
+        }
     }
 }
+

@@ -375,6 +375,42 @@ namespace TP1
 
         }
 
+        public bool actualizaConsumoTarjeta(string numeroTarjeta, double consumos)
+        {
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "UPDATE [dbo].[TARJETA_CREDITO] SET [CONSUMOS]=@consumos WHERE [NUMERO]=@numeroTarjeta;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@numeroTarjeta", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@consumos", SqlDbType.Float));
+                command.Parameters["@numeroTarjeta"].Value = numeroTarjeta;
+                command.Parameters["@consumos"].Value = consumos;
+
+
+                try
+                {
+                    connection.Open();
+
+                    resultadoQuery = command.ExecuteNonQuery();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                }
+
+            }
+            return false;
+
+        }
+
         public bool bajaCajaDeAhorro(int id)
         {
 
@@ -577,13 +613,15 @@ namespace TP1
 
                     string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[TARJETA_CREDITO] WHERE [NUMERO]=@numeroTarjeta";
                     command = new SqlCommand(ConsultaID, connection);
-                    command.Parameters.Add(new SqlParameter("@numero", SqlDbType.Int));
+                    command.Parameters.Add(new SqlParameter("@numeroTarjeta", SqlDbType.NVarChar));
                     command.Parameters["@numeroTarjeta"].Value = numeroTarjeta;
                     SqlDataReader reader = command.ExecuteReader();
                     reader.Read();
                     idNuevaTarjeta = reader.GetInt32(0);
                     reader.Close();
                     connection.Close();
+                   
+                  
                 }
                 catch (Exception ex)
                 {

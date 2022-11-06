@@ -9,16 +9,6 @@ namespace TP1
 	internal class TarjetaDeCredito
 	{
 
-		public TarjetaDeCredito(int id,Usuario titular, string numero, int codigoV, double limite)
-		{
-			_id = id;
-			_titular = titular;
-			_numero = numero;
-			_codigoV = codigoV;
-			_limite = limite;
-			_consumos = 0;
-
-		}
 
 		public TarjetaDeCredito(int id, int id_usuario, string numero, int codigoV, double limite, double consumos)
 		{

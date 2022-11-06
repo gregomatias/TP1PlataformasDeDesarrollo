@@ -63,6 +63,14 @@
             this.columnaDetalle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnaMonto = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label15 = new System.Windows.Forms.Label();
+            this.cbx_lista_CajasAhorro = new System.Windows.Forms.ComboBox();
+            this.btn_PagarTarjeta = new System.Windows.Forms.Button();
+            this.btn_Crear_Tarjeta = new System.Windows.Forms.Button();
+            this.dataGView_Tarjetas = new System.Windows.Forms.DataGridView();
+            this.DGV_ColumnNumeroTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DGV_ColumnLimiteTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DGV_ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -95,12 +103,6 @@
             this.button4 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.btn_Crear_Tarjeta = new System.Windows.Forms.Button();
-            this.dataGView_Tarjetas = new System.Windows.Forms.DataGridView();
-            this.DGV_ColumnNumeroTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DGV_ColumnLimiteTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DGV_ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btn_PagarTarjeta = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -110,12 +112,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4_pagos_pendientes)).BeginInit();
             this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGView_Tarjetas)).BeginInit();
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_movimiento)).BeginInit();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGView_Tarjetas)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -222,10 +224,10 @@
             // 
             this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Controls.Add(this.dataGridView2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 27);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(793, 291);
+            this.tabPage2.Size = new System.Drawing.Size(793, 289);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Plazo Fijo";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -264,9 +266,9 @@
             this.tabPage3.Controls.Add(this.label12);
             this.tabPage3.Controls.Add(this.label11);
             this.tabPage3.Controls.Add(this.dataGridView4_pagos_pendientes);
-            this.tabPage3.Location = new System.Drawing.Point(4, 27);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(793, 291);
+            this.tabPage3.Size = new System.Drawing.Size(793, 289);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Pagos";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -460,15 +462,95 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.label15);
+            this.tabPage4.Controls.Add(this.cbx_lista_CajasAhorro);
             this.tabPage4.Controls.Add(this.btn_PagarTarjeta);
             this.tabPage4.Controls.Add(this.btn_Crear_Tarjeta);
             this.tabPage4.Controls.Add(this.dataGView_Tarjetas);
-            this.tabPage4.Location = new System.Drawing.Point(4, 27);
+            this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(793, 291);
+            this.tabPage4.Size = new System.Drawing.Size(793, 289);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Tarjetas";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(596, 11);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(148, 18);
+            this.label15.TabIndex = 8;
+            this.label15.Text = "Seleccione la cuenta:";
+            // 
+            // cbx_lista_CajasAhorro
+            // 
+            this.cbx_lista_CajasAhorro.FormattingEnabled = true;
+            this.cbx_lista_CajasAhorro.Location = new System.Drawing.Point(596, 36);
+            this.cbx_lista_CajasAhorro.Name = "cbx_lista_CajasAhorro";
+            this.cbx_lista_CajasAhorro.Size = new System.Drawing.Size(151, 26);
+            this.cbx_lista_CajasAhorro.TabIndex = 7;
+            this.cbx_lista_CajasAhorro.Click += new System.EventHandler(this.cbx_lista_CajasAhorro_Click);
+            // 
+            // btn_PagarTarjeta
+            // 
+            this.btn_PagarTarjeta.Location = new System.Drawing.Point(606, 193);
+            this.btn_PagarTarjeta.Name = "btn_PagarTarjeta";
+            this.btn_PagarTarjeta.Size = new System.Drawing.Size(138, 30);
+            this.btn_PagarTarjeta.TabIndex = 5;
+            this.btn_PagarTarjeta.Text = "Pagar Tarjeta";
+            this.btn_PagarTarjeta.UseVisualStyleBackColor = true;
+            this.btn_PagarTarjeta.Click += new System.EventHandler(this.btn_PagarTarjeta_Click);
+            // 
+            // btn_Crear_Tarjeta
+            // 
+            this.btn_Crear_Tarjeta.Location = new System.Drawing.Point(606, 241);
+            this.btn_Crear_Tarjeta.Name = "btn_Crear_Tarjeta";
+            this.btn_Crear_Tarjeta.Size = new System.Drawing.Size(138, 35);
+            this.btn_Crear_Tarjeta.TabIndex = 4;
+            this.btn_Crear_Tarjeta.Text = " Solicitar Tarjeta";
+            this.btn_Crear_Tarjeta.UseVisualStyleBackColor = true;
+            this.btn_Crear_Tarjeta.Click += new System.EventHandler(this.btn_Crear_Tarjeta_Click);
+            // 
+            // dataGView_Tarjetas
+            // 
+            this.dataGView_Tarjetas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGView_Tarjetas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DGV_ColumnNumeroTarjeta,
+            this.DGV_ColumnLimiteTarjeta,
+            this.DGV_ColumnConsumosTarjeta});
+            this.dataGView_Tarjetas.Location = new System.Drawing.Point(34, 29);
+            this.dataGView_Tarjetas.Name = "dataGView_Tarjetas";
+            this.dataGView_Tarjetas.RowHeadersWidth = 51;
+            this.dataGView_Tarjetas.RowTemplate.Height = 29;
+            this.dataGView_Tarjetas.Size = new System.Drawing.Size(503, 232);
+            this.dataGView_Tarjetas.TabIndex = 3;
+            // 
+            // DGV_ColumnNumeroTarjeta
+            // 
+            this.DGV_ColumnNumeroTarjeta.Frozen = true;
+            this.DGV_ColumnNumeroTarjeta.HeaderText = "Numero";
+            this.DGV_ColumnNumeroTarjeta.MinimumWidth = 6;
+            this.DGV_ColumnNumeroTarjeta.Name = "DGV_ColumnNumeroTarjeta";
+            this.DGV_ColumnNumeroTarjeta.ReadOnly = true;
+            this.DGV_ColumnNumeroTarjeta.Width = 200;
+            // 
+            // DGV_ColumnLimiteTarjeta
+            // 
+            this.DGV_ColumnLimiteTarjeta.Frozen = true;
+            this.DGV_ColumnLimiteTarjeta.HeaderText = "Limite";
+            this.DGV_ColumnLimiteTarjeta.MinimumWidth = 6;
+            this.DGV_ColumnLimiteTarjeta.Name = "DGV_ColumnLimiteTarjeta";
+            this.DGV_ColumnLimiteTarjeta.ReadOnly = true;
+            this.DGV_ColumnLimiteTarjeta.Width = 125;
+            // 
+            // DGV_ColumnConsumosTarjeta
+            // 
+            this.DGV_ColumnConsumosTarjeta.HeaderText = "Consumos";
+            this.DGV_ColumnConsumosTarjeta.MinimumWidth = 6;
+            this.DGV_ColumnConsumosTarjeta.Name = "DGV_ColumnConsumosTarjeta";
+            this.DGV_ColumnConsumosTarjeta.ReadOnly = true;
+            this.DGV_ColumnConsumosTarjeta.Width = 125;
             // 
             // tabPage5
             // 
@@ -478,10 +560,10 @@
             this.tabPage5.Controls.Add(this.btn_depositar);
             this.tabPage5.Controls.Add(this.btn_extraer);
             this.tabPage5.Controls.Add(this.comboBox1);
-            this.tabPage5.Location = new System.Drawing.Point(4, 27);
+            this.tabPage5.Location = new System.Drawing.Point(4, 29);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(793, 291);
+            this.tabPage5.Size = new System.Drawing.Size(793, 289);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Transacciones";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -517,7 +599,7 @@
             // btn_depositar
             // 
             this.btn_depositar.Enabled = false;
-            this.btn_depositar.Location = new System.Drawing.Point(517, 173);
+            this.btn_depositar.Location = new System.Drawing.Point(587, 106);
             this.btn_depositar.Name = "btn_depositar";
             this.btn_depositar.Size = new System.Drawing.Size(94, 29);
             this.btn_depositar.TabIndex = 4;
@@ -528,7 +610,7 @@
             // btn_extraer
             // 
             this.btn_extraer.Enabled = false;
-            this.btn_extraer.Location = new System.Drawing.Point(141, 173);
+            this.btn_extraer.Location = new System.Drawing.Point(235, 66);
             this.btn_extraer.Name = "btn_extraer";
             this.btn_extraer.Size = new System.Drawing.Size(94, 29);
             this.btn_extraer.TabIndex = 3;
@@ -543,7 +625,6 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(151, 26);
             this.comboBox1.TabIndex = 2;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.SelectedValueChanged += new System.EventHandler(this.comboBox1_SelectedValueChanged);
             this.comboBox1.Click += new System.EventHandler(this.comboBox1_Click);
             // 
@@ -566,7 +647,7 @@
             // 
             // txtb_cbu_destino
             // 
-            this.txtb_cbu_destino.Location = new System.Drawing.Point(121, 137);
+            this.txtb_cbu_destino.Location = new System.Drawing.Point(121, 185);
             this.txtb_cbu_destino.Name = "txtb_cbu_destino";
             this.txtb_cbu_destino.Size = new System.Drawing.Size(125, 24);
             this.txtb_cbu_destino.TabIndex = 15;
@@ -574,7 +655,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(21, 107);
+            this.label8.Location = new System.Drawing.Point(21, 155);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(155, 18);
             this.label8.TabIndex = 14;
@@ -609,7 +690,7 @@
             // 
             // btn_transferir
             // 
-            this.btn_transferir.Location = new System.Drawing.Point(282, 180);
+            this.btn_transferir.Location = new System.Drawing.Point(282, 228);
             this.btn_transferir.Name = "btn_transferir";
             this.btn_transferir.Size = new System.Drawing.Size(94, 29);
             this.btn_transferir.TabIndex = 9;
@@ -637,10 +718,10 @@
             this.tabPage7.Controls.Add(this.btn_busca_movimiento);
             this.tabPage7.Controls.Add(this.comboBox3_movimientos);
             this.tabPage7.Controls.Add(this.dataGridView_movimiento);
-            this.tabPage7.Location = new System.Drawing.Point(4, 27);
+            this.tabPage7.Location = new System.Drawing.Point(4, 29);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(793, 291);
+            this.tabPage7.Size = new System.Drawing.Size(793, 289);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "Movimientos";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -791,65 +872,6 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Online Banking";
             // 
-            // btn_Crear_Tarjeta
-            // 
-            this.btn_Crear_Tarjeta.Location = new System.Drawing.Point(608, 42);
-            this.btn_Crear_Tarjeta.Name = "btn_Crear_Tarjeta";
-            this.btn_Crear_Tarjeta.Size = new System.Drawing.Size(138, 46);
-            this.btn_Crear_Tarjeta.TabIndex = 4;
-            this.btn_Crear_Tarjeta.Text = " Solicitar Tarjeta";
-            this.btn_Crear_Tarjeta.UseVisualStyleBackColor = true;
-            this.btn_Crear_Tarjeta.Click += new System.EventHandler(this.btn_Crear_Tarjeta_Click);
-            // 
-            // dataGView_Tarjetas
-            // 
-            this.dataGView_Tarjetas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGView_Tarjetas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.DGV_ColumnNumeroTarjeta,
-            this.DGV_ColumnLimiteTarjeta,
-            this.DGV_ColumnConsumosTarjeta});
-            this.dataGView_Tarjetas.Location = new System.Drawing.Point(34, 29);
-            this.dataGView_Tarjetas.Name = "dataGView_Tarjetas";
-            this.dataGView_Tarjetas.RowHeadersWidth = 51;
-            this.dataGView_Tarjetas.RowTemplate.Height = 29;
-            this.dataGView_Tarjetas.Size = new System.Drawing.Size(503, 232);
-            this.dataGView_Tarjetas.TabIndex = 3;
-            // 
-            // DGV_ColumnNumeroTarjeta
-            // 
-            this.DGV_ColumnNumeroTarjeta.Frozen = true;
-            this.DGV_ColumnNumeroTarjeta.HeaderText = "Numero";
-            this.DGV_ColumnNumeroTarjeta.MinimumWidth = 6;
-            this.DGV_ColumnNumeroTarjeta.Name = "DGV_ColumnNumeroTarjeta";
-            this.DGV_ColumnNumeroTarjeta.ReadOnly = true;
-            this.DGV_ColumnNumeroTarjeta.Width = 200;
-            // 
-            // DGV_ColumnLimiteTarjeta
-            // 
-            this.DGV_ColumnLimiteTarjeta.Frozen = true;
-            this.DGV_ColumnLimiteTarjeta.HeaderText = "Limite";
-            this.DGV_ColumnLimiteTarjeta.MinimumWidth = 6;
-            this.DGV_ColumnLimiteTarjeta.Name = "DGV_ColumnLimiteTarjeta";
-            this.DGV_ColumnLimiteTarjeta.ReadOnly = true;
-            this.DGV_ColumnLimiteTarjeta.Width = 125;
-            // 
-            // DGV_ColumnConsumosTarjeta
-            // 
-            this.DGV_ColumnConsumosTarjeta.HeaderText = "Consumos";
-            this.DGV_ColumnConsumosTarjeta.MinimumWidth = 6;
-            this.DGV_ColumnConsumosTarjeta.Name = "DGV_ColumnConsumosTarjeta";
-            this.DGV_ColumnConsumosTarjeta.ReadOnly = true;
-            this.DGV_ColumnConsumosTarjeta.Width = 125;
-            // 
-            // btn_PagarTarjeta
-            // 
-            this.btn_PagarTarjeta.Location = new System.Drawing.Point(606, 137);
-            this.btn_PagarTarjeta.Name = "btn_PagarTarjeta";
-            this.btn_PagarTarjeta.Size = new System.Drawing.Size(138, 46);
-            this.btn_PagarTarjeta.TabIndex = 5;
-            this.btn_PagarTarjeta.Text = "Pagar Tarjeta";
-            this.btn_PagarTarjeta.UseVisualStyleBackColor = true;
-            // 
             // Form3
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -874,6 +896,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4_pagos_pendientes)).EndInit();
             this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGView_Tarjetas)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             this.tabPage6.ResumeLayout(false);
@@ -883,7 +907,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_movimiento)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGView_Tarjetas)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -964,6 +987,8 @@
         private DataGridViewTextBoxColumn DGV_ColumnLimiteTarjeta;
         private DataGridViewTextBoxColumn DGV_ColumnConsumosTarjeta;
         private Button btn_PagarTarjeta;
+        private Label label15;
+        private ComboBox cbx_lista_CajasAhorro;
     }
 
 }

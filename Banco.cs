@@ -369,22 +369,38 @@ namespace TP1
         }
 
 
-        public bool PagarTarjeta(TarjetaDeCredito tarjeta, CajaDeAhorro caja)
+        public bool PagarTarjeta(string numeroTarjeta, string cbuCajaAhorro)
         {
-            double monto = tarjeta._consumos;
 
-            if (caja._saldo > tarjeta._consumos)
+
+            TarjetaDeCredito? tarjeta = tarjetas.Where(tarjeta => tarjeta._numero == numeroTarjeta && tarjeta._consumos > 0).FirstOrDefault();
+
+            if (tarjeta != null)
             {
-                caja._saldo = caja._saldo - tarjeta._consumos;
+                CajaDeAhorro? caja = cajas.Where(caja => caja._cbu == cbuCajaAhorro && caja._saldo >= tarjeta._consumos).FirstOrDefault();
 
-                AltaMovimiento(caja, "Pago Tarjeta", monto);
-                return true;
-            }
-            else
-            {
-                return false;
+                if (caja != null)
+                {
+                    try
+                    {
+                       double  saldoActualizado = caja._saldo - tarjeta._consumos;
+                        DB.actualizaSaldoCajaAhorro(cbuCajaAhorro, saldoActualizado);
+                        caja._saldo = saldoActualizado;
+                        tarjeta._consumos = 0;
+                        DB.actualizaConsumoTarjeta(numeroTarjeta, 0);
+
+                        return true;
+
+                    }
+                    catch (Exception ex)
+                    { MessageBox.Show(ex.Message); return false; }
+
+                }
+
+
             }
 
+            return false;
 
         }
 
@@ -712,11 +728,17 @@ namespace TP1
             try
             {
                 string idNuevaTarjeta = this.obtieneSecuencia(usuarioLogueado);
-                tarjetas.Add(new TarjetaDeCredito(1, usuarioLogueado, idNuevaTarjeta, 1, 500000));
-                DB.agregarTarjetaDeCredito(usuarioLogueado._id, idNuevaTarjeta, 1, 500000);
-                return true;
+                int idSeqTarjeta = DB.agregarTarjetaDeCredito(usuarioLogueado._id, idNuevaTarjeta, 1, 500000);
+                if (idSeqTarjeta > 0)
+                {
+                    tarjetas.Add(new TarjetaDeCredito(idSeqTarjeta, usuarioLogueado._id, idNuevaTarjeta, 1, 500000, 0));
+
+                    return true;
+                }
             }
             catch (Exception ex) { return false; }
+
+            return false;
         }
 
         public bool ModificarTarjetaDeCredito(string numeroTarjeta, float limite)
