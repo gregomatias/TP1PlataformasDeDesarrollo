@@ -290,9 +290,12 @@ namespace TP1
         }
 
 
-        public List<Movimiento> BuscarMovimiento(CajaDeAhorro caja, string detalle = "default", DateTime? fecha = null, float monto = 0)
+        public List<Movimiento> BuscarMovimiento(string cbuCaja, string detalle = "default", DateTime? fecha = null, float monto = 0)
         {
-            caja._movimientos = DB.buscarMovimiento(caja._id);
+            CajaDeAhorro? caja = cajas.Where(caja => caja._cbu == cbuCaja).FirstOrDefault();
+
+
+            caja._movimientos = DB.buscarMovimiento(caja._cbu);
             List<Movimiento> move = new List<Movimiento>();
 
             foreach (Movimiento movimiento in caja._movimientos)
@@ -305,72 +308,12 @@ namespace TP1
                     }
                 }
             }
-
-
-
-            /*
-            if (detalle != "default")
-            {
-                foreach (Movimiento movimiento in movimientos)
-                {
-                    if (movimiento._cajaDeAhorro == caja && movimiento._detalle == detalle)
-                    {
-                        move.Add(movimiento);
-
-                    }
-                }
-                return move;
-
-            }
-            else if (fecha != null)
-            {
-                foreach (Movimiento movimiento in movimientos)
-                {
-                    if (movimiento._cajaDeAhorro == caja && movimiento._fecha == fecha)
-                    {
-                        move.Add(movimiento);
-
-                    }
-                    return move;
-
-                }
-            }
-            else if (monto != 0)
-            {
-
-                foreach (Movimiento movimiento in movimientos)
-                {
-                    if (movimiento._cajaDeAhorro == caja && movimiento._monto == monto)
-                    {
-                        move.Add(movimiento);
-
-                    }
-                    return move;
-
-                }
-            }
-            */
             return move;
 
         }
 
 
-        public List<Movimiento> BuscarMovimiento(int cbu, string detalle = "default", DateTime? fecha = null, float monto = 0)
-        {
-            List<Movimiento> listaMovimientos = new List<Movimiento>();
-            usuarioLogueado.cajas = DB.buscaCajasAhorroDeUsuario(usuarioLogueado._id);
-            foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
-            {
-                if (caja._cbu.Equals(cbu))
-                {
 
-                    listaMovimientos = BuscarMovimiento(caja, detalle, fecha, monto);
-
-
-                }
-            }
-            return listaMovimientos.ToList();
-        }
 
 
 
@@ -810,22 +753,14 @@ namespace TP1
 
 
 
-        public List<Movimiento> MostrarMovimientos(int id_caja)
+        public List<Movimiento> MostrarMovimientos(string cbuCaja)
         {
-            List<Movimiento> movimientosCaja = new List<Movimiento>();
-            foreach (Movimiento movimiento in movimientos)
-            {
-                if (movimiento._cajaDeAhorro._id == id_caja)
-                {
-                    movimientosCaja.Add(movimiento);
-                }
-            }
-            return movimientosCaja;
 
-            /*
-             movimientosCaja = DB.buscarMovimientos(id_caja);
-             return movimientosCaja.ToList();
-             */
+
+
+
+            return DB.buscarMovimiento(cbuCaja).ToList();
+
 
         }
 

@@ -117,9 +117,10 @@ namespace TP1
             btn_extraer.Enabled = true;
             btn_depositar.Enabled = true;
 
-            int selectedIndex = comboBox1.SelectedIndex;
+           
             List<Movimiento> listaMovimientos = new List<Movimiento>();
-            listaMovimientos = banco.MostrarMovimientos(selectedIndex);
+            //Tra todos los movimientos del usuario logueado
+            listaMovimientos = banco.MostrarMovimientos(comboBox1.SelectedItem.ToString());
 
 
 
@@ -268,24 +269,11 @@ namespace TP1
                 }
                 else { montoFiltro = 0; }
 
-                List<Movimiento> listaMovimientos = new List<Movimiento>();
-                listaMovimientos = banco.BuscarMovimiento(comboBox3_movimientos.SelectedIndex,
+
+                cargaMovimientos(comboBox3_movimientos.SelectedItem.ToString(),
                 txtb_filtro_detalle.Text, dateTimePicker_filtro.Value, montoFiltro);
 
-                dataGridView_movimiento.Rows.Clear();
-                dataGridView_movimiento.Refresh();
 
-
-                int fila;
-                foreach (Movimiento intem in listaMovimientos)
-                {
-                    fila = dataGridView_movimiento.Rows.Add();
-                    dataGridView_movimiento.Rows[fila].Cells[0].Value = intem._cajaDeAhorro._cbu;
-                    dataGridView_movimiento.Rows[fila].Cells[1].Value = intem._detalle;
-                    dataGridView_movimiento.Rows[fila].Cells[2].Value = intem._monto;
-                    dataGridView_movimiento.Rows[fila].Cells[3].Value = intem._fecha;
-
-                }
 
 
 
@@ -547,6 +535,30 @@ namespace TP1
                 dataGView_Tarjetas.Rows[fila].Cells[0].Value = tarjeta._numero;
                 dataGView_Tarjetas.Rows[fila].Cells[1].Value = tarjeta._limite;
                 dataGView_Tarjetas.Rows[fila].Cells[2].Value = tarjeta._consumos;
+
+            }
+
+        }
+
+
+        private void cargaMovimientos( string cbu,string filtroDetalle,DateTime dateTime,float montoFiltro)
+        {
+            List<Movimiento> listaMovimientos = new List<Movimiento>();
+
+            listaMovimientos = banco.BuscarMovimiento(cbu,filtroDetalle, dateTime, montoFiltro);
+
+            dataGridView_movimiento.Rows.Clear();
+            dataGridView_movimiento.Refresh();
+
+
+            int fila;
+            foreach (Movimiento intem in listaMovimientos)
+            {
+                fila = dataGridView_movimiento.Rows.Add();
+                dataGridView_movimiento.Rows[fila].Cells[0].Value = intem._cajaDeAhorro._cbu;
+                dataGridView_movimiento.Rows[fila].Cells[1].Value = intem._detalle;
+                dataGridView_movimiento.Rows[fila].Cells[2].Value = intem._monto;
+                dataGridView_movimiento.Rows[fila].Cells[3].Value = intem._fecha;
 
             }
 
