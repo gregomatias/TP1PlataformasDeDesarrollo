@@ -38,6 +38,9 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.btn_crearCajaAhorro = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label16 = new System.Windows.Forms.Label();
+            this.comboBoxPlazo = new System.Windows.Forms.ComboBox();
+            this.textBoxPlazo = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
@@ -157,7 +160,7 @@
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(238)))), ((int)(((byte)(236)))));
             this.label1.Location = new System.Drawing.Point(636, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 20);
+            this.label1.Size = new System.Drawing.Size(78, 17);
             this.label1.TabIndex = 1;
             this.label1.Text = "Bienvenido";
             // 
@@ -167,7 +170,7 @@
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(238)))), ((int)(((byte)(236)))));
             this.label2.Location = new System.Drawing.Point(735, 20);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(133, 18);
+            this.label2.Size = new System.Drawing.Size(113, 15);
             this.label2.TabIndex = 2;
             this.label2.Text = "lbl_nombreUsuario";
             // 
@@ -203,10 +206,10 @@
             // 
             this.tabPage1.Controls.Add(this.btn_crearCajaAhorro);
             this.tabPage1.Controls.Add(this.dataGridView1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 27);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(793, 291);
+            this.tabPage1.Size = new System.Drawing.Size(793, 294);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Caja de Ahorro";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -223,20 +226,49 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label16);
+            this.tabPage2.Controls.Add(this.comboBoxPlazo);
+            this.tabPage2.Controls.Add(this.textBoxPlazo);
             this.tabPage2.Controls.Add(this.button2);
             this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Controls.Add(this.dataGridView2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 27);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(793, 291);
+            this.tabPage2.Size = new System.Drawing.Size(793, 294);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Plazo Fijo";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(579, 17);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(124, 15);
+            this.label16.TabIndex = 9;
+            this.label16.Text = "Seleccione la cuenta:";
+            // 
+            // comboBoxPlazo
+            // 
+            this.comboBoxPlazo.FormattingEnabled = true;
+            this.comboBoxPlazo.Location = new System.Drawing.Point(579, 48);
+            this.comboBoxPlazo.Name = "comboBoxPlazo";
+            this.comboBoxPlazo.Size = new System.Drawing.Size(121, 23);
+            this.comboBoxPlazo.TabIndex = 4;
+            this.comboBoxPlazo.Click += new System.EventHandler(this.cBox_caja_Click);
+            // 
+            // textBoxPlazo
+            // 
+            this.textBoxPlazo.Location = new System.Drawing.Point(568, 126);
+            this.textBoxPlazo.Name = "textBoxPlazo";
+            this.textBoxPlazo.PlaceholderText = "Monto Nuevo Plazo Fijo";
+            this.textBoxPlazo.Size = new System.Drawing.Size(146, 21);
+            this.textBoxPlazo.TabIndex = 3;
+            // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(584, 145);
+            this.button2.Location = new System.Drawing.Point(653, 187);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(124, 35);
             this.button2.TabIndex = 2;
@@ -246,7 +278,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(584, 32);
+            this.button3.Location = new System.Drawing.Point(510, 186);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(124, 36);
             this.button3.TabIndex = 1;
@@ -278,9 +310,9 @@
             this.tabPage3.Controls.Add(this.label12);
             this.tabPage3.Controls.Add(this.label11);
             this.tabPage3.Controls.Add(this.dataGridView4_pagos_pendientes);
-            this.tabPage3.Location = new System.Drawing.Point(4, 29);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(793, 289);
+            this.tabPage3.Size = new System.Drawing.Size(793, 294);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Pagos";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -344,7 +376,7 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(618, 174);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(115, 18);
+            this.label14.Size = new System.Drawing.Size(94, 15);
             this.label14.TabIndex = 11;
             this.label14.Text = "Cajas de Ahorro";
             // 
@@ -353,7 +385,7 @@
             this.cBox_caja_ahorro.FormattingEnabled = true;
             this.cBox_caja_ahorro.Location = new System.Drawing.Point(622, 194);
             this.cBox_caja_ahorro.Name = "cBox_caja_ahorro";
-            this.cBox_caja_ahorro.Size = new System.Drawing.Size(109, 26);
+            this.cBox_caja_ahorro.Size = new System.Drawing.Size(109, 23);
             this.cBox_caja_ahorro.TabIndex = 10;
             this.cBox_caja_ahorro.Click += new System.EventHandler(this.cBox_caja_ahorro_Click);
             // 
@@ -362,7 +394,7 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(621, 113);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(61, 18);
+            this.label13.Size = new System.Drawing.Size(51, 15);
             this.label13.TabIndex = 9;
             this.label13.Text = "Tarjetas";
             // 
@@ -371,7 +403,7 @@
             this.cBox_tarjeta.FormattingEnabled = true;
             this.cBox_tarjeta.Location = new System.Drawing.Point(622, 133);
             this.cBox_tarjeta.Name = "cBox_tarjeta";
-            this.cBox_tarjeta.Size = new System.Drawing.Size(109, 26);
+            this.cBox_tarjeta.Size = new System.Drawing.Size(109, 23);
             this.cBox_tarjeta.TabIndex = 8;
             // 
             // txtb_concepto_pago
@@ -379,7 +411,7 @@
             this.txtb_concepto_pago.Location = new System.Drawing.Point(622, 70);
             this.txtb_concepto_pago.Name = "txtb_concepto_pago";
             this.txtb_concepto_pago.PlaceholderText = "Concepto";
-            this.txtb_concepto_pago.Size = new System.Drawing.Size(109, 24);
+            this.txtb_concepto_pago.Size = new System.Drawing.Size(109, 21);
             this.txtb_concepto_pago.TabIndex = 7;
             // 
             // button5
@@ -407,7 +439,7 @@
             this.txtb_monto_pago.Location = new System.Drawing.Point(622, 22);
             this.txtb_monto_pago.Name = "txtb_monto_pago";
             this.txtb_monto_pago.PlaceholderText = "Monto pago";
-            this.txtb_monto_pago.Size = new System.Drawing.Size(109, 24);
+            this.txtb_monto_pago.Size = new System.Drawing.Size(109, 21);
             this.txtb_monto_pago.TabIndex = 4;
             // 
             // label12
@@ -415,7 +447,7 @@
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(3, 141);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(81, 18);
+            this.label12.Size = new System.Drawing.Size(69, 15);
             this.label12.TabIndex = 3;
             this.label12.Text = "Pendientes";
             // 
@@ -424,7 +456,7 @@
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(3, 9);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(94, 18);
+            this.label11.Size = new System.Drawing.Size(77, 15);
             this.label11.TabIndex = 2;
             this.label11.Text = "Confirmados";
             // 
@@ -479,9 +511,9 @@
             this.tabPage4.Controls.Add(this.btn_PagarTarjeta);
             this.tabPage4.Controls.Add(this.btn_Crear_Tarjeta);
             this.tabPage4.Controls.Add(this.dataGView_Tarjetas);
-            this.tabPage4.Location = new System.Drawing.Point(4, 29);
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(793, 289);
+            this.tabPage4.Size = new System.Drawing.Size(793, 294);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Tarjetas";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -491,7 +523,7 @@
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(596, 11);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(148, 18);
+            this.label15.Size = new System.Drawing.Size(124, 15);
             this.label15.TabIndex = 8;
             this.label15.Text = "Seleccione la cuenta:";
             // 
@@ -500,7 +532,7 @@
             this.cbx_lista_CajasAhorro.FormattingEnabled = true;
             this.cbx_lista_CajasAhorro.Location = new System.Drawing.Point(596, 36);
             this.cbx_lista_CajasAhorro.Name = "cbx_lista_CajasAhorro";
-            this.cbx_lista_CajasAhorro.Size = new System.Drawing.Size(151, 26);
+            this.cbx_lista_CajasAhorro.Size = new System.Drawing.Size(151, 23);
             this.cbx_lista_CajasAhorro.TabIndex = 7;
             this.cbx_lista_CajasAhorro.Click += new System.EventHandler(this.cbx_lista_CajasAhorro_Click);
             // 
@@ -572,10 +604,10 @@
             this.tabPage5.Controls.Add(this.btn_depositar);
             this.tabPage5.Controls.Add(this.btn_extraer);
             this.tabPage5.Controls.Add(this.comboBox1);
-            this.tabPage5.Location = new System.Drawing.Point(4, 29);
+            this.tabPage5.Location = new System.Drawing.Point(4, 24);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(793, 289);
+            this.tabPage5.Size = new System.Drawing.Size(793, 294);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Transacciones";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -585,7 +617,7 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(517, 49);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(122, 18);
+            this.label5.Size = new System.Drawing.Size(102, 15);
             this.label5.TabIndex = 7;
             this.label5.Text = "Ingrese el monto:";
             // 
@@ -594,7 +626,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(42, 41);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(148, 18);
+            this.label4.Size = new System.Drawing.Size(124, 15);
             this.label4.TabIndex = 6;
             this.label4.Text = "Seleccione la cuenta:";
             // 
@@ -604,7 +636,7 @@
             this.txtb_monto.Location = new System.Drawing.Point(573, 74);
             this.txtb_monto.Name = "txtb_monto";
             this.txtb_monto.PlaceholderText = "Ingrese el monto";
-            this.txtb_monto.Size = new System.Drawing.Size(125, 24);
+            this.txtb_monto.Size = new System.Drawing.Size(125, 21);
             this.txtb_monto.TabIndex = 5;
             this.txtb_monto.TextChanged += new System.EventHandler(this.txtb_monto_TextChanged);
             // 
@@ -635,7 +667,7 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(67, 66);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(151, 26);
+            this.comboBox1.Size = new System.Drawing.Size(151, 23);
             this.comboBox1.TabIndex = 2;
             this.comboBox1.SelectedValueChanged += new System.EventHandler(this.comboBox1_SelectedValueChanged);
             this.comboBox1.Click += new System.EventHandler(this.comboBox1_Click);
@@ -649,10 +681,10 @@
             this.tabPage6.Controls.Add(this.txtb_monto_transferencia);
             this.tabPage6.Controls.Add(this.btn_transferir);
             this.tabPage6.Controls.Add(this.comboBox2);
-            this.tabPage6.Location = new System.Drawing.Point(4, 29);
+            this.tabPage6.Location = new System.Drawing.Point(4, 24);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(793, 289);
+            this.tabPage6.Size = new System.Drawing.Size(793, 294);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Transferencia";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -661,7 +693,7 @@
             // 
             this.txtb_cbu_destino.Location = new System.Drawing.Point(121, 185);
             this.txtb_cbu_destino.Name = "txtb_cbu_destino";
-            this.txtb_cbu_destino.Size = new System.Drawing.Size(125, 24);
+            this.txtb_cbu_destino.Size = new System.Drawing.Size(125, 21);
             this.txtb_cbu_destino.TabIndex = 15;
             // 
             // label8
@@ -669,7 +701,7 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(21, 155);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(155, 18);
+            this.label8.Size = new System.Drawing.Size(130, 15);
             this.label8.TabIndex = 14;
             this.label8.Text = "Ingrese el cbu destino:";
             this.label8.Click += new System.EventHandler(this.label8_Click);
@@ -679,7 +711,7 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(327, 75);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(196, 18);
+            this.label6.Size = new System.Drawing.Size(163, 15);
             this.label6.TabIndex = 12;
             this.label6.Text = "Ingrese el monto a transferir:";
             // 
@@ -688,7 +720,7 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(21, 18);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(153, 18);
+            this.label7.Size = new System.Drawing.Size(127, 15);
             this.label7.TabIndex = 11;
             this.label7.Text = "Seleccione su cuenta:";
             // 
@@ -697,7 +729,7 @@
             this.txtb_monto_transferencia.Location = new System.Drawing.Point(517, 96);
             this.txtb_monto_transferencia.Name = "txtb_monto_transferencia";
             this.txtb_monto_transferencia.PlaceholderText = "Ingrese el monto";
-            this.txtb_monto_transferencia.Size = new System.Drawing.Size(125, 24);
+            this.txtb_monto_transferencia.Size = new System.Drawing.Size(125, 21);
             this.txtb_monto_transferencia.TabIndex = 10;
             // 
             // btn_transferir
@@ -715,7 +747,7 @@
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(121, 48);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(151, 26);
+            this.comboBox2.Size = new System.Drawing.Size(151, 23);
             this.comboBox2.TabIndex = 8;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             this.comboBox2.Click += new System.EventHandler(this.comboBox2_Click);
@@ -730,10 +762,10 @@
             this.tabPage7.Controls.Add(this.btn_busca_movimiento);
             this.tabPage7.Controls.Add(this.comboBox3_movimientos);
             this.tabPage7.Controls.Add(this.dataGridView_movimiento);
-            this.tabPage7.Location = new System.Drawing.Point(4, 29);
+            this.tabPage7.Location = new System.Drawing.Point(4, 24);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(793, 289);
+            this.tabPage7.Size = new System.Drawing.Size(793, 294);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "Movimientos";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -742,7 +774,7 @@
             // 
             this.dateTimePicker_filtro.Location = new System.Drawing.Point(546, 189);
             this.dateTimePicker_filtro.Name = "dateTimePicker_filtro";
-            this.dateTimePicker_filtro.Size = new System.Drawing.Size(183, 24);
+            this.dateTimePicker_filtro.Size = new System.Drawing.Size(183, 21);
             this.dateTimePicker_filtro.TabIndex = 6;
             // 
             // txtb_filtro_detalle
@@ -750,7 +782,7 @@
             this.txtb_filtro_detalle.Location = new System.Drawing.Point(582, 148);
             this.txtb_filtro_detalle.Name = "txtb_filtro_detalle";
             this.txtb_filtro_detalle.PlaceholderText = "Detalle";
-            this.txtb_filtro_detalle.Size = new System.Drawing.Size(125, 24);
+            this.txtb_filtro_detalle.Size = new System.Drawing.Size(125, 21);
             this.txtb_filtro_detalle.TabIndex = 14;
             // 
             // label9
@@ -758,7 +790,7 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(547, 88);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(53, 18);
+            this.label9.Size = new System.Drawing.Size(43, 15);
             this.label9.TabIndex = 13;
             this.label9.Text = "Filtros:";
             // 
@@ -767,7 +799,7 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(547, 22);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(148, 18);
+            this.label10.Size = new System.Drawing.Size(124, 15);
             this.label10.TabIndex = 12;
             this.label10.Text = "Seleccione la cuenta:";
             // 
@@ -776,7 +808,7 @@
             this.txtb_filtro_monto.Location = new System.Drawing.Point(582, 116);
             this.txtb_filtro_monto.Name = "txtb_filtro_monto";
             this.txtb_filtro_monto.PlaceholderText = "Monto";
-            this.txtb_filtro_monto.Size = new System.Drawing.Size(125, 24);
+            this.txtb_filtro_monto.Size = new System.Drawing.Size(125, 21);
             this.txtb_filtro_monto.TabIndex = 11;
             // 
             // btn_busca_movimiento
@@ -794,7 +826,7 @@
             this.comboBox3_movimientos.FormattingEnabled = true;
             this.comboBox3_movimientos.Location = new System.Drawing.Point(572, 47);
             this.comboBox3_movimientos.Name = "comboBox3_movimientos";
-            this.comboBox3_movimientos.Size = new System.Drawing.Size(151, 26);
+            this.comboBox3_movimientos.Size = new System.Drawing.Size(151, 23);
             this.comboBox3_movimientos.TabIndex = 9;
             this.comboBox3_movimientos.Click += new System.EventHandler(this.comboBox3_movimientos_Click);
             // 
@@ -880,7 +912,7 @@
             this.label3.ForeColor = System.Drawing.SystemColors.Window;
             this.label3.Location = new System.Drawing.Point(10, 15);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(177, 29);
+            this.label3.Size = new System.Drawing.Size(139, 24);
             this.label3.TabIndex = 3;
             this.label3.Text = "Online Banking";
             // 
@@ -902,6 +934,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
@@ -1002,6 +1035,9 @@
         private Label label15;
         private ComboBox cbx_lista_CajasAhorro;
         private Button button2;
+        private TextBox textBoxPlazo;
+        private ComboBox comboBoxPlazo;
+        private Label label16;
     }
 
 }

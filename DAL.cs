@@ -1010,18 +1010,17 @@ namespace TP1
         }
 
 
-        public List<Movimiento> buscarMovimiento(int id_usuario)
+        public List<Movimiento> buscarMovimiento(int id_caja)
         {
             List<Movimiento> movimientoReturn = new List<Movimiento>();
 
-            MessageBox.Show("Titular: " + id_usuario);
-            string queryString = "select * from dbo.[Movimiento] WHERE [ID_USUARIO]= @id_usuario;";
+            string queryString = "select * from dbo.[Movimiento] WHERE [ID_CAJA_AHORRO]= @id_caja;";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
                 SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
-                command.Parameters["@id_usuario"].Value = id_usuario;
+                command.Parameters.Add(new SqlParameter("@id_caja", SqlDbType.Int));
+                command.Parameters["@id_caja"].Value = id_caja;
 
 
 

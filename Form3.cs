@@ -393,6 +393,20 @@ namespace TP1
 
         }
 
+        private void cBox_caja_Click(object sender, EventArgs e)
+        {
+            comboBoxPlazo.Items.Clear();
+            comboBoxPlazo.Refresh();
+            List<CajaDeAhorro> listaCajaAhorro = new List<CajaDeAhorro>();
+            listaCajaAhorro = banco.MostrarCajasDeAhorro();
+
+            foreach (CajaDeAhorro caja in listaCajaAhorro)
+            {
+                comboBoxPlazo.Items.Add(caja._cbu);
+            }
+
+        }
+
         public void cargarPagos()
         {
             this.cargaListaPagos(true);

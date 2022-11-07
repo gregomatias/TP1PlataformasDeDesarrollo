@@ -229,21 +229,23 @@ namespace TP1
         public bool Retirar(string cbu, double monto)
         {
 
-            foreach (CajaDeAhorro caja in cajas)
+
+            CajaDeAhorro? cajaEncontrada = cajas.Where(caja => caja._cbu == cbu && caja._saldo >= monto).FirstOrDefault();
+
+
+            if (cajaEncontrada != null)
             {
+                double saldoActualizado = cajaEncontrada._saldo - monto;
 
-                if (caja._cbu == cbu)
-                {
-                    double saldoActualizado = caja._saldo - monto;
+                DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
+                cajaEncontrada._saldo = saldoActualizado;
+                Movimiento movimiento = new Movimiento(cajaEncontrada, "Retiro", monto);
+                movimientos.Add(movimiento);
+                cajaEncontrada._movimientos.Add(movimiento);
+                return true;
 
-                    DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
-                    caja._saldo = saldoActualizado;
-                    Movimiento movimiento = new Movimiento(caja, "Retiro", monto);
-                    movimientos.Add(movimiento);
-                    caja._movimientos.Add(movimiento);
-                    return true;
-                }
             }
+
             return false;
         }
 
@@ -290,9 +292,10 @@ namespace TP1
 
         public List<Movimiento> BuscarMovimiento(CajaDeAhorro caja, string detalle = "default", DateTime? fecha = null, float monto = 0)
         {
+            caja._movimientos = DB.buscarMovimiento(caja._id);
             List<Movimiento> move = new List<Movimiento>();
 
-            foreach (Movimiento movimiento in movimientos)
+            foreach (Movimiento movimiento in caja._movimientos)
             {
                 if (movimiento._cajaDeAhorro == caja)
                 {
@@ -355,6 +358,7 @@ namespace TP1
         public List<Movimiento> BuscarMovimiento(int cbu, string detalle = "default", DateTime? fecha = null, float monto = 0)
         {
             List<Movimiento> listaMovimientos = new List<Movimiento>();
+            usuarioLogueado.cajas = DB.buscaCajasAhorroDeUsuario(usuarioLogueado._id);
             foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
             {
                 if (caja._cbu.Equals(cbu))
@@ -367,6 +371,9 @@ namespace TP1
             }
             return listaMovimientos.ToList();
         }
+
+
+
 
 
         public bool PagarTarjeta(string numeroTarjeta, string cbuCajaAhorro)
@@ -383,7 +390,7 @@ namespace TP1
                 {
                     try
                     {
-                       double  saldoActualizado = caja._saldo - tarjeta._consumos;
+                        double saldoActualizado = caja._saldo - tarjeta._consumos;
                         DB.actualizaSaldoCajaAhorro(cbuCajaAhorro, saldoActualizado);
                         caja._saldo = saldoActualizado;
                         tarjeta._consumos = 0;
@@ -860,7 +867,12 @@ namespace TP1
         public List<TarjetaDeCredito> MostrarTarjetasDeCredito()
         {
 
-            return tarjetas.ToList();
+            List<TarjetaDeCredito>? tarjetasUsuario = tarjetas.Where(tarjeta => tarjeta._id_usuario == usuarioLogueado._id).ToList();
+
+
+
+            return tarjetasUsuario.ToList();
+
 
         }
 
