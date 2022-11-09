@@ -20,7 +20,7 @@ namespace TP1
 
 		}
 
-		public Pago(int id, int id_usuario, double monto,int pagado,String metodo, String detalle, int id_metodo)
+		public Pago(int id, int id_usuario, double monto,int estado,string metodo, string detalle, int id_metodo)
 		{
 			_id = id;
 			_id_usuario=id_usuario;
@@ -28,7 +28,7 @@ namespace TP1
 			_metodo = metodo;
 			_detalle=detalle;
 			_id_metodo = id_metodo;
-			if (pagado == 1)
+			if (estado == 1)
 			{
 				_pagado = true;
 			}
@@ -94,7 +94,7 @@ namespace TP1
 			set { detalle = value; }
 		}
 
-		 private int id_metodo;
+		private int id_metodo;
 
 		public int _id_metodo
 		{
