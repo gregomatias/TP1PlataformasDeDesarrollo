@@ -19,7 +19,7 @@ namespace TP1
 			_id_metodo = id_metodo;
 
 		}
-		//PRUEBA
+		//prueba2
 		public Pago(int id, int id_usuario, double monto,int estado,string metodo, string detalle, int id_metodo)
 		{
 			_id = id;
