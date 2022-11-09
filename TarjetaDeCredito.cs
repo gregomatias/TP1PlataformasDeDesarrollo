@@ -20,7 +20,7 @@ namespace TP1
 			_consumos = consumos;
 		}
 
-		private int id = 0;
+		static private int id = 0;
 
 		public int _id
 		{

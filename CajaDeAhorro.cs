@@ -29,7 +29,7 @@ namespace TP1
             set { titulares = value; }
         }
 
-        private int id = 0;
+        static private int id = 0;
 
 		public int _id
 		{
