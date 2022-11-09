@@ -33,7 +33,7 @@ namespace TP1
 
             this.cargaCajasAhorro();
             this.cargaTarjetasDeCredito();
-
+            this.cargaPlazoFijo();
 
 
         }
@@ -117,10 +117,9 @@ namespace TP1
             btn_extraer.Enabled = true;
             btn_depositar.Enabled = true;
 
-           
+            int selectedIndex = comboBox1.SelectedIndex;
             List<Movimiento> listaMovimientos = new List<Movimiento>();
-            //Tra todos los movimientos del usuario logueado
-            listaMovimientos = banco.MostrarMovimientos(comboBox1.SelectedItem.ToString());
+            listaMovimientos = banco.MostrarMovimientos(selectedIndex);
 
 
 
@@ -269,11 +268,24 @@ namespace TP1
                 }
                 else { montoFiltro = 0; }
 
-
-                cargaMovimientos(comboBox3_movimientos.SelectedItem.ToString(),
+                List<Movimiento> listaMovimientos = new List<Movimiento>();
+                listaMovimientos = banco.BuscarMovimiento(comboBox3_movimientos.SelectedIndex,
                 txtb_filtro_detalle.Text, dateTimePicker_filtro.Value, montoFiltro);
 
+                dataGridView_movimiento.Rows.Clear();
+                dataGridView_movimiento.Refresh();
 
+
+                int fila;
+                foreach (Movimiento intem in listaMovimientos)
+                {
+                    fila = dataGridView_movimiento.Rows.Add();
+                    dataGridView_movimiento.Rows[fila].Cells[0].Value = intem._cajaDeAhorro._cbu;
+                    dataGridView_movimiento.Rows[fila].Cells[1].Value = intem._detalle;
+                    dataGridView_movimiento.Rows[fila].Cells[2].Value = intem._monto;
+                    dataGridView_movimiento.Rows[fila].Cells[3].Value = intem._fecha;
+
+                }
 
 
 
@@ -541,30 +553,6 @@ namespace TP1
         }
 
 
-        private void cargaMovimientos( string cbu,string filtroDetalle,DateTime dateTime,float montoFiltro)
-        {
-            List<Movimiento> listaMovimientos = new List<Movimiento>();
-
-            listaMovimientos = banco.BuscarMovimiento(cbu,filtroDetalle, dateTime, montoFiltro);
-
-            dataGridView_movimiento.Rows.Clear();
-            dataGridView_movimiento.Refresh();
-
-
-            int fila;
-            foreach (Movimiento intem in listaMovimientos)
-            {
-                fila = dataGridView_movimiento.Rows.Add();
-                dataGridView_movimiento.Rows[fila].Cells[0].Value = intem._cajaDeAhorro._cbu;
-                dataGridView_movimiento.Rows[fila].Cells[1].Value = intem._detalle;
-                dataGridView_movimiento.Rows[fila].Cells[2].Value = intem._monto;
-                dataGridView_movimiento.Rows[fila].Cells[3].Value = intem._fecha;
-
-            }
-
-        }
-
-
 
         private void btn_Crear_Tarjeta_Click(object sender, EventArgs e)
         {
@@ -609,8 +597,89 @@ namespace TP1
 
         private void button2_Click(object sender, EventArgs e)
         {
+            try {
+                if (banco.BajaPlazoFijo(int.Parse(dataGridPlazo.CurrentCell.Value.ToString())))
+                {
 
+                    MessageBox.Show("El Plazo Fijo se ha eliminado");
+                }
+                else
+                {
+                    MessageBox.Show("El plazo fijo aún se encuentra pendiente de pago, pruebe eliminar el registro en una fecha posterior");
+
+                }
+                cargaPlazoFijo();
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (comboBoxPlazo.Text != "" && textBoxPlazo.Text != "")
+            {
+                CajaDeAhorro caja;
+
+                DateTime fecha = new DateTime();
+                fecha = DateTime.Now;
+                float montoPlazo = float.Parse(textBoxPlazo.Text);
+                if (montoPlazo >= 1000)
+                {
+
+
+
+                    if (banco.AltaPlazoFijo(montoPlazo, comboBoxPlazo.SelectedItem.ToString()))
+                    {
+                        banco.Retirar(comboBoxPlazo.SelectedItem.ToString(), montoPlazo);
+                        MessageBox.Show("El plazo fijo ha sido creado exitosamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("El saldo de la cuenta no es suficiente");
+
+                    }
+
+
+                }
+                else
+                {
+                    MessageBox.Show("El monto debe ser al menos 1000$");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Elija una caja de ahorro para realizar el Plazo Fijo y un monto");
+
+            }
+            cargaPlazoFijo();
+            //textBoxPlazo
+            //comboBoxPlazo
+            //dataGridPlazo
+        }
+
+        private void cargaPlazoFijo()
+        {
+            int fila;
+            dataGridPlazo.Rows.Clear();
+            dataGridPlazo.Refresh();
+            List<PlazoFijo> listaPlazo = new List<PlazoFijo>();
+            listaPlazo = banco.MostrarPfUsuario();
+            foreach (PlazoFijo pf in listaPlazo)
+            {
+
+                fila = dataGridPlazo.Rows.Add();
+                dataGridPlazo.Rows[fila].Cells[0].Value = pf._id;
+                dataGridPlazo.Rows[fila].Cells[1].Value = pf._id_usuario;
+                dataGridPlazo.Rows[fila].Cells[2].Value = pf._monto;
+                dataGridPlazo.Rows[fila].Cells[3].Value = pf._fechaIni;
+                dataGridPlazo.Rows[fila].Cells[4].Value = pf._fechaFin;
+                dataGridPlazo.Rows[fila].Cells[5].Value = pf._tasa;
+                dataGridPlazo.Rows[fila].Cells[6].Value = pf._pagado;
+
+            }
+        }
+
+
     }
 }
 

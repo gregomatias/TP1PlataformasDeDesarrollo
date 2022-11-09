@@ -17,21 +17,22 @@ namespace TP1
 			_fechaIni= DateTime.Now;
             _fechaFin = fechaFin;
 			_tasa = tasa;
-			_pagado = false;
+			_pagado = 0;
         }
 		
-		public PlazoFijo(int id,int id_usuario,double monto,DateTime fechaFin,double tasa)
-		{
-			_id = id;
-			_id_usuario= id_usuario;
-			_monto = monto;
+		
+
+        public PlazoFijo(int id, int id_usuario, double monto, DateTime fechaFin, double tasa,int pagado)
+        {
+            _id = id;
+            _id_usuario = id_usuario;
+            _monto = monto;
             _fechaIni = DateTime.Now;
             _fechaFin = fechaFin;
-			_tasa= tasa;
-			_pagado= false;
-		}
-
-        static private int id;
+            _tasa = tasa;
+            _pagado = pagado;
+        }
+        private int id;
 
 		public int _id
 		{
@@ -88,9 +89,9 @@ namespace TP1
 			set { tasa = value; }
 		}
 
-		private bool pagado;
+		private int pagado;
 
-		public bool _pagado
+		public int _pagado
 		{
 			get { return pagado; }
 			set { pagado = value; }
