@@ -421,6 +421,7 @@
             this.cBox_tarjeta.Name = "cBox_tarjeta";
             this.cBox_tarjeta.Size = new System.Drawing.Size(109, 23);
             this.cBox_tarjeta.TabIndex = 8;
+            this.cBox_tarjeta.Click += new System.EventHandler(this.cBox_tarjeta_Click);
             // 
             // txtb_concepto_pago
             // 

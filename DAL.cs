@@ -214,12 +214,17 @@ namespace TP1
                     CajaDeAhorro aux;
                     while (reader.Read())
                     {
+
+                        //aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDouble(3));
+                        //cajasReturn.Add(aux);
+                        cajasReturn.Add(new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDouble(3)));
                        
                         aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDouble(3));
                         cajasReturn.Add(aux);
                     }
                     //Luego de recorrer la query se libera la memoria:
                     reader.Close();
+                    connection.Close();
                 }
                 catch (Exception ex) { Console.WriteLine(ex.Message);
 
@@ -265,6 +270,7 @@ namespace TP1
                         //0:ID,1:DNI,2:NOMBRE;3:APELLIDO,4:MAIL,5:PASSWORD,6:BLOQUEADO,7:ADMINISTRADOR,8:INTENTOS_LOGUEO
                         aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDouble(3));
                         cajasReturn.Add(aux);
+                                      
                     }
                     //Luego de recorrer la query se libera la memoria:
                     reader.Close();
@@ -422,6 +428,84 @@ namespace TP1
 
             }
             return false;
+
+        }
+
+        public int buscarCajaDeAhorroByCbu(long cbu)
+        {
+            int id = 0;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "SELECT ID FROM [dbo].[CAJA_AHORRO] WHERE [CBU]=@cbu;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.NVarChar));
+                command.Parameters["@cbu"].Value = cbu;
+
+
+                try
+                {
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    id = reader.GetInt32(0);
+                    reader.Close();
+
+                    connection.Close();
+
+                    return id;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                }
+
+            }
+            return id;
+
+        }
+
+        public int buscarTarjetaDeCreditoByNro(long nro)
+        {
+            int id = 0;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "SELECT ID FROM [dbo].[TARJETA_CREDITO] WHERE [numero]=@nro;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@nro", SqlDbType.NVarChar));
+                command.Parameters["@nro"].Value = nro;
+
+
+                try
+                {
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    id = reader.GetInt32(0);
+                    reader.Close();
+
+                    connection.Close();
+
+                    return id;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                }
+
+            }
+            return id;
 
         }
 
@@ -1113,7 +1197,7 @@ namespace TP1
 
             List<Pago> pagoReturn = new List<Pago>();
 
-            string queryString = "select * from dbo.Pago";
+            string queryString = "select [ID],[ID_USUARIO],[MONTO],[PAGADO],[METODO],[DETALLE],[ID_METODO] from dbo.Pago";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -1129,12 +1213,17 @@ namespace TP1
                     Pago aux;
                     while (reader.Read())
                     {
+                        //MessageBox.Show("reader.GetByte(3): " +reader.GetInt32(6));
+                        aux = new Pago(reader.GetInt32(0), reader.GetInt32(1), reader.GetDouble(2), reader.GetByte(3), reader.GetString(4), reader.GetString(5), int.Parse(reader.GetString(6)));
                         aux = new Pago(reader.GetInt32(0),reader.GetInt32(1),reader.GetDouble(2) ,reader.GetInt32(3), reader.GetString(4), reader.GetString(5),reader.GetInt32(6));
                         pagoReturn.Add(aux);
                     }
                     reader.Close();
                 }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                    Console.WriteLine(ex.Message); 
+                }
             }
 
 
@@ -1142,13 +1231,14 @@ namespace TP1
             return pagoReturn;
         }
 
+        public int agregarPago(int id_usuario, double monto, String metodo, String detalle, int id_metodo)
 
         public int agregarPago(int id_usuario, double monto,String metodo, String detalle, int id_metodo)
         {
             int resultadoQuery;
             int idNuevoPago = -1;
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "INSERT INTO [dbo].[PAGO] ([ID_USUARIO],[MONTO],[PAGADO],[METODO],[DETALLE],[ID_METODO] VALUES (@id_usuario,@monto,@pagado,@metodo,@detalle,@id_metodo);";
+            string queryString = "INSERT INTO [dbo].[PAGO] ([ID_USUARIO],[MONTO],[PAGADO],[METODO],[DETALLE],[ID_METODO]) VALUES (@id_usuario,@monto,@pagado,@metodo,@detalle,@id_metodo);";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
@@ -1185,6 +1275,7 @@ namespace TP1
                 }
                 catch (Exception ex)
                 {
+                    MessageBox.Show(ex.Message);
                     Console.WriteLine(ex.Message);
                     return -1;
                 }

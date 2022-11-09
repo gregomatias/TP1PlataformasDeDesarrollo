@@ -312,6 +312,10 @@ namespace TP1
                 case 1:
                     // PLazo Fijo
                     break;
+                case 2:
+                    // Pagos
+                    cargarPagos();
+                    break;
                 case 3:
 
                     cargaTarjetasDeCredito();
@@ -341,8 +345,10 @@ namespace TP1
         }
         private void btn_ingresar_pago_Click(object sender, EventArgs e)
         {
-
-            float montoPago = float.Parse(txtb_monto_pago.Text);
+            float montoPago = 0;
+            try { montoPago = float.Parse(txtb_monto_pago.Text); }
+            catch(Exception ex) { MessageBox.Show("Debe ingresar el monto del pago"); }
+           
 
             if (cBox_tarjeta.Text == "" && cBox_caja_ahorro.Text == "")
             {
@@ -355,13 +361,13 @@ namespace TP1
 
                     if (cBox_tarjeta.Text != "")
                     {
-                        banco.AltaPago(montoPago, "TJ", txtb_concepto_pago.Text, int.Parse(cBox_tarjeta.Text));
+                        banco.AltaPago(montoPago, "TJ", txtb_concepto_pago.Text, Int64.Parse(cBox_tarjeta.Text));
 
                         cargarPagos();
                     }
                     else if (cBox_caja_ahorro.Text != "")
                     {
-                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text, int.Parse(cBox_caja_ahorro.Text));
+                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text, Int64.Parse(cBox_caja_ahorro.Text));
                         MessageBox.Show("Pago ingresado");
                         cargarPagos();
                     }
@@ -409,6 +415,7 @@ namespace TP1
 
         public void cargarPagos()
         {
+            
             this.cargaListaPagos(true);
             this.cargaListaPagos(false);
 
@@ -458,7 +465,8 @@ namespace TP1
         }
 
         private void button5_Click(object sender, EventArgs e)
-        {
+        { 
+            MessageBox.Show("this.celda: " + this.celda);
             if (banco.ModificarPago(this.celda))
             {
                 MessageBox.Show("El pago se realizo de manera exitosa");
@@ -478,6 +486,7 @@ namespace TP1
             if (Banco.IsNumeric(dataGridView3.CurrentCell.Value.ToString()))
             {
                 this.celda = int.Parse(dataGridView3.CurrentCell.Value.ToString());
+                MessageBox.Show("Celda: " + this.celda);
             }
             else
             {
@@ -597,6 +606,20 @@ namespace TP1
 
         private void button2_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void cBox_tarjeta_Click(object sender, EventArgs e)
+        {
+            cBox_tarjeta.Items.Clear();
+            cBox_tarjeta.Refresh();
+            List<TarjetaDeCredito> listaTarjetas = new List<TarjetaDeCredito>();
+            listaTarjetas = banco.MostrarTarjetasDeCredito();
+
+            foreach (TarjetaDeCredito tc in listaTarjetas)
+            {
+                cBox_tarjeta.Items.Add(tc._numero);
+            }
             try {
                 if (banco.BajaPlazoFijo(int.Parse(dataGridPlazo.CurrentCell.Value.ToString())))
                 {
