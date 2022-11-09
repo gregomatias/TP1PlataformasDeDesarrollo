@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using TP1;
 
 namespace TP1
@@ -23,7 +24,7 @@ namespace TP1
         private List<Movimiento> movimientos;
         private Usuario? usuarioLogueado;
         //  private  int cbuAutonumerado = 0;
-        private int idPagoAutonumerado = 0;
+        //  private int idPagoAutonumerado = 0;
         /*TP2*/
         DAL DB;
 
@@ -229,23 +230,21 @@ namespace TP1
         public bool Retirar(string cbu, double monto)
         {
 
-
-            CajaDeAhorro? cajaEncontrada = cajas.Where(caja => caja._cbu == cbu && caja._saldo >= monto).FirstOrDefault();
-
-
-            if (cajaEncontrada != null)
+            foreach (CajaDeAhorro caja in cajas)
             {
-                double saldoActualizado = cajaEncontrada._saldo - monto;
 
-                DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
-                cajaEncontrada._saldo = saldoActualizado;
-                Movimiento movimiento = new Movimiento(cajaEncontrada, "Retiro", monto);
-                movimientos.Add(movimiento);
-                cajaEncontrada._movimientos.Add(movimiento);
-                return true;
+                if (caja._cbu == cbu)
+                {
+                    double saldoActualizado = caja._saldo - monto;
 
+                    DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
+                    caja._saldo = saldoActualizado;
+                    Movimiento movimiento = new Movimiento(caja, "Retiro", monto);
+                    movimientos.Add(movimiento);
+                    caja._movimientos.Add(movimiento);
+                    return true;
+                }
             }
-
             return false;
         }
 
@@ -290,12 +289,9 @@ namespace TP1
         }
 
 
-        public List<Movimiento> BuscarMovimiento(string cbuCaja, string detalle = "default", DateTime? fecha = null, float monto = 0)
+        public List<Movimiento> BuscarMovimiento(CajaDeAhorro caja, string detalle = "default", DateTime? fecha = null, float monto = 0)
         {
-            CajaDeAhorro? caja = cajas.Where(caja => caja._cbu == cbuCaja).FirstOrDefault();
-
-
-            caja._movimientos = DB.buscarMovimiento(caja._cbu);
+            caja._movimientos = DB.buscarMovimiento(caja._id);
             List<Movimiento> move = new List<Movimiento>();
 
             foreach (Movimiento movimiento in caja._movimientos)
@@ -308,14 +304,74 @@ namespace TP1
                     }
                 }
             }
+
+
+
+            /*
+            if (detalle != "default")
+            {
+                foreach (Movimiento movimiento in movimientos)
+                {
+                    if (movimiento._cajaDeAhorro == caja && movimiento._detalle == detalle)
+                    {
+                        move.Add(movimiento);
+
+                    }
+                }
+                return move;
+
+            }
+            else if (fecha != null)
+            {
+                foreach (Movimiento movimiento in movimientos)
+                {
+                    if (movimiento._cajaDeAhorro == caja && movimiento._fecha == fecha)
+                    {
+                        move.Add(movimiento);
+
+                    }
+                    return move;
+
+                }
+            }
+            else if (monto != 0)
+            {
+
+                foreach (Movimiento movimiento in movimientos)
+                {
+                    if (movimiento._cajaDeAhorro == caja && movimiento._monto == monto)
+                    {
+                        move.Add(movimiento);
+
+                    }
+                    return move;
+
+                }
+            }
+            */
             return move;
 
         }
 
 
+        public List<Movimiento> BuscarMovimiento(int cbu, string detalle = "default", DateTime? fecha = null, float monto = 0)
+        {
+            List<Movimiento> listaMovimientos = new List<Movimiento>();
+            usuarioLogueado.cajas = DB.buscaCajasAhorroDeUsuario(usuarioLogueado._id);
+            foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
+            {
+                if (caja._cbu.Equals(cbu))
+                {
+
+                    listaMovimientos = BuscarMovimiento(caja, detalle, fecha, monto);
 
 
+                }
+            }
+            return listaMovimientos.ToList();
+        }
 
+       
 
 
 
@@ -333,7 +389,7 @@ namespace TP1
                 {
                     try
                     {
-                        double saldoActualizado = caja._saldo - tarjeta._consumos;
+                       double  saldoActualizado = caja._saldo - tarjeta._consumos;
                         DB.actualizaSaldoCajaAhorro(cbuCajaAhorro, saldoActualizado);
                         caja._saldo = saldoActualizado;
                         tarjeta._consumos = 0;
@@ -515,15 +571,22 @@ namespace TP1
 
         }
 
-        public bool AltaPago(float monto, string metodo, string detalle, int id_metodo)
+        public bool AltaPago(float monto, string metodo, string detalle, long id_metodo)
         {
+            int idAux = 0;
             try
             {
-                Pago pago = new Pago(idPagoAutonumerado, usuarioLogueado, monto, metodo, detalle, id_metodo);
-                idPagoAutonumerado = idPagoAutonumerado + 1;
+                Pago pago;
+                if (metodo.Equals("CA")) { 
+                    idAux = DB.agregarPago(usuarioLogueado._id, monto, metodo, detalle, DB.buscarCajaDeAhorroByCbu(id_metodo));
+                    pago = new Pago(idAux, usuarioLogueado, monto, metodo, detalle, DB.buscarCajaDeAhorroByCbu(id_metodo));
+                } else
+                {
+                    idAux = DB.agregarPago(usuarioLogueado._id, monto, metodo, detalle, DB.buscarTarjetaDeCreditoByNro(id_metodo));
+                    pago = new Pago(idAux, usuarioLogueado, monto, metodo, detalle, DB.buscarTarjetaDeCreditoByNro(id_metodo));
+                }
                 this.pagos.Add(pago);
                 this.usuarioLogueado.pagos.Add(pago);
-                //DB.agregarPago(usuarioLogeado._id,monto,metodo,detalle,id_metodo);
                 return true;
             }
             catch (Exception) { return false; }
@@ -531,32 +594,62 @@ namespace TP1
 
         public bool ModificarPago(int id)
         {
+            //List<CajaDeAhorro> cajasAux = DB.buscaCajasAhorroDeUsuario(usuarioLogueado._id);
+            MessageBox.Show("id: " + id);
             try
             {
                 foreach (Pago pago in pagos)
                 {
                     if (pago._id == id)
                     {
-                        foreach (CajaDeAhorro caja in cajas)
+
+                        if (pago._metodo.Equals("CA"))
                         {
-                            if (pago._id_metodo == caja._id)
+                            foreach (CajaDeAhorro caja in cajas)
                             {
-                                if (pago._pagado == false)
+                                if (pago._id_metodo == caja._id)
                                 {
-                                    if (this.Pagar(caja, pago._monto))
+                                    if (pago._pagado == false)
                                     {
-                                        pago._pagado = true;
-                                        //DB.cambioPago(id);
-                                        return true;
+                                        if (this.Pagar(caja, pago._monto))
+                                        {
+                                            pago._pagado = true;
+                                            DB.cambioPago(id);
+                                            return true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Debe seleccionar un ID de pago pendiente");
+                                        return false;
                                     }
                                 }
-                                else
-                                {
-                                    MessageBox.Show("Debe seleccionar un ID de pago pendiente");
-                                    return false;
-                                }
-                            }
 
+                            }
+                        } else
+                        {
+                            foreach (TarjetaDeCredito tc in tarjetas)
+                            {
+                                MessageBox.Show("pago._id_metodo: " +pago._id_metodo);
+                                MessageBox.Show("tc._id: " + tc._id);
+                                if (pago._id_metodo == tc._id)
+                                {
+                                    
+                                    if (pago._pagado == false)
+                                    {
+                                            pago._pagado = true;
+                                            DB.cambioPago(id);
+                                            return true;
+                                        
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Debe seleccionar un ID de pago pendiente");
+                                        return false;
+                                    }
+                                }
+
+                            }
                         }
                     }
                 }
@@ -577,7 +670,7 @@ namespace TP1
                     {
                         pagos.Remove(pago);
                         usuarioLogueado.pagos.Remove(pago);
-                        //DB.bajaPago(id);
+                        DB.bajaPago(id);
                         return true;
                     }
                 }
@@ -616,13 +709,30 @@ namespace TP1
             catch (Exception ex) { return false; }
         }
 
-        public bool AltaPlazoFijo(Usuario titular, double monto, DateTime fechaFin, double tasa)
+        public bool AltaPlazoFijo(double monto,String cbu)
         {
+            CajaDeAhorro? caja = cajas.Where(caja => caja._cbu == cbu).FirstOrDefault();
+            int id;
+            DateTime fechaFin = DateTime.Now;
             try
             {
-                pfs.Add(new PlazoFijo(titular, monto, fechaFin, tasa));
-                //DB.agregarPlazoFijo(UsuarioLogeado._id,monto,fechaFin,tasa);
-                return true;
+                if (caja._saldo > monto)
+                {
+                    id = DB.agregarPlazoFijo(usuarioLogueado._id, monto, fechaFin.AddMonths(1));
+                    if (id>=0)
+                    {
+                        usuarioLogueado.pfs.Add(new PlazoFijo(usuarioLogueado, monto, fechaFin, 7));
+                        pfs.Add(new PlazoFijo(id, usuarioLogueado._id, monto, fechaFin.AddMonths(1), 7,0));
+                        return true;
+                    }
+                   
+                    
+                }
+                
+                
+                 return false;
+                
+                
             }
             catch (Exception ex) { return false; }
         }
@@ -632,10 +742,31 @@ namespace TP1
 
         }
 
-        public bool BajaPlazoFijo(int id, int id_user)
+        public bool BajaPlazoFijo(int id)
         {
+            MessageBox.Show("id:" + id);
+            PlazoFijo? plazo = pfs.Where(plazo => plazo._id == id).FirstOrDefault();
+         
+            
+
+            
             try
             {
+                
+
+                if (plazo._pagado==1)
+                {
+                    DB.bajaPlazoFijo(id);
+                }
+                else
+                {
+
+                    return false;
+                }
+                
+
+
+                /*
                 foreach (PlazoFijo pf in pfs)
                 {
                     if (pf._id == id)
@@ -664,7 +795,7 @@ namespace TP1
                         }
                     }
                 }
-                return true;
+               */ return true;
             }
             catch (Exception ex) { return false; }
 
@@ -753,30 +884,39 @@ namespace TP1
 
 
 
-        public List<Movimiento> MostrarMovimientos(string cbuCaja)
+        public List<Movimiento> MostrarMovimientos(int id_caja)
         {
+            List<Movimiento> movimientosCaja = new List<Movimiento>();
+            foreach (Movimiento movimiento in movimientos)
+            {
+                if (movimiento._cajaDeAhorro._id == id_caja)
+                {
+                    movimientosCaja.Add(movimiento);
+                }
+            }
+            return movimientosCaja;
 
-
-
-
-            return DB.buscarMovimiento(cbuCaja).ToList();
-
+            /*
+             movimientosCaja = DB.buscarMovimientos(id_caja);
+             return movimientosCaja.ToList();
+             */
 
         }
 
         public List<Pago> MostrarPago(bool pagado)
         {
             List<Pago> pagosAux = new List<Pago>();
+            usuarioLogueado.pagos = DB.inicializarPago();
             foreach (Pago pago in usuarioLogueado.pagos)
             {
-                if (pago._pagado == pagado)
+                if (pago._pagado == pagado && pago._id_usuario == usuarioLogueado._id)
                 {
                     pagosAux.Add(pago);
 
                 }
 
             }
-            //pagosAux = DB.buscarPago(usuarioLogeado._id);
+            
             return pagosAux.ToList();
         }
 
@@ -797,17 +937,26 @@ namespace TP1
             return pfs.ToList();
         }
 
+        public List<PlazoFijo> MostrarPfUsuario()
+        {
+
+            /*
+            
+            if(usuarioLogeado.esUsuarioAdmin==true){
+                return pfs.ToList();
+            }else{
+                List<PlazoFijo> plazoAux = new List <PlazoFijo>();
+                plazoAux= DB.buscarPlazoFijo(usuarioLogueado._id);
+            }
+             */
+            return DB.buscaPlazoFijo(usuarioLogueado._id);
+        }
 
 
         public List<TarjetaDeCredito> MostrarTarjetasDeCredito()
         {
 
-            List<TarjetaDeCredito>? tarjetasUsuario = tarjetas.Where(tarjeta => tarjeta._id_usuario == usuarioLogueado._id).ToList();
-
-
-
-            return tarjetasUsuario.ToList();
-
+            return tarjetas.ToList();
 
         }
 

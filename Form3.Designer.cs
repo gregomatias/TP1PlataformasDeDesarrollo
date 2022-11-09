@@ -43,7 +43,7 @@
             this.textBoxPlazo = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dataGridPlazo = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -107,11 +107,18 @@
             this.button4 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id_usuario = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Monto = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fecha_ini = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fecha_fin = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tasa = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridPlazo)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4_pagos_pendientes)).BeginInit();
@@ -231,7 +238,7 @@
             this.tabPage2.Controls.Add(this.textBoxPlazo);
             this.tabPage2.Controls.Add(this.button2);
             this.tabPage2.Controls.Add(this.button3);
-            this.tabPage2.Controls.Add(this.dataGridView2);
+            this.tabPage2.Controls.Add(this.dataGridPlazo);
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -243,7 +250,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(579, 17);
+            this.label16.Location = new System.Drawing.Point(628, 17);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(124, 15);
             this.label16.TabIndex = 9;
@@ -252,7 +259,7 @@
             // comboBoxPlazo
             // 
             this.comboBoxPlazo.FormattingEnabled = true;
-            this.comboBoxPlazo.Location = new System.Drawing.Point(579, 48);
+            this.comboBoxPlazo.Location = new System.Drawing.Point(628, 48);
             this.comboBoxPlazo.Name = "comboBoxPlazo";
             this.comboBoxPlazo.Size = new System.Drawing.Size(121, 23);
             this.comboBoxPlazo.TabIndex = 4;
@@ -260,7 +267,7 @@
             // 
             // textBoxPlazo
             // 
-            this.textBoxPlazo.Location = new System.Drawing.Point(568, 126);
+            this.textBoxPlazo.Location = new System.Drawing.Point(618, 119);
             this.textBoxPlazo.Name = "textBoxPlazo";
             this.textBoxPlazo.PlaceholderText = "Monto Nuevo Plazo Fijo";
             this.textBoxPlazo.Size = new System.Drawing.Size(146, 21);
@@ -268,32 +275,41 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(653, 187);
+            this.button2.Location = new System.Drawing.Point(628, 239);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(124, 35);
             this.button2.TabIndex = 2;
-            this.button2.Text = "button2";
+            this.button2.Text = "Eliminar ";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(510, 186);
+            this.button3.Location = new System.Drawing.Point(625, 181);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(124, 36);
             this.button3.TabIndex = 1;
             this.button3.Text = "Crear";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // dataGridView2
+            // dataGridPlazo
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(36, 6);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.RowHeadersWidth = 51;
-            this.dataGridView2.RowTemplate.Height = 29;
-            this.dataGridView2.Size = new System.Drawing.Size(468, 239);
-            this.dataGridView2.TabIndex = 0;
+            this.dataGridPlazo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridPlazo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.id,
+            this.id_usuario,
+            this.Monto,
+            this.fecha_ini,
+            this.fecha_fin,
+            this.tasa,
+            this.Column1});
+            this.dataGridPlazo.Location = new System.Drawing.Point(20, 0);
+            this.dataGridPlazo.Name = "dataGridPlazo";
+            this.dataGridPlazo.RowHeadersWidth = 51;
+            this.dataGridPlazo.RowTemplate.Height = 29;
+            this.dataGridPlazo.Size = new System.Drawing.Size(549, 268);
+            this.dataGridPlazo.TabIndex = 0;
             // 
             // tabPage3
             // 
@@ -405,6 +421,7 @@
             this.cBox_tarjeta.Name = "cBox_tarjeta";
             this.cBox_tarjeta.Size = new System.Drawing.Size(109, 23);
             this.cBox_tarjeta.TabIndex = 8;
+            this.cBox_tarjeta.Click += new System.EventHandler(this.cBox_tarjeta_Click);
             // 
             // txtb_concepto_pago
             // 
@@ -916,6 +933,42 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Online Banking";
             // 
+            // id
+            // 
+            this.id.HeaderText = "Id";
+            this.id.Name = "id";
+            // 
+            // id_usuario
+            // 
+            this.id_usuario.HeaderText = "Column1";
+            this.id_usuario.Name = "id_usuario";
+            // 
+            // Monto
+            // 
+            this.Monto.HeaderText = "Monto";
+            this.Monto.Name = "Monto";
+            // 
+            // fecha_ini
+            // 
+            this.fecha_ini.HeaderText = "Fecha realizado";
+            this.fecha_ini.Name = "fecha_ini";
+            this.fecha_ini.Visible = false;
+            // 
+            // fecha_fin
+            // 
+            this.fecha_fin.HeaderText = "fecha de vencimiento";
+            this.fecha_fin.Name = "fecha_fin";
+            // 
+            // tasa
+            // 
+            this.tasa.HeaderText = "Tasa";
+            this.tasa.Name = "tasa";
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "columnaPagado";
+            this.Column1.Name = "Column1";
+            // 
             // Form3
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -935,7 +988,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridPlazo)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
@@ -966,7 +1019,7 @@
         private TabPage tabPage1;
         private TabPage tabPage2;
         private Button button3;
-        private DataGridView dataGridView2;
+        private DataGridView dataGridPlazo;
         private TabPage tabPage3;
         private TabPage tabPage4;
         private DataGridViewTextBoxColumn Column_cbu;
@@ -1038,6 +1091,14 @@
         private TextBox textBoxPlazo;
         private ComboBox comboBoxPlazo;
         private Label label16;
+        private DataGridViewTextBoxColumn id;
+        private DataGridViewTextBoxColumn id_usuario;
+        private DataGridViewTextBoxColumn Monto;
+        private DataGridViewTextBoxColumn fecha_ini;
+        private DataGridViewTextBoxColumn fecha_fin;
+        private DataGridViewTextBoxColumn tasa;
+        private DataGridViewCheckBoxColumn pagado;
+        private DataGridViewTextBoxColumn Column1;
     }
 
 }
