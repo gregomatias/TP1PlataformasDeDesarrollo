@@ -13,14 +13,14 @@ namespace TP1
 			_id = id;
 			_usuario = usuario;
 			_monto = monto;
-			_estado = false;
+			_pagado = false;
 			_metodo = metodo;
 			_detalle = detalle;
 			_id_metodo = id_metodo;
 
 		}
 
-		public Pago(int id, int id_usuario, double monto,int estado,String metodo, String detalle, int id_metodo)
+		public Pago(int id, int id_usuario, double monto,int pagado,String metodo, String detalle, int id_metodo)
 		{
 			_id = id;
 			_id_usuario=id_usuario;
@@ -28,13 +28,13 @@ namespace TP1
 			_metodo = metodo;
 			_detalle=detalle;
 			_id_metodo = id_metodo;
-			if (estado == 1)
+			if (pagado == 1)
 			{
-				_estado = true;
+				_pagado = true;
 			}
 			else
 			{
-				_estado = false;
+				_pagado = false;
 			}
 		}
 
@@ -70,12 +70,12 @@ namespace TP1
 			set { monto = value; }
 		}
 
-		private bool estado;
+		private bool pagado;
 
-		public bool _estado
+		public bool _pagado
 		{
-			get { return estado; }
-			set { estado = value; }
+			get { return pagado; }
+			set { pagado = value; }
 		}
 
 		private string metodo;

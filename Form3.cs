@@ -285,6 +285,11 @@ namespace TP1
                     dataGridView_movimiento.Rows[fila].Cells[2].Value = intem._monto;
                     dataGridView_movimiento.Rows[fila].Cells[3].Value = intem._fecha;
 
+                }
+
+
+
+
             }
             else { MessageBox.Show("La cuenta es obligatoria"); }
         }
@@ -306,10 +311,6 @@ namespace TP1
                     break;
                 case 1:
                     // PLazo Fijo
-                    break;
-                case 2:
-                    // Pagos
-                    cargarPagos();
                     break;
                 case 3:
 
@@ -340,10 +341,8 @@ namespace TP1
         }
         private void btn_ingresar_pago_Click(object sender, EventArgs e)
         {
-            float montoPago = 0;
-            try { montoPago = float.Parse(txtb_monto_pago.Text); }
-            catch(Exception ex) { MessageBox.Show("Debe ingresar el monto del pago"); }
-           
+
+            float montoPago = float.Parse(txtb_monto_pago.Text);
 
             if (cBox_tarjeta.Text == "" && cBox_caja_ahorro.Text == "")
             {
@@ -356,13 +355,13 @@ namespace TP1
 
                     if (cBox_tarjeta.Text != "")
                     {
-                        banco.AltaPago(montoPago, "TJ", txtb_concepto_pago.Text, Int64.Parse(cBox_tarjeta.Text));
+                        banco.AltaPago(montoPago, "TJ", txtb_concepto_pago.Text, int.Parse(cBox_tarjeta.Text));
 
                         cargarPagos();
                     }
                     else if (cBox_caja_ahorro.Text != "")
                     {
-                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text, Int64.Parse(cBox_caja_ahorro.Text));
+                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text, int.Parse(cBox_caja_ahorro.Text));
                         MessageBox.Show("Pago ingresado");
                         cargarPagos();
                     }
@@ -410,7 +409,6 @@ namespace TP1
 
         public void cargarPagos()
         {
-            
             this.cargaListaPagos(true);
             this.cargaListaPagos(false);
 
@@ -460,8 +458,7 @@ namespace TP1
         }
 
         private void button5_Click(object sender, EventArgs e)
-        { 
-            MessageBox.Show("this.celda: " + this.celda);
+        {
             if (banco.ModificarPago(this.celda))
             {
                 MessageBox.Show("El pago se realizo de manera exitosa");
@@ -481,7 +478,6 @@ namespace TP1
             if (Banco.IsNumeric(dataGridView3.CurrentCell.Value.ToString()))
             {
                 this.celda = int.Parse(dataGridView3.CurrentCell.Value.ToString());
-                MessageBox.Show("Celda: " + this.celda);
             }
             else
             {
@@ -556,29 +552,6 @@ namespace TP1
 
         }
 
-        private void cargaMovimientos( string cbu,string filtroDetalle,DateTime dateTime,float montoFiltro)
-        {
-            List<Movimiento> listaMovimientos = new List<Movimiento>();
-
-            listaMovimientos = banco.BuscarMovimiento(cbu,filtroDetalle, dateTime, montoFiltro);
-
-            dataGridView_movimiento.Rows.Clear();
-            dataGridView_movimiento.Refresh();
-
-
-            int fila;
-            foreach (Movimiento intem in listaMovimientos)
-            {
-                fila = dataGridView_movimiento.Rows.Add();
-                dataGridView_movimiento.Rows[fila].Cells[0].Value = intem._cajaDeAhorro._cbu;
-                dataGridView_movimiento.Rows[fila].Cells[1].Value = intem._detalle;
-                dataGridView_movimiento.Rows[fila].Cells[2].Value = intem._monto;
-                dataGridView_movimiento.Rows[fila].Cells[3].Value = intem._fecha;
-
-            }
-
-        }
-
 
 
         private void btn_Crear_Tarjeta_Click(object sender, EventArgs e)
@@ -623,20 +596,19 @@ namespace TP1
         }
 
         private void button2_Click(object sender, EventArgs e)
-        {             
-                try
+        {
+            try {
+                if (banco.BajaPlazoFijo(int.Parse(dataGridPlazo.CurrentCell.Value.ToString())))
                 {
-                    if (banco.BajaPlazoFijo(int.Parse(dataGridPlazo.CurrentCell.Value.ToString())))
-                    {
 
-                        MessageBox.Show("El Plazo Fijo se ha eliminado");
-                    }
-                    else
-                    {
-                        MessageBox.Show("El plazo fijo aún se encuentra pendiente de pago, pruebe eliminar el registro en una fecha posterior");
+                    MessageBox.Show("El Plazo Fijo se ha eliminado");
+                }
+                else
+                {
+                    MessageBox.Show("El plazo fijo aún se encuentra pendiente de pago, pruebe eliminar el registro en una fecha posterior");
 
-                    }
-                    cargaPlazoFijo();
+                }
+                cargaPlazoFijo();
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
             
