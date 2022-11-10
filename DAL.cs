@@ -317,6 +317,53 @@ namespace TP1
                     reader.Close();
                     connection.Close();
                 }
+                catch (Exception ex) { 
+                   
+                    MessageBox.Show(ex.Message);
+
+                }
+            }
+
+
+           
+            return cajasReturn;
+        }
+        /*
+        public CajaDeAhorro buscaCajasCbu(string cbu)
+        {
+            
+
+            //Creo la query que carga la lista TP2
+
+            string queryString = "select * from [CAJA_AHORRO] WHERE [CBU]=@cbu;";
+
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                CajaDeAhorro? extra;
+                //Union entre la conexion y el query a ejecutar
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.VarChar));
+                command.Parameters["@cbu"].Value = cbu;
+
+                try
+                {
+                    //Abro la conexion
+                    connection.Open();
+                    //Ejecuta la query :
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    //reader.Read() se para en cada fila de la query y mira si tene datos
+                    CajaDeAhorro aux;
+                    
+                        //0:ID,1:DNI,2:NOMBRE;3:APELLIDO,4:MAIL,5:PASSWORD,6:BLOQUEADO,7:ADMINISTRADOR,8:INTENTOS_LOGUEO
+                        aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDouble(3));
+                        return aux;
+
+                    //Luego de recorrer la query se libera la memoria:
+                    reader.Close();
+                    connection.Close();
+                }
                 catch (Exception ex)
                 {
 
@@ -1208,7 +1255,7 @@ namespace TP1
                     Pago aux;
                     while (reader.Read())
                     {
-                        aux = new Pago(reader.GetInt32(0), reader.GetInt32(1), reader.GetDouble(2), reader.GetInt32(3), reader.GetString(4), reader.GetString(5), reader.GetInt32(6));
+                        aux = new Pago(reader.GetInt32(0),reader.GetInt32(1),reader.GetDouble(2) ,reader.GetInt32(3), reader.GetString(4), reader.GetString(5),reader.GetInt32(6));
                         pagoReturn.Add(aux);
                     }
                     reader.Close();

@@ -285,11 +285,6 @@ namespace TP1
                     dataGridView_movimiento.Rows[fila].Cells[2].Value = intem._monto;
                     dataGridView_movimiento.Rows[fila].Cells[3].Value = intem._fecha;
 
-                }
-
-
-
-
             }
             else { MessageBox.Show("La cuenta es obligatoria"); }
         }
@@ -561,6 +556,29 @@ namespace TP1
 
         }
 
+        private void cargaMovimientos( string cbu,string filtroDetalle,DateTime dateTime,float montoFiltro)
+        {
+            List<Movimiento> listaMovimientos = new List<Movimiento>();
+
+            listaMovimientos = banco.BuscarMovimiento(cbu,filtroDetalle, dateTime, montoFiltro);
+
+            dataGridView_movimiento.Rows.Clear();
+            dataGridView_movimiento.Refresh();
+
+
+            int fila;
+            foreach (Movimiento intem in listaMovimientos)
+            {
+                fila = dataGridView_movimiento.Rows.Add();
+                dataGridView_movimiento.Rows[fila].Cells[0].Value = intem._cajaDeAhorro._cbu;
+                dataGridView_movimiento.Rows[fila].Cells[1].Value = intem._detalle;
+                dataGridView_movimiento.Rows[fila].Cells[2].Value = intem._monto;
+                dataGridView_movimiento.Rows[fila].Cells[3].Value = intem._fecha;
+
+            }
+
+        }
+
 
 
         private void btn_Crear_Tarjeta_Click(object sender, EventArgs e)
@@ -605,20 +623,20 @@ namespace TP1
         }
 
         private void button2_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (banco.BajaPlazoFijo(int.Parse(dataGridPlazo.CurrentCell.Value.ToString())))
+        {             
+                try
                 {
+                    if (banco.BajaPlazoFijo(int.Parse(dataGridPlazo.CurrentCell.Value.ToString())))
+                    {
 
-                    MessageBox.Show("El Plazo Fijo se ha eliminado");
-                }
-                else
-                {
-                    MessageBox.Show("El plazo fijo aún se encuentra pendiente de pago, pruebe eliminar el registro en una fecha posterior");
+                        MessageBox.Show("El Plazo Fijo se ha eliminado");
+                    }
+                    else
+                    {
+                        MessageBox.Show("El plazo fijo aún se encuentra pendiente de pago, pruebe eliminar el registro en una fecha posterior");
 
-                }
-                cargaPlazoFijo();
+                    }
+                    cargaPlazoFijo();
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
             
