@@ -34,7 +34,7 @@ namespace TP1
 			set { id_CajaDeAhorro = value; }
 		}
 
-        static private int id;
+        private int id;
 
 		public int _id
 		{
