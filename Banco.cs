@@ -23,7 +23,7 @@ namespace TP1
         private List<Movimiento> movimientos;
         private Usuario? usuarioLogueado;
         //  private  int cbuAutonumerado = 0;
-        private int idPagoAutonumerado = 0;
+        //private int idPagoAutonumerado = 0;
         /*TP2*/
         DAL DB;
 
@@ -64,19 +64,15 @@ namespace TP1
         {
             if (caja._saldo >= monto)
             {
-                /*
-                 DB.agregarMovimiento(CajaDeAhorro.id,"Pago de servicio",monto,DateTime.Now());
-                 */
+                int idAux = DB.agregarMovimiento(caja._id,"Pago de servicio",monto,DateTime.Now);
                 caja._saldo = caja._saldo - monto;
-                Movimiento muvi = new Movimiento(caja, "Pago de servicio", monto); ;
+                Movimiento muvi = new Movimiento(idAux, caja._id, "Pago de servicio", monto, DateTime.Now);
                 movimientos.Add(muvi);
                 caja._movimientos.Add(muvi);
                 return true;
 
             }
             else { return false; }
-
-
 
         }
 
@@ -570,15 +566,24 @@ namespace TP1
 
         }
 
-        public bool AltaPago(float monto, string metodo, string detalle, int id_metodo)
+        public bool AltaPago(float monto, string metodo, string detalle, long id_metodo)
         {
+            int idAux = 0;
             try
             {
-                Pago pago = new Pago(idPagoAutonumerado, usuarioLogueado, monto, metodo, detalle, id_metodo);
-                idPagoAutonumerado = idPagoAutonumerado + 1;
+                Pago pago;
+                if (metodo.Equals("CA"))
+                {
+                    idAux = DB.agregarPago(usuarioLogueado._id, monto, metodo, detalle, DB.buscarCajaDeAhorroByCbu(id_metodo));
+                    pago = new Pago(idAux, usuarioLogueado, monto, metodo, detalle, DB.buscarCajaDeAhorroByCbu(id_metodo));
+                }
+                else
+                {
+                    idAux = DB.agregarPago(usuarioLogueado._id, monto, metodo, detalle, DB.buscarTarjetaDeCreditoByNro(id_metodo));
+                    pago = new Pago(idAux, usuarioLogueado, monto, metodo, detalle, DB.buscarTarjetaDeCreditoByNro(id_metodo));
+                }
                 this.pagos.Add(pago);
                 this.usuarioLogueado.pagos.Add(pago);
-                //DB.agregarPago(usuarioLogeado._id,monto,metodo,detalle,id_metodo);
                 return true;
             }
             catch (Exception) { return false; }
@@ -592,26 +597,56 @@ namespace TP1
                 {
                     if (pago._id == id)
                     {
-                        foreach (CajaDeAhorro caja in cajas)
+
+                        if (pago._metodo.Equals("CA"))
                         {
-                            if (pago._id_metodo == caja._id)
+
+                            foreach (CajaDeAhorro caja in cajas)
                             {
-                                if (pago._pagado == false)
+                                if (pago._id_metodo == caja._id)
                                 {
-                                    if (this.Pagar(caja, pago._monto))
+                                    if (pago._pagado == false)
                                     {
-                                        pago._pagado = true;
-                                        //DB.cambioPago(id);
-                                        return true;
+                                        if (this.Pagar(caja, pago._monto))
+                                        {
+                                            pago._pagado = true;
+                                            DB.cambioPago(id);
+                                            return true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Debe seleccionar un ID de pago pendiente");
+                                        return false;
                                     }
                                 }
-                                else
-                                {
-                                    MessageBox.Show("Debe seleccionar un ID de pago pendiente");
-                                    return false;
-                                }
-                            }
 
+                            }
+                        }
+                        else
+                        {
+                            foreach (TarjetaDeCredito tc in tarjetas)
+                            {
+                                if (pago._id_metodo == tc._id)
+                                {
+
+                                    if (pago._pagado == false)
+                                    {
+                                        if(DB.actualizaConsumoTarjeta(tc._numero, pago._monto)) {
+                                  
+                                            pago._pagado = true;           
+                                            return DB.cambioPago(id); ;
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Debe seleccionar un ID de pago pendiente");
+                                        return false;
+                                    }
+                                }
+
+                            }
                         }
                     }
                 }
@@ -632,7 +667,7 @@ namespace TP1
                     {
                         pagos.Remove(pago);
                         usuarioLogueado.pagos.Remove(pago);
-                        //DB.bajaPago(id);
+                        DB.bajaPago(id);
                         return true;
                     }
                 }
@@ -868,16 +903,17 @@ namespace TP1
         public List<Pago> MostrarPago(bool pagado)
         {
             List<Pago> pagosAux = new List<Pago>();
+            usuarioLogueado.pagos = DB.inicializarPago();
             foreach (Pago pago in usuarioLogueado.pagos)
             {
-                if (pago._pagado == pagado)
+                if (pago._pagado == pagado && pago._id_usuario == usuarioLogueado._id)
                 {
                     pagosAux.Add(pago);
 
                 }
 
             }
-            //pagosAux = DB.buscarPago(usuarioLogeado._id);
+
             return pagosAux.ToList();
         }
 

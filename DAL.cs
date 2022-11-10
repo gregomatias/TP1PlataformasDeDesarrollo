@@ -425,12 +425,90 @@ namespace TP1
 
         }
 
+        public int buscarCajaDeAhorroByCbu(long cbu)
+        {
+            int id = 0;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "SELECT ID FROM [dbo].[CAJA_AHORRO] WHERE [CBU]=@cbu;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.NVarChar));
+                command.Parameters["@cbu"].Value = cbu;
+
+
+                try
+                {
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    id = reader.GetInt32(0);
+                    reader.Close();
+
+                    connection.Close();
+
+                    return id;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                }
+
+            }
+            return id;
+
+        }
+
+        public int buscarTarjetaDeCreditoByNro(long nro)
+        {
+            int id = 0;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "SELECT ID FROM [dbo].[TARJETA_CREDITO] WHERE [numero]=@nro;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@nro", SqlDbType.NVarChar));
+                command.Parameters["@nro"].Value = nro;
+
+
+                try
+                {
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    id = reader.GetInt32(0);
+                    reader.Close();
+
+                    connection.Close();
+
+                    return id;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                }
+
+            }
+            return id;
+
+        }
+
         public bool actualizaConsumoTarjeta(string numeroTarjeta, double consumos)
         {
             int resultadoQuery;
 
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "UPDATE [dbo].[TARJETA_CREDITO] SET [CONSUMOS]=@consumos WHERE [NUMERO]=@numeroTarjeta;";
+            string queryString = "UPDATE [dbo].[TARJETA_CREDITO] SET [CONSUMOS]=[CONSUMOS]+@consumos WHERE [NUMERO]=@numeroTarjeta;";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
@@ -999,7 +1077,7 @@ namespace TP1
             int resultadoQuery;
             int idNuevoMovimiento = -1;
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "INSERT INTO [dbo].[MOVIMIENTO] ([id_caja_ahorro],[descripcion],[monto],[fecha] VALUES (@id_cajaDeAhorro,@detalle,@monto,@fecha);";
+            string queryString = "INSERT INTO [dbo].[MOVIMIENTO] ([id_caja_ahorro],[descripcion],[monto],[fecha]) VALUES (@id_cajaDeAhorro,@detalle,@monto,@fecha);";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
@@ -1031,7 +1109,7 @@ namespace TP1
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                     return -1;
                 }
                 return idNuevoMovimiento;
@@ -1113,7 +1191,7 @@ namespace TP1
 
             List<Pago> pagoReturn = new List<Pago>();
 
-            string queryString = "select * from dbo.Pago";
+            string queryString = "select [ID],[ID_USUARIO],[MONTO],[PAGADO],[METODO],[DETALLE],[ID_METODO] from dbo.Pago";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -1129,33 +1207,36 @@ namespace TP1
                     Pago aux;
                     while (reader.Read())
                     {
-                        aux = new Pago(reader.GetInt32(0),reader.GetInt32(1),reader.GetDouble(2) ,reader.GetInt32(3), reader.GetString(4), reader.GetString(5),reader.GetInt32(6));
+
+                        aux = new Pago(reader.GetInt32(0), reader.GetInt32(1), reader.GetDouble(2), reader.GetByte(3), reader.GetString(4), reader.GetString(5), int.Parse(reader.GetString(6)));
+
                         pagoReturn.Add(aux);
                     }
                     reader.Close();
                 }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-
-
 
             return pagoReturn;
         }
 
 
-        public int agregarPago(int id_usuario, double monto,String metodo, String detalle, int id_metodo)
+        public int agregarPago(int id_usuario, double monto, string metodo, string detalle, int id_metodo)
         {
             int resultadoQuery;
             int idNuevoPago = -1;
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "INSERT INTO [dbo].[PAGO] ([ID_USUARIO],[MONTO],[PAGADO],[METODO],[DETALLE],[ID_METODO] VALUES (@id_usuario,@monto,@pagado,@metodo,@detalle,@id_metodo);";
+            string queryString = "INSERT INTO [dbo].[PAGO] ([ID_USUARIO],[MONTO],[PAGADO],[METODO],[DETALLE],[ID_METODO]) VALUES (@id_usuario,@monto,@pagado,@metodo,@detalle,@id_metodo);";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
                 command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Float));
-                command.Parameters.Add(new SqlParameter("@pagado", SqlDbType.Bit));
+                command.Parameters.Add(new SqlParameter("@pagado", SqlDbType.Int));
                 command.Parameters.Add(new SqlParameter("@metodo", SqlDbType.VarChar));
                 command.Parameters.Add(new SqlParameter("@detalle", SqlDbType.VarChar));
                 command.Parameters.Add(new SqlParameter("@id_metodo", SqlDbType.Int));
@@ -1185,6 +1266,7 @@ namespace TP1
                 }
                 catch (Exception ex)
                 {
+                    MessageBox.Show(ex.Message);
                     Console.WriteLine(ex.Message);
                     return -1;
                 }
@@ -1287,7 +1369,7 @@ namespace TP1
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                     return false;
 
                 }
