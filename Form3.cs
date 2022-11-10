@@ -21,7 +21,7 @@ namespace TP1
         private Banco banco;
         private TransfDelegadoForm2 transEvento;
         private int celda;
-
+        //alan
         public Form3(Banco banco, TransfDelegadoForm2 transEvento)
         {
 
@@ -312,6 +312,10 @@ namespace TP1
                 case 1:
                     // PLazo Fijo
                     break;
+                case 2:
+                    // Pagos
+                    cargarPagos();
+                    break;
                 case 3:
 
                     cargaTarjetasDeCredito();
@@ -341,8 +345,10 @@ namespace TP1
         }
         private void btn_ingresar_pago_Click(object sender, EventArgs e)
         {
+            float montoPago = 0;
+            try { montoPago = float.Parse(txtb_monto_pago.Text); }
+            catch (Exception ex) { MessageBox.Show("Debe ingresar el monto del pago"); }
 
-            float montoPago = float.Parse(txtb_monto_pago.Text);
 
             if (cBox_tarjeta.Text == "" && cBox_caja_ahorro.Text == "")
             {
@@ -355,13 +361,13 @@ namespace TP1
 
                     if (cBox_tarjeta.Text != "")
                     {
-                        banco.AltaPago(montoPago, "TJ", txtb_concepto_pago.Text, int.Parse(cBox_tarjeta.Text));
+                        banco.AltaPago(montoPago, "TJ", txtb_concepto_pago.Text, Int64.Parse(cBox_tarjeta.Text));
 
                         cargarPagos();
                     }
                     else if (cBox_caja_ahorro.Text != "")
                     {
-                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text, int.Parse(cBox_caja_ahorro.Text));
+                        banco.AltaPago(montoPago, "CA", txtb_concepto_pago.Text, Int64.Parse(cBox_caja_ahorro.Text));
                         MessageBox.Show("Pago ingresado");
                         cargarPagos();
                     }
@@ -374,8 +380,6 @@ namespace TP1
                     cBox_tarjeta.Text = "";
                 }
             }
-
-
 
         }
 
@@ -505,7 +509,6 @@ namespace TP1
         {
             if (Banco.IsNumeric(dataGridView4_pagos_pendientes.CurrentCell.Value.ToString()))
             {
-                MessageBox.Show("CellClick: " + dataGridView4_pagos_pendientes.CurrentCell.Value.ToString());
                 this.celda = int.Parse(dataGridView4_pagos_pendientes.CurrentCell.Value.ToString());
             }
             else
@@ -679,7 +682,19 @@ namespace TP1
             }
         }
 
+        private void cBox_tarjeta_Click(object sender, EventArgs e)
+        {
+            cBox_tarjeta.Items.Clear();
+            cBox_tarjeta.Refresh();
+            List<TarjetaDeCredito> listaTarjetas = new List<TarjetaDeCredito>();
+            listaTarjetas = banco.MostrarTarjetasDeCredito();
 
+            foreach (TarjetaDeCredito tc in listaTarjetas)
+            {
+                cBox_tarjeta.Items.Add(tc._numero);
+            }
+
+        }
     }
 }
 

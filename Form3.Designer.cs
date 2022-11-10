@@ -44,6 +44,13 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.dataGridPlazo = new System.Windows.Forms.DataGridView();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id_usuario = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Monto = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fecha_ini = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fecha_fin = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tasa = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -107,13 +114,6 @@
             this.button4 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id_usuario = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Monto = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fecha_ini = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fecha_fin = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tasa = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -311,6 +311,42 @@
             this.dataGridPlazo.Size = new System.Drawing.Size(549, 268);
             this.dataGridPlazo.TabIndex = 0;
             // 
+            // id
+            // 
+            this.id.HeaderText = "Id";
+            this.id.Name = "id";
+            // 
+            // id_usuario
+            // 
+            this.id_usuario.HeaderText = "Column1";
+            this.id_usuario.Name = "id_usuario";
+            // 
+            // Monto
+            // 
+            this.Monto.HeaderText = "Monto";
+            this.Monto.Name = "Monto";
+            // 
+            // fecha_ini
+            // 
+            this.fecha_ini.HeaderText = "Fecha realizado";
+            this.fecha_ini.Name = "fecha_ini";
+            this.fecha_ini.Visible = false;
+            // 
+            // fecha_fin
+            // 
+            this.fecha_fin.HeaderText = "fecha de vencimiento";
+            this.fecha_fin.Name = "fecha_fin";
+            // 
+            // tasa
+            // 
+            this.tasa.HeaderText = "Tasa";
+            this.tasa.Name = "tasa";
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "columnaPagado";
+            this.Column1.Name = "Column1";
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.dataGridView3);
@@ -379,7 +415,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(3, 39);
+            this.button6.Location = new System.Drawing.Point(3, 42);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(94, 29);
             this.button6.TabIndex = 12;
@@ -421,6 +457,7 @@
             this.cBox_tarjeta.Name = "cBox_tarjeta";
             this.cBox_tarjeta.Size = new System.Drawing.Size(109, 23);
             this.cBox_tarjeta.TabIndex = 8;
+            this.cBox_tarjeta.Click += new System.EventHandler(this.cBox_tarjeta_Click);
             // 
             // txtb_concepto_pago
             // 
@@ -931,42 +968,6 @@
             this.label3.Size = new System.Drawing.Size(139, 24);
             this.label3.TabIndex = 3;
             this.label3.Text = "Online Banking";
-            // 
-            // id
-            // 
-            this.id.HeaderText = "Id";
-            this.id.Name = "id";
-            // 
-            // id_usuario
-            // 
-            this.id_usuario.HeaderText = "Column1";
-            this.id_usuario.Name = "id_usuario";
-            // 
-            // Monto
-            // 
-            this.Monto.HeaderText = "Monto";
-            this.Monto.Name = "Monto";
-            // 
-            // fecha_ini
-            // 
-            this.fecha_ini.HeaderText = "Fecha realizado";
-            this.fecha_ini.Name = "fecha_ini";
-            this.fecha_ini.Visible = false;
-            // 
-            // fecha_fin
-            // 
-            this.fecha_fin.HeaderText = "fecha de vencimiento";
-            this.fecha_fin.Name = "fecha_fin";
-            // 
-            // tasa
-            // 
-            this.tasa.HeaderText = "Tasa";
-            this.tasa.Name = "tasa";
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "columnaPagado";
-            this.Column1.Name = "Column1";
             // 
             // Form3
             // 
