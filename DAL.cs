@@ -160,7 +160,7 @@ namespace TP1
             int resultadoQuery;
 
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "UPDATE [dbo].[USUARIO] SET [BLOQUEADO]=0 WHERE [ID]=@id;";
+            string queryString = "UPDATE [dbo].[USUARIO] SET [BLOQUEADO]=0,[INTENTOS_LOGUEO]=0 WHERE [ID]=@id;";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {

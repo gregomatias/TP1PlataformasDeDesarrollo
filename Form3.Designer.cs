@@ -105,6 +105,10 @@
             this.btn_busca_movimiento = new System.Windows.Forms.Button();
             this.comboBox3_movimientos = new System.Windows.Forms.ComboBox();
             this.dataGridView_movimiento = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabUsuarios = new System.Windows.Forms.TabPage();
             this.label17 = new System.Windows.Forms.Label();
             this.buttonDesbloquear = new System.Windows.Forms.Button();
@@ -118,10 +122,6 @@
             this.button4 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -379,9 +379,9 @@
             this.tabPage3.Controls.Add(this.label12);
             this.tabPage3.Controls.Add(this.label11);
             this.tabPage3.Controls.Add(this.dataGridView4_pagos_pendientes);
-            this.tabPage3.Location = new System.Drawing.Point(4, 27);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(793, 291);
+            this.tabPage3.Size = new System.Drawing.Size(793, 289);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Pagos";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -581,9 +581,9 @@
             this.tabPage4.Controls.Add(this.btn_PagarTarjeta);
             this.tabPage4.Controls.Add(this.btn_Crear_Tarjeta);
             this.tabPage4.Controls.Add(this.dataGView_Tarjetas);
-            this.tabPage4.Location = new System.Drawing.Point(4, 27);
+            this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(793, 291);
+            this.tabPage4.Size = new System.Drawing.Size(793, 289);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Tarjetas";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -674,10 +674,10 @@
             this.tabPage5.Controls.Add(this.btn_depositar);
             this.tabPage5.Controls.Add(this.btn_extraer);
             this.tabPage5.Controls.Add(this.comboBox1);
-            this.tabPage5.Location = new System.Drawing.Point(4, 27);
+            this.tabPage5.Location = new System.Drawing.Point(4, 29);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(793, 291);
+            this.tabPage5.Size = new System.Drawing.Size(793, 289);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Transacciones";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -751,10 +751,10 @@
             this.tabPage6.Controls.Add(this.txtb_monto_transferencia);
             this.tabPage6.Controls.Add(this.btn_transferir);
             this.tabPage6.Controls.Add(this.comboBox2);
-            this.tabPage6.Location = new System.Drawing.Point(4, 27);
+            this.tabPage6.Location = new System.Drawing.Point(4, 29);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(793, 291);
+            this.tabPage6.Size = new System.Drawing.Size(793, 289);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Transferencia";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -915,15 +915,47 @@
             this.dataGridView_movimiento.Size = new System.Drawing.Size(582, 237);
             this.dataGridView_movimiento.TabIndex = 8;
             // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.HeaderText = "Caja";
+            this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            this.dataGridViewTextBoxColumn5.Width = 160;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.HeaderText = "Detalle";
+            this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            this.dataGridViewTextBoxColumn6.Width = 160;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.HeaderText = "Monto";
+            this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            this.dataGridViewTextBoxColumn7.Width = 75;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.HeaderText = "Fecha";
+            this.dataGridViewTextBoxColumn8.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            this.dataGridViewTextBoxColumn8.Width = 130;
+            // 
             // tabUsuarios
             // 
             this.tabUsuarios.Controls.Add(this.label17);
             this.tabUsuarios.Controls.Add(this.buttonDesbloquear);
             this.tabUsuarios.Controls.Add(this.dataGridUsuarios);
-            this.tabUsuarios.Location = new System.Drawing.Point(4, 29);
+            this.tabUsuarios.Location = new System.Drawing.Point(4, 27);
             this.tabUsuarios.Name = "tabUsuarios";
             this.tabUsuarios.Padding = new System.Windows.Forms.Padding(3);
-            this.tabUsuarios.Size = new System.Drawing.Size(793, 289);
+            this.tabUsuarios.Size = new System.Drawing.Size(793, 291);
             this.tabUsuarios.TabIndex = 7;
             this.tabUsuarios.Text = "Usuarios";
             this.tabUsuarios.UseVisualStyleBackColor = true;
@@ -941,7 +973,7 @@
             // 
             this.buttonDesbloquear.Location = new System.Drawing.Point(625, 159);
             this.buttonDesbloquear.Name = "buttonDesbloquear";
-            this.buttonDesbloquear.Size = new System.Drawing.Size(90, 43);
+            this.buttonDesbloquear.Size = new System.Drawing.Size(121, 43);
             this.buttonDesbloquear.TabIndex = 1;
             this.buttonDesbloquear.Text = "Desbloquear Usuario";
             this.buttonDesbloquear.UseVisualStyleBackColor = true;
@@ -1038,38 +1070,6 @@
             this.label3.Size = new System.Drawing.Size(177, 29);
             this.label3.TabIndex = 3;
             this.label3.Text = "Online Banking";
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.HeaderText = "Caja";
-            this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            this.dataGridViewTextBoxColumn5.Width = 160;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.HeaderText = "Detalle";
-            this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            this.dataGridViewTextBoxColumn6.Width = 160;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.HeaderText = "Monto";
-            this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            this.dataGridViewTextBoxColumn7.Width = 85;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.HeaderText = "Fecha";
-            this.dataGridViewTextBoxColumn8.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.ReadOnly = true;
-            this.dataGridViewTextBoxColumn8.Width = 120;
             // 
             // Form3
             // 

@@ -59,7 +59,7 @@ namespace TP1
         {
             int dni = int.Parse(txtB_dni.Text);
 
-            //Si inicia sesion abre Form3
+          
             if (  banco.IniciarSesion(dni, txtB_contrasena.Text))
             {
                 formUsuarioLogueado = new Form3(banco, TransfDelegadoForm3);

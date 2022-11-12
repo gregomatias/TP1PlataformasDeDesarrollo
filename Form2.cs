@@ -35,7 +35,7 @@ namespace TP1
                 if ( txtBox_email.Text.Contains("@"))
                 {
                     int dni = int.Parse(txtBox_dni.Text);
-                    if(banco.AltaUsuario(dni, txtBox_nombres.Text, txtBox_apellidos.Text, txtBox_email.Text, txtBox_contrasena.Text)){
+                    if(banco.AltaUsuario(dni, txtBox_nombres.Text, txtBox_apellidos.Text, txtBox_email.Text, txtBox_contrasena.Text,false,false,0)){
                         MessageBox.Show("Se registrado el usuario");
                     }else
                     {

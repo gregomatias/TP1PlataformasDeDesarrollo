@@ -273,8 +273,7 @@ namespace TP1
 
                 List<Movimiento> listaMovimientos = new List<Movimiento>();
 
-                listaMovimientos = banco.BuscarMovimiento(comboBox3_movimientos.Text,
-                txtb_filtro_detalle.Text, dateTimePicker_filtro.Value, montoFiltro);
+                listaMovimientos = banco.BuscarMovimiento(comboBox3_movimientos.Text,txtb_filtro_detalle.Text, dateTimePicker_filtro.Value, montoFiltro);
 
                 dataGridView_movimiento.Rows.Clear();
                 dataGridView_movimiento.Refresh();

@@ -23,9 +23,7 @@ namespace TP1
         private List<Pago> pagos;
         private List<Movimiento> movimientos;
         private Usuario? usuarioLogueado;
-        //  private  int cbuAutonumerado = 0;
-        //private int idPagoAutonumerado = 0;
-        /*TP2*/
+
         DAL DB;
 
 
@@ -44,6 +42,11 @@ namespace TP1
             this.tarjetas = DB.inicializarTarjetaDeCredito();
             this.pagos = DB.inicializarPago();
             this.movimientos = DB.inicializarMovimiento();
+
+            /*Hardcodeo de Admin para poder probarlo:*/
+            AltaUsuario(123, "Walter", "Gomez", "wg@gmail.com", "123", false, true, 0);
+
+
         }
 
 
@@ -185,10 +188,8 @@ namespace TP1
 
                     DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
                     caja._saldo = saldoActualizado;
-                    DB.agregarMovimiento(caja._id, "Deposito", monto, DateTime.Now);
-                    Movimiento movimiento = new Movimiento(caja, "Deposito", monto);
-                    movimientos.Add(movimiento);
-                    caja._movimientos.Add(movimiento);
+
+                    AltaMovimiento(caja, "Deposito", monto);
                     return true;
                 }
             }
@@ -219,10 +220,8 @@ namespace TP1
 
                         DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
                         caja._saldo = saldoActualizado;
-                        DB.agregarMovimiento(caja._id, "Retiro", monto, DateTime.Now);
-                        Movimiento movimiento = new Movimiento(caja, "Retiro", monto);
-                        movimientos.Add(movimiento);
-                        caja._movimientos.Add(movimiento);
+
+                        AltaMovimiento(caja, "Retiro", monto);
                         return true;
 
                     }
@@ -253,14 +252,16 @@ namespace TP1
                     cajaEmisor._saldo = saldoEmisor;
                     cajaDestino._saldo = saldoDestino;
 
-                    DB.agregarMovimiento(cajaEmisor._id, "Transferencia emitida", monto, DateTime.Now);
-                    DB.agregarMovimiento(cajaDestino._id, "Transferencia recibida", monto, DateTime.Now);
-                    Movimiento movimientoEmisor = new Movimiento(cajaEmisor, "Transferencia emitida", monto);
-                    Movimiento movimientoDestino = new Movimiento(cajaDestino, "Transferencia recibida", monto);
-                    movimientos.Add(movimientoEmisor);
-                    movimientos.Add(movimientoDestino);
+                    AltaMovimiento(cajaEmisor, "Transferencia Emitida", monto);
+                    AltaMovimiento(cajaDestino, "Transferencia Recibida", monto);
+
                     DB.actualizaSaldoCajaAhorro(cbuEmisor, saldoEmisor);
                     DB.actualizaSaldoCajaAhorro(cbuDestino, saldoDestino);
+
+
+
+
+
                     return true;
 
                 }
@@ -276,26 +277,7 @@ namespace TP1
         }
 
 
-        public List<Movimiento> BuscarMovimiento(CajaDeAhorro caja, string detalle = "default", DateTime? fecha = null, float monto = 0)
-        {
-            caja._movimientos = DB.buscarMovimiento(caja._id);
-            List<Movimiento> move = new List<Movimiento>();
 
-            foreach (Movimiento movimiento in caja._movimientos)
-            {
-                if (movimiento._id_CajaDeAhorro == caja._id)
-                {
-                    if (movimiento._detalle == detalle || movimiento._fecha.Date == fecha.Value.Date || movimiento._monto == monto)
-                    {
-                        move.Add(movimiento);
-                    }
-                }
-            }
-
-
-            return move;
-
-        }
 
         public string buscarCBU(int id)
         {
@@ -313,21 +295,40 @@ namespace TP1
         }
 
 
-        public List<Movimiento> BuscarMovimiento(string idCaja, string detalle = "default", DateTime? fecha = null, float monto = 0)
+
+
+        public List<Movimiento> BuscarMovimiento(string cbuCaja, string detalle = "default", DateTime? fecha = null, float monto = 0)
         {
             List<Movimiento> listaMovimientos = new List<Movimiento>();
+            List<Movimiento> listaMovimientosFiltrados = new List<Movimiento>();
             usuarioLogueado.cajas = DB.buscaCajasAhorroDeUsuario(usuarioLogueado._id);
-            foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
+
+            //Busca Id de caja de ahoro
+            CajaDeAhorro? caja = usuarioLogueado._Cajas.Where(caja => caja._cbu == cbuCaja).FirstOrDefault();
+
+
+            //Busca movimientos de la caja buscada anteriormente
+            listaMovimientos = DB.buscarMovimiento(caja._id);
+
+
+
+            foreach (Movimiento movimiento in listaMovimientos)
             {
-                if (caja._cbu.Equals(idCaja))
+
+                if (movimiento._detalle == detalle || movimiento._fecha.Date == fecha.Value.Date || movimiento._monto == monto)
+
+
                 {
-
-                    listaMovimientos = BuscarMovimiento(caja, detalle, fecha, monto);
-
-
+                    listaMovimientosFiltrados.Add(movimiento);
                 }
+
             }
-            return listaMovimientos.ToList();
+
+
+
+
+
+            return listaMovimientosFiltrados.ToList();
         }
 
 
@@ -378,7 +379,7 @@ namespace TP1
 
 
 
-        public bool AltaUsuario(int dni, string nombre, string apellido, string mail, string password)
+        public bool AltaUsuario(int dni, string nombre, string apellido, string mail, string password, bool bloqueado, bool esAdmin, int intentosLogueo)
         {
 
             //valida usuario Duplicado
@@ -391,12 +392,12 @@ namespace TP1
             if (esValido)
             {
                 int idNuevoUsuario;
-                idNuevoUsuario = DB.agregarUsuario(dni, nombre, apellido, mail, password, false, false, 0);
+                idNuevoUsuario = DB.agregarUsuario(dni, nombre, apellido, mail, password, bloqueado, esAdmin, intentosLogueo);
 
                 if (idNuevoUsuario != -1)
                 {
                     //Agrega a la lista con el ID obtenido de la DB
-                    Usuario nuevoUsuario = new Usuario(idNuevoUsuario, dni, nombre, apellido, mail, password, false, false, 0);
+                    Usuario nuevoUsuario = new Usuario(idNuevoUsuario, dni, nombre, apellido, mail, password, bloqueado, esAdmin, intentosLogueo);
                     usuarios.Add(nuevoUsuario);
 
                     return true;
@@ -539,9 +540,12 @@ namespace TP1
             {
                 int idAux = DB.agregarMovimiento(caja._id, detalle, monto, DateTime.Now);
 
-                Movimiento muvi = new Movimiento(idAux, caja._id, detalle, monto, DateTime.Now);
-                movimientos.Add(muvi);
-                caja._movimientos.Add(muvi);
+                Movimiento movimiento = new Movimiento(idAux, caja._id, detalle, monto, DateTime.Now);
+                movimientos.Add(movimiento);
+                caja._movimientos.Add(movimiento);
+
+
+
 
                 return true;
             }

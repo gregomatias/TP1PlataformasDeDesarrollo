@@ -18,7 +18,7 @@ namespace TP1
 			_detalle = detalle;
 			_id_metodo = id_metodo;
 
-		}
+		} 
 
 		public Pago(int id, int id_usuario, double monto,int pagado,String metodo, String detalle, int id_metodo)
 		{

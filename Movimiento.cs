@@ -8,14 +8,7 @@ namespace TP1
 {
     internal class Movimiento
     {
-        public Movimiento(CajaDeAhorro cajaDeAhorro, string detalle, double monto)
-        {
-			_id = _id + 1;
-			_cajaDeAhorro = cajaDeAhorro;
-			_detalle = detalle;
-			_monto = monto;
-			_fecha = DateTime.Now;
-        }
+
 
 		public Movimiento(int id,int id_CajaDeAhorro,String detalle, double monto, DateTime fecha)
 		{
