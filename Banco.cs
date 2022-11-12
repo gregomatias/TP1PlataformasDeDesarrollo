@@ -9,6 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using TP1;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace TP1
 {
@@ -64,47 +65,27 @@ namespace TP1
         {
             if (caja._saldo >= monto)
             {
-                int idAux = DB.agregarMovimiento(caja._id,"Pago de servicio",monto,DateTime.Now);
-                caja._saldo = caja._saldo - monto;
-                Movimiento muvi = new Movimiento(idAux, caja._id, "Pago de servicio", monto, DateTime.Now);
-                movimientos.Add(muvi);
-                caja._movimientos.Add(muvi);
-                return true;
+                try
+                {
 
+                    double saldoNuevo = caja._saldo - monto;
+                    caja._saldo = saldoNuevo;
+                    DB.actualizaSaldoCajaAhorro(caja._cbu, saldoNuevo);
+
+                    AltaMovimiento(caja, "Pago Con Caja Ahorro", monto);
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return false;
+                }
             }
             else { return false; }
 
         }
 
-        public bool Pagar(int cbu, float monto)
-        {
-
-            try
-            {
-                foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
-                {
-                    if (caja._cbu.Equals(cbu))
-                    {
-                        return Pagar(caja, monto);
-
-                    }
-                }
-            }
-            catch (Exception) { return false; }
-            return false;
-        }
-        //////////////
-        public bool PagarTester(int id_cajaDeAhorro, double monto, int id_pago)
-        {
-            try
-            {
-                DB.agregarMovimiento(id_cajaDeAhorro, "Pago de servicio", monto, DateTime.Now);
-                DB.cambioPago(id_pago);
-                return true;
-            }
-            catch (Exception) { return false; }
-
-        }
 
 
         public string GetNombreUsuarioLogueado()
@@ -230,16 +211,23 @@ namespace TP1
             {
 
                 if (caja._cbu == cbu)
-                {
-                    double saldoActualizado = caja._saldo - monto;
 
-                    DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
-                    caja._saldo = saldoActualizado;
-                    DB.agregarMovimiento(caja._id, "Retiro", monto, DateTime.Now);
-                    Movimiento movimiento = new Movimiento(caja, "Retiro", monto);
-                    movimientos.Add(movimiento);
-                    caja._movimientos.Add(movimiento);
-                    return true;
+                {
+                    if (caja._saldo > monto)
+                    {
+                        double saldoActualizado = caja._saldo - monto;
+
+                        DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
+                        caja._saldo = saldoActualizado;
+                        DB.agregarMovimiento(caja._id, "Retiro", monto, DateTime.Now);
+                        Movimiento movimiento = new Movimiento(caja, "Retiro", monto);
+                        movimientos.Add(movimiento);
+                        caja._movimientos.Add(movimiento);
+                        return true;
+
+                    }
+                    else { return false; }
+
                 }
             }
             return false;
@@ -305,49 +293,6 @@ namespace TP1
             }
 
 
-
-            /*
-            if (detalle != "default")
-            {
-                foreach (Movimiento movimiento in movimientos)
-                {
-                    if (movimiento._cajaDeAhorro == caja && movimiento._detalle == detalle)
-                    {
-                        move.Add(movimiento);
-
-                    }
-                }
-                return move;
-
-            }
-            else if (fecha != null)
-            {
-                foreach (Movimiento movimiento in movimientos)
-                {
-                    if (movimiento._cajaDeAhorro == caja && movimiento._fecha == fecha)
-                    {
-                        move.Add(movimiento);
-
-                    }
-                    return move;
-
-                }
-            }
-            else if (monto != 0)
-            {
-
-                foreach (Movimiento movimiento in movimientos)
-                {
-                    if (movimiento._cajaDeAhorro == caja && movimiento._monto == monto)
-                    {
-                        move.Add(movimiento);
-
-                    }
-                    return move;
-
-                }
-            }
-            */
             return move;
 
         }
@@ -358,10 +303,10 @@ namespace TP1
             try
             {
                 cbu = DB.buscarCbuById(id);
-            } 
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show("Se produjo un error: " +ex.Message);
+                MessageBox.Show("Se produjo un error: " + ex.Message);
             }
 
             return cbu;
@@ -385,7 +330,7 @@ namespace TP1
             return listaMovimientos.ToList();
         }
 
-       
+
 
 
 
@@ -397,17 +342,24 @@ namespace TP1
 
             if (tarjeta != null)
             {
+
                 CajaDeAhorro? caja = cajas.Where(caja => caja._cbu == cbuCajaAhorro && caja._saldo >= tarjeta._consumos).FirstOrDefault();
 
                 if (caja != null)
                 {
+
+
                     try
                     {
-                       double  saldoActualizado = caja._saldo - tarjeta._consumos;
+
+                        double saldoActualizado = caja._saldo - tarjeta._consumos;
                         DB.actualizaSaldoCajaAhorro(cbuCajaAhorro, saldoActualizado);
                         caja._saldo = saldoActualizado;
+                        AltaMovimiento(caja, "Consumos de Tarjeta", tarjeta._consumos);
                         tarjeta._consumos = 0;
                         DB.actualizaConsumoTarjeta(numeroTarjeta, 0);
+
+
 
                         return true;
 
@@ -495,10 +447,10 @@ namespace TP1
             }
             else
             {
-                return false;  
+                return false;
             }
 
-            
+
         }
 
         public bool EliminarUsuario(int id)
@@ -580,18 +532,25 @@ namespace TP1
 
         }
 
+
         public bool AltaMovimiento(CajaDeAhorro caja, string detalle, double monto)
         {
             try
             {
-                Movimiento movi = new Movimiento(caja, detalle, monto);
-                caja._movimientos.Add(movi);
-                movimientos.Add(movi);
-                /*DB.agregarMovimiento(caja._id,detalle,monto,DateTime.Now)*/
+                int idAux = DB.agregarMovimiento(caja._id, detalle, monto, DateTime.Now);
+
+                Movimiento muvi = new Movimiento(idAux, caja._id, detalle, monto, DateTime.Now);
+                movimientos.Add(muvi);
+                caja._movimientos.Add(muvi);
+
                 return true;
             }
             catch (Exception ex) { return false; }
         }
+
+
+
+
 
         public void ModificarMovimiento()
         {
@@ -669,9 +628,12 @@ namespace TP1
 
                                     if (pago._pagado == false)
                                     {
-                                        if(DB.actualizaConsumoTarjeta(tc._numero, pago._monto)) {
-                                  
-                                            pago._pagado = true;           
+                                        if (DB.actualizaConsumoTarjeta(tc._numero, pago._monto))
+                                        {
+                                            tc._consumos = tc._consumos + pago._monto;
+
+
+                                            pago._pagado = true;
                                             return DB.cambioPago(id); ;
                                         }
 
@@ -743,7 +705,7 @@ namespace TP1
             catch (Exception ex) { return false; }
         }
 
-        public bool AltaPlazoFijo(double monto,String cbu)
+        public bool AltaPlazoFijo(double monto, String cbu)
         {
             CajaDeAhorro? caja = cajas.Where(caja => caja._cbu == cbu).FirstOrDefault();
             int id;
@@ -753,20 +715,20 @@ namespace TP1
                 if (caja._saldo > monto)
                 {
                     id = DB.agregarPlazoFijo(usuarioLogueado._id, monto, fechaFin.AddMonths(1));
-                    if (id>=0)
+                    if (id >= 0)
                     {
                         usuarioLogueado.pfs.Add(new PlazoFijo(usuarioLogueado, monto, fechaFin, 7));
-                        pfs.Add(new PlazoFijo(id, usuarioLogueado._id, monto, fechaFin.AddMonths(1), 7,0));
+                        pfs.Add(new PlazoFijo(id, usuarioLogueado._id, monto, fechaFin.AddMonths(1), 7, 0));
                         return true;
                     }
-                   
-                    
+
+
                 }
-                
-                
-                 return false;
-                
-                
+
+
+                return false;
+
+
             }
             catch (Exception ex) { return false; }
         }
@@ -780,15 +742,15 @@ namespace TP1
         {
             MessageBox.Show("id:" + id);
             PlazoFijo? plazo = pfs.Where(plazo => plazo._id == id).FirstOrDefault();
-         
-            
 
-            
+
+
+
             try
             {
-                
 
-                if (plazo._pagado==1)
+
+                if (plazo._pagado == 1)
                 {
                     DB.bajaPlazoFijo(id);
                 }
@@ -797,39 +759,10 @@ namespace TP1
 
                     return false;
                 }
-                
 
 
-                /*
-                foreach (PlazoFijo pf in pfs)
-                {
-                    if (pf._id == id)
-                    {
-                        if (pf._pagado = true && (System.DateTime.Now - pf._fechaFin).TotalDays > 30)
-                        {
-                            pfs.Remove(pf);
-                            //DB.bajaPlazoFijo(id);
-                        }
-                    }
-                }
 
-                foreach (Usuario usuario in usuarios)
-                {
-                    if (usuario._id == id_user)
-                    {
-                        foreach (PlazoFijo pf in usuario.pfs)
-                        {
-                            if (pf._id == id)
-                            {
-                                if (pf._pagado = true && (System.DateTime.Now - pf._fechaFin).TotalDays > 30)
-                                {
-                                    pfs.Remove(pf);
-                                }
-                            }
-                        }
-                    }
-                }
-               */ return true;
+                return true;
             }
             catch (Exception ex) { return false; }
 
@@ -911,7 +844,7 @@ namespace TP1
 
         public List<CajaDeAhorro> MostrarCajasDeAhorro()
         {
-            if (usuarioLogueado._esUsuarioAdmin==true)
+            if (usuarioLogueado._esUsuarioAdmin == true)
             {
                 return cajas;
             }
@@ -919,7 +852,7 @@ namespace TP1
             {
                 return DB.buscaCajasAhorroDeUsuario(usuarioLogueado._id).ToList();
             }
-            
+
         }
 
 
@@ -937,10 +870,7 @@ namespace TP1
             }
             return movimientosCaja;
 
-            /*
-             movimientosCaja = DB.buscarMovimientos(id_caja);
-             return movimientosCaja.ToList();
-             */
+
 
         }
 
@@ -966,22 +896,14 @@ namespace TP1
         public List<PlazoFijo> MostrarPf()
         {
 
-            /*
-            
-            if(usuarioLogeado.esUsuarioAdmin==true){
-                return pfs.ToList();
-            }else{
-                List<PlazoFijo> plazoAux = new List <PlazoFijo>();
-                plazoAux= DB.buscarPlazoFijo(usuarioLogueado._id);
-            }
-             */
+
             return pfs.ToList();
         }
 
         public List<PlazoFijo> MostrarPfUsuario()
         {
 
-            if (usuarioLogueado._esUsuarioAdmin==true)
+            if (usuarioLogueado._esUsuarioAdmin == true)
             {
                 return pfs.ToList();
             }
@@ -989,15 +911,16 @@ namespace TP1
             {
                 return DB.buscaPlazoFijo(usuarioLogueado._id);
             }
-           
+
         }
 
         public bool esAdmin()
         {
             if (usuarioLogueado._esUsuarioAdmin)
-            { 
+            {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
@@ -1006,7 +929,7 @@ namespace TP1
 
         public List<TarjetaDeCredito> MostrarTarjetasDeCredito()
         {
-            if (usuarioLogueado._esUsuarioAdmin==true)
+            if (usuarioLogueado._esUsuarioAdmin == true)
             {
                 return tarjetas.ToList();
             }
@@ -1014,7 +937,7 @@ namespace TP1
             {
                 return DB.buscaTarjetasDeCreditoUsuario(usuarioLogueado._id);
             }
-            
+
 
         }
 
@@ -1024,7 +947,7 @@ namespace TP1
             return int.TryParse(input, out test);
         }
 
-      
+
         public List<Usuario> mostrarUsuarios()
         {
             if (usuarioLogueado._esUsuarioAdmin == true)
@@ -1036,9 +959,10 @@ namespace TP1
                 List<Usuario> usuarioss = new List<Usuario>();
                 return usuarioss;
             }
-            
-            
+
+
         }
+
 
 
     }

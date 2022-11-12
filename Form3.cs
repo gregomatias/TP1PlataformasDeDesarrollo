@@ -475,7 +475,7 @@ namespace TP1
             }
             else
             {
-                MessageBox.Show("El pago no pudo realizarse");
+                MessageBox.Show("El pago no pudo realizarse-Seleccione el ID de fila");
             }
         }
 
@@ -503,7 +503,7 @@ namespace TP1
             }
             else
             {
-                MessageBox.Show("El pago no pudo eliminarse");
+                MessageBox.Show("El pago no pudo eliminarse-Seleccione el ID de fila");
             }
 
         }

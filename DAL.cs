@@ -577,10 +577,11 @@ namespace TP1
 
         public bool actualizaConsumoTarjeta(string numeroTarjeta, double consumos)
         {
+          
             int resultadoQuery;
 
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "UPDATE [dbo].[TARJETA_CREDITO] SET [CONSUMOS]=[CONSUMOS]+@consumos WHERE [NUMERO]=@numeroTarjeta;";
+            string queryString = "UPDATE [dbo].[TARJETA_CREDITO] SET [CONSUMOS]=@consumos WHERE [NUMERO]=@numeroTarjeta;";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
@@ -602,7 +603,7 @@ namespace TP1
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
 
                 }
 
