@@ -63,7 +63,7 @@ namespace TP1
             if (  banco.IniciarSesion(dni, txtB_contrasena.Text))
             {
                 formUsuarioLogueado = new Form3(banco, TransfDelegadoForm3);
-                formUsuarioLogueado.Show();
+                formUsuarioLogueado.Show();             
                 this.Hide();
 
             }

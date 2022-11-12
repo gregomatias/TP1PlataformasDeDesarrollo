@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
@@ -34,7 +35,9 @@ namespace TP1
             this.cargaCajasAhorro();
             this.cargaTarjetasDeCredito();
             this.cargaPlazoFijo();
-
+            this.cargaUsuarios();
+            if(!banco.esAdmin())
+                this.tabControl1.TabPages.Remove(tabUsuarios);
 
         }
         public Form3(object[] args)
@@ -269,7 +272,8 @@ namespace TP1
                 else { montoFiltro = 0; }
 
                 List<Movimiento> listaMovimientos = new List<Movimiento>();
-                listaMovimientos = banco.BuscarMovimiento(comboBox3_movimientos.SelectedIndex,
+
+                listaMovimientos = banco.BuscarMovimiento(comboBox3_movimientos.Text,
                 txtb_filtro_detalle.Text, dateTimePicker_filtro.Value, montoFiltro);
 
                 dataGridView_movimiento.Rows.Clear();
@@ -280,7 +284,7 @@ namespace TP1
                 foreach (Movimiento intem in listaMovimientos)
                 {
                     fila = dataGridView_movimiento.Rows.Add();
-                    dataGridView_movimiento.Rows[fila].Cells[0].Value = intem._cajaDeAhorro._cbu;
+                    dataGridView_movimiento.Rows[fila].Cells[0].Value = banco.buscarCBU(intem._id_CajaDeAhorro);
                     dataGridView_movimiento.Rows[fila].Cells[1].Value = intem._detalle;
                     dataGridView_movimiento.Rows[fila].Cells[2].Value = intem._monto;
                     dataGridView_movimiento.Rows[fila].Cells[3].Value = intem._fecha;
@@ -672,12 +676,11 @@ namespace TP1
 
                 fila = dataGridPlazo.Rows.Add();
                 dataGridPlazo.Rows[fila].Cells[0].Value = pf._id;
-                dataGridPlazo.Rows[fila].Cells[1].Value = pf._id_usuario;
-                dataGridPlazo.Rows[fila].Cells[2].Value = pf._monto;
-                dataGridPlazo.Rows[fila].Cells[3].Value = pf._fechaIni;
-                dataGridPlazo.Rows[fila].Cells[4].Value = pf._fechaFin;
-                dataGridPlazo.Rows[fila].Cells[5].Value = pf._tasa;
-                dataGridPlazo.Rows[fila].Cells[6].Value = pf._pagado;
+                dataGridPlazo.Rows[fila].Cells[1].Value = pf._monto;
+                dataGridPlazo.Rows[fila].Cells[2].Value = pf._fechaIni;
+                dataGridPlazo.Rows[fila].Cells[3].Value = pf._fechaFin;
+                dataGridPlazo.Rows[fila].Cells[4].Value = pf._tasa;
+                dataGridPlazo.Rows[fila].Cells[5].Value = pf._pagado;
 
             }
         }
@@ -694,6 +697,48 @@ namespace TP1
                 cBox_tarjeta.Items.Add(tc._numero);
             }
 
+        }
+
+        private void buttonDesbloquear_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (banco.desbloquearUsuario(int.Parse(dataGridUsuarios.CurrentCell.Value.ToString())))
+                {
+
+                    MessageBox.Show("El Usuario ha sido desbloqueado");
+                }
+                else
+                {
+                    MessageBox.Show("El usuario seleccionado no se encuentra bloqueado");
+
+                }
+                cargaUsuarios();
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+
+
+        private void cargaUsuarios()
+        {
+            int fila;
+            dataGridUsuarios.Rows.Clear();
+            dataGridUsuarios.Refresh();
+            List<Usuario> listaUsuario = new List<Usuario>();
+            listaUsuario = banco.mostrarUsuarios();
+            foreach (Usuario Us in listaUsuario)
+            {
+
+                fila = dataGridUsuarios.Rows.Add();
+                dataGridUsuarios.Rows[fila].Cells[0].Value = Us._id;
+                dataGridUsuarios.Rows[fila].Cells[1].Value = Us._dni;
+                dataGridUsuarios.Rows[fila].Cells[2].Value = Us._nombre;
+                dataGridUsuarios.Rows[fila].Cells[3].Value = Us._apellido;
+                dataGridUsuarios.Rows[fila].Cells[4].Value = Us._bloqueado;
+
+
+            }
         }
     }
 }

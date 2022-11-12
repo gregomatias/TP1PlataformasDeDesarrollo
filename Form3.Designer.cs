@@ -45,7 +45,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.dataGridPlazo = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id_usuario = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Monto = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fecha_ini = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fecha_fin = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -110,10 +109,19 @@
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabUsuarios = new System.Windows.Forms.TabPage();
+            this.label17 = new System.Windows.Forms.Label();
+            this.buttonDesbloquear = new System.Windows.Forms.Button();
+            this.dataGridUsuarios = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -128,6 +136,8 @@
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_movimiento)).BeginInit();
+            this.tabUsuarios.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridUsuarios)).BeginInit();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -201,6 +211,7 @@
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage7);
+            this.tabControl1.Controls.Add(this.tabUsuarios);
             this.tabControl1.Location = new System.Drawing.Point(26, 72);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -298,7 +309,6 @@
             this.dataGridPlazo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridPlazo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
-            this.id_usuario,
             this.Monto,
             this.fecha_ini,
             this.fecha_fin,
@@ -308,18 +318,13 @@
             this.dataGridPlazo.Name = "dataGridPlazo";
             this.dataGridPlazo.RowHeadersWidth = 51;
             this.dataGridPlazo.RowTemplate.Height = 29;
-            this.dataGridPlazo.Size = new System.Drawing.Size(549, 268);
+            this.dataGridPlazo.Size = new System.Drawing.Size(554, 268);
             this.dataGridPlazo.TabIndex = 0;
             // 
             // id
             // 
             this.id.HeaderText = "Id";
             this.id.Name = "id";
-            // 
-            // id_usuario
-            // 
-            this.id_usuario.HeaderText = "Column1";
-            this.id_usuario.Name = "id_usuario";
             // 
             // Monto
             // 
@@ -930,6 +935,53 @@
             this.dataGridViewTextBoxColumn8.ReadOnly = true;
             this.dataGridViewTextBoxColumn8.Width = 90;
             // 
+            // tabUsuarios
+            // 
+            this.tabUsuarios.Controls.Add(this.label17);
+            this.tabUsuarios.Controls.Add(this.buttonDesbloquear);
+            this.tabUsuarios.Controls.Add(this.dataGridUsuarios);
+            this.tabUsuarios.Location = new System.Drawing.Point(4, 24);
+            this.tabUsuarios.Name = "tabUsuarios";
+            this.tabUsuarios.Padding = new System.Windows.Forms.Padding(3);
+            this.tabUsuarios.Size = new System.Drawing.Size(793, 294);
+            this.tabUsuarios.TabIndex = 7;
+            this.tabUsuarios.Text = "Usuarios";
+            this.tabUsuarios.UseVisualStyleBackColor = true;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(534, 56);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(259, 15);
+            this.label17.TabIndex = 2;
+            this.label17.Text = "Seleccione un id de usuario para desbloquear";
+            // 
+            // buttonDesbloquear
+            // 
+            this.buttonDesbloquear.Location = new System.Drawing.Point(625, 159);
+            this.buttonDesbloquear.Name = "buttonDesbloquear";
+            this.buttonDesbloquear.Size = new System.Drawing.Size(90, 43);
+            this.buttonDesbloquear.TabIndex = 1;
+            this.buttonDesbloquear.Text = "Desbloquear Usuario";
+            this.buttonDesbloquear.UseVisualStyleBackColor = true;
+            this.buttonDesbloquear.Click += new System.EventHandler(this.buttonDesbloquear_Click);
+            // 
+            // dataGridUsuarios
+            // 
+            this.dataGridUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridUsuarios.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn9,
+            this.Column2,
+            this.Column3,
+            this.Column4,
+            this.Column5});
+            this.dataGridUsuarios.Location = new System.Drawing.Point(-4, 0);
+            this.dataGridUsuarios.Name = "dataGridUsuarios";
+            this.dataGridUsuarios.RowTemplate.Height = 25;
+            this.dataGridUsuarios.Size = new System.Drawing.Size(534, 298);
+            this.dataGridUsuarios.TabIndex = 0;
+            // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(41)))), ((int)(((byte)(30)))));
@@ -969,6 +1021,33 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Online Banking";
             // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "DNI";
+            this.Column2.Name = "Column2";
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Nombre";
+            this.Column3.Name = "Column3";
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Apellido";
+            this.Column4.Name = "Column4";
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "Bloqueado";
+            this.Column5.Name = "Column5";
+            this.Column5.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
             // Form3
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1003,6 +1082,9 @@
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_movimiento)).EndInit();
+            this.tabUsuarios.ResumeLayout(false);
+            this.tabUsuarios.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridUsuarios)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
@@ -1091,14 +1173,22 @@
         private TextBox textBoxPlazo;
         private ComboBox comboBoxPlazo;
         private Label label16;
+        private DataGridViewCheckBoxColumn pagado;
         private DataGridViewTextBoxColumn id;
-        private DataGridViewTextBoxColumn id_usuario;
         private DataGridViewTextBoxColumn Monto;
         private DataGridViewTextBoxColumn fecha_ini;
         private DataGridViewTextBoxColumn fecha_fin;
         private DataGridViewTextBoxColumn tasa;
-        private DataGridViewCheckBoxColumn pagado;
         private DataGridViewTextBoxColumn Column1;
+        private TabPage tabUsuarios;
+        private Label label17;
+        private Button buttonDesbloquear;
+        private DataGridView dataGridUsuarios;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column3;
+        private DataGridViewTextBoxColumn Column4;
+        private DataGridViewCheckBoxColumn Column5;
     }
 
 }

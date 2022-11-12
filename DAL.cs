@@ -154,6 +154,39 @@ namespace TP1
 
             }
         }
+
+        public void desbloquearUsuario(int id)
+        {
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "UPDATE [dbo].[USUARIO] SET [BLOQUEADO]=0 WHERE [ID]=@id;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                command.Parameters["@id"].Value = id;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                }
+
+            }
+        }
+
+         
+
+
         public void actualizaIntentosDeLogueo(int Dni,int numeroDeIntento)
         {
 
@@ -461,6 +494,45 @@ namespace TP1
 
             }
             return id;
+
+        }
+
+        public string buscarCbuById(int id)
+        {
+            string cbu = "";
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "SELECT CBU FROM [dbo].[CAJA_AHORRO] WHERE [ID]=@id;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.NVarChar));
+                command.Parameters["@id"].Value = id;
+
+
+                try
+                {
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    cbu = reader.GetString(0);
+                    reader.Close();
+
+                    connection.Close();
+
+                    return cbu;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+
+                }
+
+            }
+            return cbu;
 
         }
 
@@ -878,7 +950,7 @@ namespace TP1
             List<PlazoFijo> plazoFijoReturn = new List<PlazoFijo>();
 
             string queryString = "select * from dbo.PLAZO_FIJO";
-            string queryString2 = "UPDATE [dbo].[PLAZO_FIJO] SET [PAGADO]=1 WHERE [FECHA_FIN]>GETDATE();";
+            string queryString2 = "UPDATE [dbo].[PLAZO_FIJO] SET [PAGADO]=1 WHERE [FECHA_FIN]>=GETDATE();";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
@@ -1177,7 +1249,7 @@ namespace TP1
                     }
                     reader.Close();
                 }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
+                catch (Exception ex) { MessageBox.Show(ex.Message); }
             }
 
 

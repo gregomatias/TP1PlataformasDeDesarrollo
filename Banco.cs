@@ -204,6 +204,7 @@ namespace TP1
 
                     DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
                     caja._saldo = saldoActualizado;
+                    DB.agregarMovimiento(caja._id, "Deposito", monto, DateTime.Now);
                     Movimiento movimiento = new Movimiento(caja, "Deposito", monto);
                     movimientos.Add(movimiento);
                     caja._movimientos.Add(movimiento);
@@ -234,6 +235,7 @@ namespace TP1
 
                     DB.actualizaSaldoCajaAhorro(cbu, saldoActualizado);
                     caja._saldo = saldoActualizado;
+                    DB.agregarMovimiento(caja._id, "Retiro", monto, DateTime.Now);
                     Movimiento movimiento = new Movimiento(caja, "Retiro", monto);
                     movimientos.Add(movimiento);
                     caja._movimientos.Add(movimiento);
@@ -263,8 +265,10 @@ namespace TP1
                     cajaEmisor._saldo = saldoEmisor;
                     cajaDestino._saldo = saldoDestino;
 
+                    DB.agregarMovimiento(cajaEmisor._id, "Transferencia emitida", monto, DateTime.Now);
+                    DB.agregarMovimiento(cajaDestino._id, "Transferencia recibida", monto, DateTime.Now);
                     Movimiento movimientoEmisor = new Movimiento(cajaEmisor, "Transferencia emitida", monto);
-                    Movimiento movimientoDestino = new Movimiento(cajaDestino, "Transferencia emitida", monto);
+                    Movimiento movimientoDestino = new Movimiento(cajaDestino, "Transferencia recibida", monto);
                     movimientos.Add(movimientoEmisor);
                     movimientos.Add(movimientoDestino);
                     DB.actualizaSaldoCajaAhorro(cbuEmisor, saldoEmisor);
@@ -291,7 +295,7 @@ namespace TP1
 
             foreach (Movimiento movimiento in caja._movimientos)
             {
-                if (movimiento._cajaDeAhorro == caja)
+                if (movimiento._id_CajaDeAhorro == caja._id)
                 {
                     if (movimiento._detalle == detalle || movimiento._fecha.Date == fecha.Value.Date || movimiento._monto == monto)
                     {
@@ -348,14 +352,29 @@ namespace TP1
 
         }
 
+        public string buscarCBU(int id)
+        {
+            string cbu = "";
+            try
+            {
+                cbu = DB.buscarCbuById(id);
+            } 
+            catch(Exception ex)
+            {
+                MessageBox.Show("Se produjo un error: " +ex.Message);
+            }
 
-        public List<Movimiento> BuscarMovimiento(int cbu, string detalle = "default", DateTime? fecha = null, float monto = 0)
+            return cbu;
+        }
+
+
+        public List<Movimiento> BuscarMovimiento(string idCaja, string detalle = "default", DateTime? fecha = null, float monto = 0)
         {
             List<Movimiento> listaMovimientos = new List<Movimiento>();
             usuarioLogueado.cajas = DB.buscaCajasAhorroDeUsuario(usuarioLogueado._id);
             foreach (CajaDeAhorro caja in usuarioLogueado.cajas)
             {
-                if (caja._cbu.Equals(cbu))
+                if (caja._cbu.Equals(idCaja))
                 {
 
                     listaMovimientos = BuscarMovimiento(caja, detalle, fecha, monto);
@@ -462,6 +481,24 @@ namespace TP1
                 return true;
             }
             catch (Exception ex) { return false; }
+        }
+
+        public bool desbloquearUsuario(int id)
+        {
+            Usuario? Us = usuarios.Where(US => US._id == id).FirstOrDefault();
+
+            if (Us._bloqueado == true)
+            {
+                DB.desbloquearUsuario(id);
+                Us._bloqueado = false;
+                return true;
+            }
+            else
+            {
+                return false;  
+            }
+
+            
         }
 
         public bool EliminarUsuario(int id)
@@ -874,8 +911,15 @@ namespace TP1
 
         public List<CajaDeAhorro> MostrarCajasDeAhorro()
         {
-
-            return DB.buscaCajasAhorroDeUsuario(usuarioLogueado._id).ToList();
+            if (usuarioLogueado._esUsuarioAdmin==true)
+            {
+                return cajas;
+            }
+            else
+            {
+                return DB.buscaCajasAhorroDeUsuario(usuarioLogueado._id).ToList();
+            }
+            
         }
 
 
@@ -886,7 +930,7 @@ namespace TP1
             List<Movimiento> movimientosCaja = new List<Movimiento>();
             foreach (Movimiento movimiento in movimientos)
             {
-                if (movimiento._cajaDeAhorro._id == id_caja)
+                if (movimiento._id_CajaDeAhorro == id_caja)
                 {
                     movimientosCaja.Add(movimiento);
                 }
@@ -937,23 +981,40 @@ namespace TP1
         public List<PlazoFijo> MostrarPfUsuario()
         {
 
-            /*
-            
-            if(usuarioLogeado.esUsuarioAdmin==true){
+            if (usuarioLogueado._esUsuarioAdmin==true)
+            {
                 return pfs.ToList();
-            }else{
-                List<PlazoFijo> plazoAux = new List <PlazoFijo>();
-                plazoAux= DB.buscarPlazoFijo(usuarioLogueado._id);
             }
-             */
-            return DB.buscaPlazoFijo(usuarioLogueado._id);
+            else
+            {
+                return DB.buscaPlazoFijo(usuarioLogueado._id);
+            }
+           
         }
 
+        public bool esAdmin()
+        {
+            if (usuarioLogueado._esUsuarioAdmin)
+            { 
+                return true;
+            } else
+            {
+                return false;
+            }
+
+        }
 
         public List<TarjetaDeCredito> MostrarTarjetasDeCredito()
         {
-
-            return tarjetas.ToList();
+            if (usuarioLogueado._esUsuarioAdmin==true)
+            {
+                return tarjetas.ToList();
+            }
+            else
+            {
+                return DB.buscaTarjetasDeCreditoUsuario(usuarioLogueado._id);
+            }
+            
 
         }
 
@@ -963,8 +1024,21 @@ namespace TP1
             return int.TryParse(input, out test);
         }
 
-
-
+      
+        public List<Usuario> mostrarUsuarios()
+        {
+            if (usuarioLogueado._esUsuarioAdmin == true)
+            {
+                return usuarios.ToList();
+            }
+            else
+            {
+                List<Usuario> usuarioss = new List<Usuario>();
+                return usuarioss;
+            }
+            
+            
+        }
 
 
     }

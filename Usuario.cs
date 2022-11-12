@@ -8,14 +8,14 @@ namespace TP1
 {
     internal class Usuario
     {
-        static private int id;
+        private int id;
         private int dni;
         private string nombre;
         private string apellido;
         private string mail;
         private string password;
         private int intentosFallidos;
-        private bool esUsuarioAdmin;
+        private bool/*int*/ esUsuarioAdmin;
         private bool bloqueado;
 
         public List<PlazoFijo> pfs = new List<PlazoFijo>();
@@ -23,7 +23,7 @@ namespace TP1
         public List<Pago> pagos = new List<Pago>();
         public List<CajaDeAhorro> cajas = new List<CajaDeAhorro>();
 
-        public Usuario(int id,int dni, string nombre, string apellido, string mail, string password, bool bloqueado,bool esUsuarioAdmin,int intentosFallidos)
+        public Usuario(int id,int dni, string nombre, string apellido, string mail, string password, bool bloqueado,bool/*int*/ esUsuarioAdmin,int intentosFallidos)
         {
             _id = id;
             _dni = dni;
