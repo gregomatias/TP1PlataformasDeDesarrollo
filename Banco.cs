@@ -454,22 +454,85 @@ namespace TP1
 
         }
 
-        public bool EliminarUsuario(int id)
+        public bool EliminarUsuario(int id_usuario)
         {
             try
             {
+
+                //Elimino relacion usuario con cajas de ahorro.Plazo Fijo y Tarjeta
+
+                DB.eliminaRelacionUsuarioCajaAhorro(id_usuario);
+                DB.eliminaRegistrosTarjetasDeCreditoDelUsuario(id_usuario);
+                DB.eliminaRegistrosPlazosFijoDelUsuario(id_usuario);
+                DB.eliminaRegistrosPagosDelUsuarioAEliminar(id_usuario);
+
+
+                List<CajaDeAhorro> cajasDelUsuario = DB.buscaCajasAhorroDeUsuario(id_usuario);
+                List<CajaDeAhorro>? cajasConUnSoloTitular = new List<CajaDeAhorro>();
+                List<CajaDeAhorro>? cajasAEliminar = new List<CajaDeAhorro>();
+
+                //Cargo cajas con 1 solo titular para eliminarlas
+                cajasDelUsuario.ForEach(delegate (CajaDeAhorro caja)
+                {
+                    if (caja._titulares.Count() == 1)
+                    {
+                        cajasConUnSoloTitular.Add(caja);
+                        MessageBox.Show("Encontro 1 caja con 1: " + caja._id);
+                    }
+                });
+
+
+                //Elimino las anteriores de las listas de cajas y usuario.cajas
+                cajasDelUsuario.ForEach(delegate (CajaDeAhorro cajaUnica)
+                {
+                    cajas.ForEach(delegate (CajaDeAhorro caja)
+                    {
+
+                        if (caja._id == cajaUnica._id)
+                        {
+
+                            cajasAEliminar.Add(caja);
+
+
+                        }
+                    });
+
+                });
+
+                //Elimino las cajas
+           
+
+                foreach (CajaDeAhorro caja in cajasAEliminar)
+                {
+                    cajasAEliminar.Remove(caja);
+
+                    DB.eliminamMovimientosPorIdDeCaja(caja._id);
+                    DB.bajaCajaDeAhorro(caja._id);
+                    MessageBox.Show("Elimino 1 caja con 1: " + caja._id);
+                }
+
+
+                //Elimino El usuario
                 foreach (Usuario usuario in usuarios)
                 {
-                    if (usuario._id == id)
+                    if (usuario._id == id_usuario)
                     {
                         usuarios.Remove(usuario);
+                        DB.bajaUsuario(id_usuario);
 
                     }
 
                 }
+
+
                 return true;
+
             }
-            catch (Exception ex) { return false; }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
         }
 
 
@@ -493,6 +556,7 @@ namespace TP1
                                 if (DB.bajaTitularCajaDeAhorro(titular))
                                 {
                                     cajaBuscada._titulares.Remove(titular);
+                                    usuarioLogueado._Cajas.Remove(cajaBuscada);
                                     return true;
                                 }
 
@@ -505,14 +569,15 @@ namespace TP1
                 {
                     int idInternoTitular = 0;
 
-                     idInternoTitular = cajaBuscada._titulares.Find(id => id== Titular);
+                    idInternoTitular = cajaBuscada._titulares.Find(id => id == Titular);
 
-                    MessageBox.Show("Id Titular: "+idInternoTitular);
+
 
                     //Si la caja no tiene el titular, lo inserta:
-                    if (idInternoTitular==0&& DB.altaTitularCajaDeAhorro(Titular, cajaBuscada._id) )
+                    if (idInternoTitular == 0 && DB.altaTitularCajaDeAhorro(Titular, cajaBuscada._id))
                     {
                         cajaBuscada._titulares.Add(Titular);
+                        usuarioLogueado._Cajas.Add(cajaBuscada);
                         return true;
 
                     }
@@ -752,7 +817,7 @@ namespace TP1
 
         public bool BajaPlazoFijo(int id)
         {
-            MessageBox.Show("id:" + id);
+           
             PlazoFijo? plazo = pfs.Where(plazo => plazo._id == id).FirstOrDefault();
 
 

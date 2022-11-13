@@ -963,10 +963,10 @@
             this.tabUsuarios.Controls.Add(this.label17);
             this.tabUsuarios.Controls.Add(this.buttonDesbloquear);
             this.tabUsuarios.Controls.Add(this.dataGridUsuarios);
-            this.tabUsuarios.Location = new System.Drawing.Point(4, 29);
+            this.tabUsuarios.Location = new System.Drawing.Point(4, 27);
             this.tabUsuarios.Name = "tabUsuarios";
             this.tabUsuarios.Padding = new System.Windows.Forms.Padding(3);
-            this.tabUsuarios.Size = new System.Drawing.Size(793, 289);
+            this.tabUsuarios.Size = new System.Drawing.Size(793, 291);
             this.tabUsuarios.TabIndex = 7;
             this.tabUsuarios.Text = "Usuarios";
             this.tabUsuarios.UseVisualStyleBackColor = true;
@@ -979,6 +979,7 @@
             this.btn_eliminarUsuario.TabIndex = 3;
             this.btn_eliminarUsuario.Text = "Eliminar";
             this.btn_eliminarUsuario.UseVisualStyleBackColor = true;
+            this.btn_eliminarUsuario.Click += new System.EventHandler(this.btn_eliminarUsuario_Click);
             // 
             // label17
             // 

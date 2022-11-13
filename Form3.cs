@@ -814,6 +814,31 @@ namespace TP1
             else { MessageBox.Show("Usuario y Caja Son Necesarios"); }
 
         }
+
+        private void btn_eliminarUsuario_Click(object sender, EventArgs e)
+        {
+         
+
+            try
+            {
+                if (banco.EliminarUsuario(int.Parse(dataGridUsuarios.CurrentCell.Value.ToString())))
+                {
+
+                    MessageBox.Show("El Usuario ha sido eliminado");
+                }
+                else
+                {
+                    MessageBox.Show("El usuario no pudo eliminarse");
+
+                }
+                cargaUsuarios();
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+
+
+
+
+        }
     }
 }
 

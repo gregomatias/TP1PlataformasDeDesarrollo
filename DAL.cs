@@ -627,8 +627,8 @@ namespace TP1
             {
 
                 SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.NVarChar));
-                command.Parameters["@cbu"].Value = id;
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                command.Parameters["@id"].Value = id;
 
                 try
                 {
@@ -642,7 +642,7 @@ namespace TP1
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                     connection.Close();
                     return false;
                 }
@@ -657,8 +657,7 @@ namespace TP1
             int resultadoQuery;
 
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "DELETE FROM [dbo].[CAJA_AHORRO] WHERE [ID]=@id;" +
-                "";
+            string queryString = "DELETE FROM [dbo].[USUARIO] WHERE [ID]=@id_usuario;";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
@@ -679,7 +678,7 @@ namespace TP1
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                  MessageBox.Show(ex.Message);
                     connection.Close();
                     return false;
                 }
@@ -1380,7 +1379,7 @@ namespace TP1
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-                    Console.WriteLine(ex.Message);
+                  
                     return -1;
                 }
                 return idNuevoPago;
@@ -1412,12 +1411,187 @@ namespace TP1
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                     return false;
                 }
 
             }
         }
+
+
+        public bool eliminaRelacionUsuarioCajaAhorro(int idUsuario)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "DELETE FROM [dbo].[USUARIO_CAJA_AHORRO]  WHERE [ID_USUARIO]=@idUsuario;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@idUsuario", SqlDbType.Int));
+                command.Parameters["@idUsuario"].Value = idUsuario;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return false;
+                }
+
+            }
+        }
+
+
+
+        public bool eliminaRegistrosPlazosFijoDelUsuario(int idUsuario)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "DELETE FROM [dbo].[PLAZO_FIJO]  WHERE [ID_USUARIO]=@idUsuario;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@idUsuario", SqlDbType.Int));
+                command.Parameters["@idUsuario"].Value = idUsuario;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return false;
+                }
+
+            }
+        }
+
+
+
+        public bool eliminaRegistrosPagosDelUsuarioAEliminar(int idUsuario)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "DELETE FROM [dbo].[PAGO]  WHERE [ID_USUARIO]=@idUsuario;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@idUsuario", SqlDbType.Int));
+                command.Parameters["@idUsuario"].Value = idUsuario;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return false;
+                }
+
+            }
+        }
+
+
+
+        public bool eliminaRegistrosTarjetasDeCreditoDelUsuario(int idUsuario)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "DELETE FROM [dbo].[TARJETA_CREDITO] WHERE [ID_USUARIO]=@idUsuario;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@idUsuario", SqlDbType.Int));
+                command.Parameters["@idUsuario"].Value = idUsuario;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return false;
+                }
+
+            }
+        }
+
+
+
+        public bool eliminamMovimientosPorIdDeCaja(int caja)
+        {
+
+            int resultadoQuery;
+
+            string connectionString = Properties.Resources.stringDeConexion;
+            string queryString = "DELETE FROM [dbo].[TARJETA_CREDITO] WHERE [ID_USUARIO]=@caja;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@caja", SqlDbType.Int));
+                command.Parameters["@caja"].Value = caja;
+
+                try
+                {
+                    connection.Open();
+                    resultadoQuery = command.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return false;
+                }
+
+            }
+        }
+
+
+
+
+
+
 
 
         public List<Pago> buscarPago(int id_usuario)
