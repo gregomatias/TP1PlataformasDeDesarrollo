@@ -458,62 +458,62 @@ namespace TP1
         {
             try
             {
-
+                List<CajaDeAhorro> cajasDelUsuario = DB.buscaCajasAhorroDeUsuario(id_usuario);
                 //Elimino relacion usuario con cajas de ahorro.Plazo Fijo y Tarjeta
-
                 DB.eliminaRelacionUsuarioCajaAhorro(id_usuario);
                 DB.eliminaRegistrosTarjetasDeCreditoDelUsuario(id_usuario);
                 DB.eliminaRegistrosPlazosFijoDelUsuario(id_usuario);
                 DB.eliminaRegistrosPagosDelUsuarioAEliminar(id_usuario);
 
-
-                List<CajaDeAhorro> cajasDelUsuario = DB.buscaCajasAhorroDeUsuario(id_usuario);
+                //List<CajaDeAhorro> cajasDelUsuario = DB.buscaCajasAhorroDeUsuario(id_usuario);
                 List<CajaDeAhorro>? cajasConUnSoloTitular = new List<CajaDeAhorro>();
                 List<CajaDeAhorro>? cajasAEliminar = new List<CajaDeAhorro>();
 
                 //Cargo cajas con 1 solo titular para eliminarlas
-                cajasDelUsuario.ForEach(delegate (CajaDeAhorro caja)
+                foreach (CajaDeAhorro caja in cajasDelUsuario)
+                //cajasDelUsuario.ForEach(delegate (CajaDeAhorro caja)
                 {
                     if (caja._titulares.Count() == 1)
                     {
                         cajasConUnSoloTitular.Add(caja);
-                        MessageBox.Show("Encontro 1 caja con 1: " + caja._id);
                     }
-                });
+                //});
+                };
 
 
                 //Elimino las anteriores de las listas de cajas y usuario.cajas
-                cajasDelUsuario.ForEach(delegate (CajaDeAhorro cajaUnica)
+                foreach (CajaDeAhorro cajaUnica in cajasDelUsuario)
+                //cajasDelUsuario.ForEach(delegate (CajaDeAhorro cajaUnica)
                 {
-                    cajas.ForEach(delegate (CajaDeAhorro caja)
+                    foreach (CajaDeAhorro caja in cajas)
+                    //cajas.ForEach(delegate (CajaDeAhorro caja)
                     {
-
                         if (caja._id == cajaUnica._id)
                         {
-
                             cajasAEliminar.Add(caja);
 
-
                         }
-                    });
+                        //});
+                    }
 
-                });
+                //});
+                };
 
                 //Elimino las cajas
            
 
                 foreach (CajaDeAhorro caja in cajasAEliminar)
                 {
-                    cajasAEliminar.Remove(caja);
+                    cajas.Remove(caja);
 
                     DB.eliminamMovimientosPorIdDeCaja(caja._id);
                     DB.bajaCajaDeAhorro(caja._id);
-                    MessageBox.Show("Elimino 1 caja con 1: " + caja._id);
                 }
 
 
                 //Elimino El usuario
-                foreach (Usuario usuario in usuarios)
+                List<Usuario> listAuxUser = usuarios.ToList();
+                foreach (Usuario usuario in listAuxUser)
                 {
                     if (usuario._id == id_usuario)
                     {
@@ -523,7 +523,6 @@ namespace TP1
                     }
 
                 }
-
 
                 return true;
 
