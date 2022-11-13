@@ -36,8 +36,12 @@ namespace TP1
             this.cargaTarjetasDeCredito();
             this.cargaPlazoFijo();
             this.cargaUsuarios();
-            if(!banco.esAdmin())
-                this.tabControl1.TabPages.Remove(tabUsuarios);
+            //Valida Amin
+            if (!banco.esAdmin()) { 
+                this.tabControl.TabPages.Remove(tabUsuarios);
+                this.tabControl.TabPages.Remove(tabTrasladoCajas);
+           
+            }
 
         }
         public Form3(object[] args)
@@ -64,8 +68,7 @@ namespace TP1
             dataGridView1.Rows.Clear();
             dataGridView1.Refresh();
 
-            //agrego lo nuevo
-            //   dataGridView1.Rows.Add(user.toArray());
+
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -725,7 +728,7 @@ namespace TP1
             dataGridUsuarios.Rows.Clear();
             dataGridUsuarios.Refresh();
             List<Usuario> listaUsuario = new List<Usuario>();
-            listaUsuario = banco.mostrarUsuarios();
+            listaUsuario = banco.MostrarUsuarios();
             foreach (Usuario Us in listaUsuario)
             {
 
@@ -738,6 +741,78 @@ namespace TP1
 
 
             }
+        }
+
+        private void comBox_id_usuario_Traslado_Click(object sender, EventArgs e)
+        {
+
+            comBox_id_usuario_Traslado.Items.Clear();
+            comBox_id_usuario_Traslado.Refresh();
+            List<Usuario> listaUsuarios = new List<Usuario>();
+            listaUsuarios = banco.MostrarUsuarios();
+
+            foreach (Usuario usuario in listaUsuarios)
+            {
+                comBox_id_usuario_Traslado.Items.Add(usuario._id);
+            }
+
+        }
+
+        private void comBox_cbu_Traslado_Saldo_Click(object sender, EventArgs e)
+        {
+            comBox_cbu_Traslado_Saldo.Items.Clear();
+            comBox_cbu_Traslado_Saldo.Refresh();
+            List<CajaDeAhorro> listaCajaAhorro = new List<CajaDeAhorro>();
+            listaCajaAhorro = banco.MostrarCajasDeAhorro();
+
+            foreach (CajaDeAhorro caja in listaCajaAhorro)
+            {
+                comBox_cbu_Traslado_Saldo.Items.Add(caja._cbu);
+            }
+
+
+        }
+
+        private void btn_traslada_Caja_Click(object sender, EventArgs e)
+        {
+            if (comBox_cbu_Traslado_Saldo.Text != "" && comBox_id_usuario_Traslado.Text != "")
+            {
+
+                //Accion 1 es trasladar
+             if(banco.ModificarCajaDeAhorro(comBox_cbu_Traslado_Saldo.Text, int.Parse(comBox_id_usuario_Traslado.Text), 1))
+                {
+                    MessageBox.Show("Se  asoció el usuario a la caja de ahorro");
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo asociar la caja");
+                }
+
+            }
+            else { MessageBox.Show("Usuario y Caja Son Necesarios"); }
+
+
+
+        }
+
+        private void btn_elimina_Caja_Click(object sender, EventArgs e)
+        {
+            if (comBox_cbu_Traslado_Saldo.Text != "" && comBox_id_usuario_Traslado.Text != "")
+            {
+
+                //Accion 0 es Quitar
+                if (banco.ModificarCajaDeAhorro(comBox_cbu_Traslado_Saldo.Text, int.Parse(comBox_id_usuario_Traslado.Text), 0))
+                {
+                    MessageBox.Show("Se  quito el usuario a la caja de ahorro");
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo quitar la caja");
+                }
+
+            }
+            else { MessageBox.Show("Usuario y Caja Son Necesarios"); }
+
         }
     }
 }

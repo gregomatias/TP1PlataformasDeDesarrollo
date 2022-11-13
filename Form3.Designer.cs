@@ -34,7 +34,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.btn_crearCajaAhorro = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -110,6 +110,7 @@
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabUsuarios = new System.Windows.Forms.TabPage();
+            this.btn_eliminarUsuario = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.buttonDesbloquear = new System.Windows.Forms.Button();
             this.dataGridUsuarios = new System.Windows.Forms.DataGridView();
@@ -118,12 +119,19 @@
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.tabTrasladoCajas = new System.Windows.Forms.TabPage();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.btn_traslada_Caja = new System.Windows.Forms.Button();
+            this.btn_elimina_Caja = new System.Windows.Forms.Button();
+            this.comBox_id_usuario_Traslado = new System.Windows.Forms.ComboBox();
+            this.comBox_cbu_Traslado_Saldo = new System.Windows.Forms.ComboBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.tabControl1.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridPlazo)).BeginInit();
@@ -138,6 +146,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_movimiento)).BeginInit();
             this.tabUsuarios.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsuarios)).BeginInit();
+            this.tabTrasladoCajas.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -202,23 +211,24 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // tabControl1
+            // tabControl
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Controls.Add(this.tabPage5);
-            this.tabControl1.Controls.Add(this.tabPage6);
-            this.tabControl1.Controls.Add(this.tabPage7);
-            this.tabControl1.Controls.Add(this.tabUsuarios);
-            this.tabControl1.Location = new System.Drawing.Point(26, 72);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(801, 322);
-            this.tabControl1.TabIndex = 4;
-            this.tabControl1.TabStop = false;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.Controls.Add(this.tabPage3);
+            this.tabControl.Controls.Add(this.tabPage4);
+            this.tabControl.Controls.Add(this.tabPage5);
+            this.tabControl.Controls.Add(this.tabPage6);
+            this.tabControl.Controls.Add(this.tabPage7);
+            this.tabControl.Controls.Add(this.tabUsuarios);
+            this.tabControl.Controls.Add(this.tabTrasladoCajas);
+            this.tabControl.Location = new System.Drawing.Point(26, 72);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(801, 322);
+            this.tabControl.TabIndex = 4;
+            this.tabControl.TabStop = false;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -234,9 +244,9 @@
             // 
             // btn_crearCajaAhorro
             // 
-            this.btn_crearCajaAhorro.Location = new System.Drawing.Point(478, 24);
+            this.btn_crearCajaAhorro.Location = new System.Drawing.Point(504, 32);
             this.btn_crearCajaAhorro.Name = "btn_crearCajaAhorro";
-            this.btn_crearCajaAhorro.Size = new System.Drawing.Size(114, 46);
+            this.btn_crearCajaAhorro.Size = new System.Drawing.Size(168, 41);
             this.btn_crearCajaAhorro.TabIndex = 2;
             this.btn_crearCajaAhorro.Text = " Crear Caja";
             this.btn_crearCajaAhorro.UseVisualStyleBackColor = true;
@@ -832,10 +842,10 @@
             this.tabPage7.Controls.Add(this.btn_busca_movimiento);
             this.tabPage7.Controls.Add(this.comboBox3_movimientos);
             this.tabPage7.Controls.Add(this.dataGridView_movimiento);
-            this.tabPage7.Location = new System.Drawing.Point(4, 27);
+            this.tabPage7.Location = new System.Drawing.Point(4, 29);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(793, 291);
+            this.tabPage7.Size = new System.Drawing.Size(793, 289);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "Movimientos";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -949,33 +959,43 @@
             // 
             // tabUsuarios
             // 
+            this.tabUsuarios.Controls.Add(this.btn_eliminarUsuario);
             this.tabUsuarios.Controls.Add(this.label17);
             this.tabUsuarios.Controls.Add(this.buttonDesbloquear);
             this.tabUsuarios.Controls.Add(this.dataGridUsuarios);
-            this.tabUsuarios.Location = new System.Drawing.Point(4, 27);
+            this.tabUsuarios.Location = new System.Drawing.Point(4, 29);
             this.tabUsuarios.Name = "tabUsuarios";
             this.tabUsuarios.Padding = new System.Windows.Forms.Padding(3);
-            this.tabUsuarios.Size = new System.Drawing.Size(793, 291);
+            this.tabUsuarios.Size = new System.Drawing.Size(793, 289);
             this.tabUsuarios.TabIndex = 7;
             this.tabUsuarios.Text = "Usuarios";
             this.tabUsuarios.UseVisualStyleBackColor = true;
             // 
+            // btn_eliminarUsuario
+            // 
+            this.btn_eliminarUsuario.Location = new System.Drawing.Point(584, 101);
+            this.btn_eliminarUsuario.Name = "btn_eliminarUsuario";
+            this.btn_eliminarUsuario.Size = new System.Drawing.Size(158, 42);
+            this.btn_eliminarUsuario.TabIndex = 3;
+            this.btn_eliminarUsuario.Text = "Eliminar";
+            this.btn_eliminarUsuario.UseVisualStyleBackColor = true;
+            // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(534, 56);
+            this.label17.Location = new System.Drawing.Point(546, 11);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(307, 18);
+            this.label17.Size = new System.Drawing.Size(116, 18);
             this.label17.TabIndex = 2;
-            this.label17.Text = "Seleccione un id de usuario para desbloquear";
+            this.label17.Text = "Seleccione un id";
             // 
             // buttonDesbloquear
             // 
-            this.buttonDesbloquear.Location = new System.Drawing.Point(625, 159);
+            this.buttonDesbloquear.Location = new System.Drawing.Point(584, 41);
             this.buttonDesbloquear.Name = "buttonDesbloquear";
-            this.buttonDesbloquear.Size = new System.Drawing.Size(121, 43);
+            this.buttonDesbloquear.Size = new System.Drawing.Size(158, 42);
             this.buttonDesbloquear.TabIndex = 1;
-            this.buttonDesbloquear.Text = "Desbloquear Usuario";
+            this.buttonDesbloquear.Text = "Desbloquear";
             this.buttonDesbloquear.UseVisualStyleBackColor = true;
             this.buttonDesbloquear.Click += new System.EventHandler(this.buttonDesbloquear_Click);
             // 
@@ -1032,6 +1052,78 @@
             this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Column5.Width = 125;
             // 
+            // tabTrasladoCajas
+            // 
+            this.tabTrasladoCajas.Controls.Add(this.label19);
+            this.tabTrasladoCajas.Controls.Add(this.label18);
+            this.tabTrasladoCajas.Controls.Add(this.btn_traslada_Caja);
+            this.tabTrasladoCajas.Controls.Add(this.btn_elimina_Caja);
+            this.tabTrasladoCajas.Controls.Add(this.comBox_id_usuario_Traslado);
+            this.tabTrasladoCajas.Controls.Add(this.comBox_cbu_Traslado_Saldo);
+            this.tabTrasladoCajas.Location = new System.Drawing.Point(4, 27);
+            this.tabTrasladoCajas.Name = "tabTrasladoCajas";
+            this.tabTrasladoCajas.Padding = new System.Windows.Forms.Padding(3);
+            this.tabTrasladoCajas.Size = new System.Drawing.Size(793, 291);
+            this.tabTrasladoCajas.TabIndex = 8;
+            this.tabTrasladoCajas.Text = "Traslado";
+            this.tabTrasladoCajas.UseVisualStyleBackColor = true;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(96, 32);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(153, 18);
+            this.label19.TabIndex = 5;
+            this.label19.Text = "Elija la Caja de Ahorro";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(451, 41);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(132, 18);
+            this.label18.TabIndex = 4;
+            this.label18.Text = "Elija el ID de Titular";
+            // 
+            // btn_traslada_Caja
+            // 
+            this.btn_traslada_Caja.Location = new System.Drawing.Point(451, 171);
+            this.btn_traslada_Caja.Name = "btn_traslada_Caja";
+            this.btn_traslada_Caja.Size = new System.Drawing.Size(144, 29);
+            this.btn_traslada_Caja.TabIndex = 3;
+            this.btn_traslada_Caja.Text = "Agregar Titular";
+            this.btn_traslada_Caja.UseVisualStyleBackColor = true;
+            this.btn_traslada_Caja.Click += new System.EventHandler(this.btn_traslada_Caja_Click);
+            // 
+            // btn_elimina_Caja
+            // 
+            this.btn_elimina_Caja.Location = new System.Drawing.Point(217, 171);
+            this.btn_elimina_Caja.Name = "btn_elimina_Caja";
+            this.btn_elimina_Caja.Size = new System.Drawing.Size(107, 29);
+            this.btn_elimina_Caja.TabIndex = 2;
+            this.btn_elimina_Caja.Text = "Quita Titular";
+            this.btn_elimina_Caja.UseVisualStyleBackColor = true;
+            this.btn_elimina_Caja.Click += new System.EventHandler(this.btn_elimina_Caja_Click);
+            // 
+            // comBox_id_usuario_Traslado
+            // 
+            this.comBox_id_usuario_Traslado.FormattingEnabled = true;
+            this.comBox_id_usuario_Traslado.Location = new System.Drawing.Point(451, 65);
+            this.comBox_id_usuario_Traslado.Name = "comBox_id_usuario_Traslado";
+            this.comBox_id_usuario_Traslado.Size = new System.Drawing.Size(60, 26);
+            this.comBox_id_usuario_Traslado.TabIndex = 1;
+            this.comBox_id_usuario_Traslado.Click += new System.EventHandler(this.comBox_id_usuario_Traslado_Click);
+            // 
+            // comBox_cbu_Traslado_Saldo
+            // 
+            this.comBox_cbu_Traslado_Saldo.FormattingEnabled = true;
+            this.comBox_cbu_Traslado_Saldo.Location = new System.Drawing.Point(96, 65);
+            this.comBox_cbu_Traslado_Saldo.Name = "comBox_cbu_Traslado_Saldo";
+            this.comBox_cbu_Traslado_Saldo.Size = new System.Drawing.Size(228, 26);
+            this.comBox_cbu_Traslado_Saldo.TabIndex = 0;
+            this.comBox_cbu_Traslado_Saldo.Click += new System.EventHandler(this.comBox_cbu_Traslado_Saldo_Click);
+            // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(41)))), ((int)(((byte)(30)))));
@@ -1077,7 +1169,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(238)))), ((int)(((byte)(236)))));
             this.ClientSize = new System.Drawing.Size(935, 451);
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.button1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -1086,7 +1178,7 @@
             this.Text = "Form3";
             this.Load += new System.EventHandler(this.Form3_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.tabControl1.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
@@ -1108,6 +1200,8 @@
             this.tabUsuarios.ResumeLayout(false);
             this.tabUsuarios.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsuarios)).EndInit();
+            this.tabTrasladoCajas.ResumeLayout(false);
+            this.tabTrasladoCajas.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
@@ -1120,7 +1214,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
-        private TabControl tabControl1;
+        private TabControl tabControl;
         private TabPage tabPage1;
         private TabPage tabPage2;
         private Button button3;
@@ -1212,6 +1306,14 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private Button btn_eliminarUsuario;
+        private TabPage tabTrasladoCajas;
+        private Button btn_traslada_Caja;
+        private Button btn_elimina_Caja;
+        private ComboBox comBox_id_usuario_Traslado;
+        private ComboBox comBox_cbu_Traslado_Saldo;
+        private Label label19;
+        private Label label18;
     }
 
 }

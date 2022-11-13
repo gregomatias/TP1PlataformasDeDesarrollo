@@ -463,6 +463,7 @@ namespace TP1
                     if (usuario._id == id)
                     {
                         usuarios.Remove(usuario);
+
                     }
 
                 }
@@ -502,7 +503,14 @@ namespace TP1
                 }
                 else if (accion == 1)
                 {
-                    if (DB.altaTitularCajaDeAhorro(Titular, cajaBuscada._cbu))
+                    int idInternoTitular = 0;
+
+                     idInternoTitular = cajaBuscada._titulares.Find(id => id== Titular);
+
+                    MessageBox.Show("Id Titular: "+idInternoTitular);
+
+                    //Si la caja no tiene el titular, lo inserta:
+                    if (idInternoTitular==0&& DB.altaTitularCajaDeAhorro(Titular, cajaBuscada._id) )
                     {
                         cajaBuscada._titulares.Add(Titular);
                         return true;
@@ -952,7 +960,7 @@ namespace TP1
         }
 
 
-        public List<Usuario> mostrarUsuarios()
+        public List<Usuario> MostrarUsuarios()
         {
             if (usuarioLogueado._esUsuarioAdmin == true)
             {
@@ -960,8 +968,8 @@ namespace TP1
             }
             else
             {
-                List<Usuario> usuarioss = new List<Usuario>();
-                return usuarioss;
+                List<Usuario> listadoUsuariosMostrar = new List<Usuario>();
+                return listadoUsuariosMostrar;
             }
 
 
