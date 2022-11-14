@@ -6,12 +6,15 @@ Alan Riva, Nicolas Villegas, Luis Duarte Carvhalosa, Natalia Belen Espinosa, Pat
 
 TP2:
 General:
+
 Se adapto todos los metodos para que funcionen con la base de datos.
 Se Implementaron las solapas de Tarjeta de Crédito y plazo fijo y funcionalidades faltantes.
 
 Admin:
+
 Se implementaron 2 Solapas de Admin. Estas solo se pueden ver si se loguea con el dicho usuario.
 -	Solapa Traslado:
+
 Boton Agregar Titular: Permite asociar una caja de ahorro a otro usuario.
 Boton Quitar Titular: Permite quitar una caja de ahorro a un usuario, siempre y cuando no sea el unico que la tenga.
 
