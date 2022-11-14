@@ -1,9 +1,27 @@
-"# TP1-PlataformasDeDesarrollo"
+"# TP2-PlataformasDeDesarrollo"
 
 Integrantes:
 
 Alan Riva, Nicolas Villegas, Luis Duarte Carvhalosa, Natalia Belen Espinosa, Patricia Belen Cabrera, Matias Grego
-  
+
+TP2:
+General:
+Se adapto todos los metodos para que funcionen con la base de datos.
+Se Implementaron las solapas de Tarjeta de Crédito y plazo fijo y funcionalidades faltantes.
+
+Admin:
+Se implementaron 2 Solapas de Admin. Estas solo se pueden ver si se loguea con el dicho usuario.
+-	Solapa Traslado:
+Boton Agregar Titular: Permite asociar una caja de ahorro a otro usuario.
+Boton Quitar Titular: Permite quitar una caja de ahorro a un usuario, siempre y cuando no sea el unico que la tenga.
+
+-	Solapa Usuarios:
+
+Boton Desbloquear:Permite desbloquear un usuario y resetearle el contador de iungresos.
+Boton Eliminar: Permite elimiar todos los objetos del usuario, a excepcion de las cajas de ahorro compartidas con otro usuario.
+
+
+TP1:   
 1- Al abri la aplicación, el usuario visualiza una pantalla de login donde podrá:
 -	Ingresar usuario y contraseña para iniciar sesión.
 -   Registrarse en la aplicación ingresando sus datos personales a través de un formulario.
