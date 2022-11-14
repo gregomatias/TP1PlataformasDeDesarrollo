@@ -43,8 +43,24 @@ namespace TP1
             this.pagos = DB.inicializarPago();
             this.movimientos = DB.inicializarMovimiento();
 
-            /*Hardcodeo de Admin para poder probarlo:*/
-            AltaUsuario(123, "Walter", "Gomez", "wg@gmail.com", "123", false, true, 0);
+
+            List<int> listaTitularesAuxiliares = new List<int>();
+            foreach (CajaDeAhorro caja in this.cajas)
+            {
+
+                listaTitularesAuxiliares = DB.InicializaCargaTitularesEnCajaDeAhorro(caja._id);
+                foreach (int titular in listaTitularesAuxiliares)
+                {
+                    caja._titulares.Add(titular);
+                }
+
+
+
+            }
+          
+
+
+
 
 
         }
@@ -467,48 +483,52 @@ namespace TP1
 
                 //List<CajaDeAhorro> cajasDelUsuario = DB.buscaCajasAhorroDeUsuario(id_usuario);
                 List<CajaDeAhorro>? cajasConUnSoloTitular = new List<CajaDeAhorro>();
-                List<CajaDeAhorro>? cajasAEliminar = new List<CajaDeAhorro>();
 
-                //Cargo cajas con 1 solo titular para eliminarlas
-                foreach (CajaDeAhorro caja in cajasDelUsuario)
-                //cajasDelUsuario.ForEach(delegate (CajaDeAhorro caja)
+                //Cargo cajas con 1 solo titular para eliminarlas (Las de la DB vienen sin titulares)
+                foreach (CajaDeAhorro cajaDB in cajasDelUsuario)
                 {
-                    if (caja._titulares.Count() == 1)
-                    {
-                        cajasConUnSoloTitular.Add(caja);
-                    }
-                //});
-                };
 
-
-                //Elimino las anteriores de las listas de cajas y usuario.cajas
-                foreach (CajaDeAhorro cajaUnica in cajasDelUsuario)
-                //cajasDelUsuario.ForEach(delegate (CajaDeAhorro cajaUnica)
-                {
                     foreach (CajaDeAhorro caja in cajas)
-                    //cajas.ForEach(delegate (CajaDeAhorro caja)
+
                     {
-                        if (caja._id == cajaUnica._id)
+                        if (cajaDB._id == caja._id && caja._titulares.Count() == 1)
                         {
-                            cajasAEliminar.Add(caja);
+                            cajasConUnSoloTitular.Add(caja);
 
                         }
-                        //});
+
+                    };
+
+                }
+
+                //Elimina el titular de cajas compartidas
+                foreach (CajaDeAhorro caja in cajas)
+                {
+                    caja._titulares.Remove(id_usuario);
+
+                }
+
+                //Elimino las anteriores de las listas de cajas y usuario.cajas
+                List<CajaDeAhorro> listAuxCajas = cajas.ToList();
+
+                foreach (CajaDeAhorro cajaUnica in cajasConUnSoloTitular)
+                //cajasDelUsuario.ForEach(delegate (CajaDeAhorro cajaUnica)
+                {
+                    foreach (CajaDeAhorro cajaAux in listAuxCajas)
+                    //cajas.ForEach(delegate (CajaDeAhorro caja)
+                    {
+                        if (cajaAux._id == cajaUnica._id)
+                        {
+                            cajas.Remove(cajaAux);
+                            DB.eliminamMovimientosPorIdDeCaja(cajaAux._id);
+                            DB.bajaCajaDeAhorro(cajaAux._id);
+
+                        }
                     }
 
-                //});
                 };
 
-                //Elimino las cajas
-           
 
-                foreach (CajaDeAhorro caja in cajasAEliminar)
-                {
-                    cajas.Remove(caja);
-
-                    DB.eliminamMovimientosPorIdDeCaja(caja._id);
-                    DB.bajaCajaDeAhorro(caja._id);
-                }
 
 
                 //Elimino El usuario
@@ -555,7 +575,7 @@ namespace TP1
                                 if (DB.bajaTitularCajaDeAhorro(titular))
                                 {
                                     cajaBuscada._titulares.Remove(titular);
-                                    usuarioLogueado._Cajas.Remove(cajaBuscada);
+                                    // usuarioLogueado._Cajas.Remove(cajaBuscada);
                                     return true;
                                 }
 
@@ -576,7 +596,9 @@ namespace TP1
                     if (idInternoTitular == 0 && DB.altaTitularCajaDeAhorro(Titular, cajaBuscada._id))
                     {
                         cajaBuscada._titulares.Add(Titular);
-                        usuarioLogueado._Cajas.Add(cajaBuscada);
+
+
+                        //usuarioLogueado._Cajas.Add(cajaBuscada);
                         return true;
 
                     }
@@ -816,7 +838,7 @@ namespace TP1
 
         public bool BajaPlazoFijo(int id)
         {
-           
+
             PlazoFijo? plazo = pfs.Where(plazo => plazo._id == id).FirstOrDefault();
 
 
@@ -1038,6 +1060,35 @@ namespace TP1
 
 
         }
+
+        private void recorreCajasDeAhorroYSusTitulares(CajaDeAhorro caja)
+        {
+
+            MessageBox.Show(caja.ToString());
+            foreach (int titular in caja._titulares)
+            {
+                MessageBox.Show("Titular: " + titular);
+            }
+
+
+        }
+
+        private void recorreCajasDeAhorroYSusTitulares(List<CajaDeAhorro> Listacaja)
+        {
+            foreach (CajaDeAhorro caja in Listacaja)
+            {
+                MessageBox.Show(caja.ToString());
+                foreach (int titular in caja._titulares)
+                {
+                    MessageBox.Show("Titular: " + titular);
+                }
+
+            }
+
+        }
+
+
+
 
 
 

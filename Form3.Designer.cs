@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column_cbu = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_SaldoCaja = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -130,6 +128,8 @@
             this.button4 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.Column_cbu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column_SaldoCaja = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -162,22 +162,6 @@
             this.dataGridView1.RowTemplate.Height = 29;
             this.dataGridView1.Size = new System.Drawing.Size(441, 232);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // Column_cbu
-            // 
-            this.Column_cbu.HeaderText = "CBU";
-            this.Column_cbu.MinimumWidth = 6;
-            this.Column_cbu.Name = "Column_cbu";
-            this.Column_cbu.ReadOnly = true;
-            this.Column_cbu.Width = 160;
-            // 
-            // Column_SaldoCaja
-            // 
-            this.Column_SaldoCaja.HeaderText = "Saldo";
-            this.Column_SaldoCaja.MinimumWidth = 6;
-            this.Column_SaldoCaja.Name = "Column_SaldoCaja";
-            this.Column_SaldoCaja.ReadOnly = true;
-            this.Column_SaldoCaja.Width = 125;
             // 
             // label1
             // 
@@ -963,10 +947,10 @@
             this.tabUsuarios.Controls.Add(this.label17);
             this.tabUsuarios.Controls.Add(this.buttonDesbloquear);
             this.tabUsuarios.Controls.Add(this.dataGridUsuarios);
-            this.tabUsuarios.Location = new System.Drawing.Point(4, 27);
+            this.tabUsuarios.Location = new System.Drawing.Point(4, 29);
             this.tabUsuarios.Name = "tabUsuarios";
             this.tabUsuarios.Padding = new System.Windows.Forms.Padding(3);
-            this.tabUsuarios.Size = new System.Drawing.Size(793, 291);
+            this.tabUsuarios.Size = new System.Drawing.Size(793, 289);
             this.tabUsuarios.TabIndex = 7;
             this.tabUsuarios.Text = "Usuarios";
             this.tabUsuarios.UseVisualStyleBackColor = true;
@@ -1061,10 +1045,10 @@
             this.tabTrasladoCajas.Controls.Add(this.btn_elimina_Caja);
             this.tabTrasladoCajas.Controls.Add(this.comBox_id_usuario_Traslado);
             this.tabTrasladoCajas.Controls.Add(this.comBox_cbu_Traslado_Saldo);
-            this.tabTrasladoCajas.Location = new System.Drawing.Point(4, 27);
+            this.tabTrasladoCajas.Location = new System.Drawing.Point(4, 29);
             this.tabTrasladoCajas.Name = "tabTrasladoCajas";
             this.tabTrasladoCajas.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTrasladoCajas.Size = new System.Drawing.Size(793, 291);
+            this.tabTrasladoCajas.Size = new System.Drawing.Size(793, 289);
             this.tabTrasladoCajas.TabIndex = 8;
             this.tabTrasladoCajas.Text = "Traslado";
             this.tabTrasladoCajas.UseVisualStyleBackColor = true;
@@ -1164,6 +1148,22 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Online Banking";
             // 
+            // Column_cbu
+            // 
+            this.Column_cbu.HeaderText = "CBU";
+            this.Column_cbu.MinimumWidth = 6;
+            this.Column_cbu.Name = "Column_cbu";
+            this.Column_cbu.ReadOnly = true;
+            this.Column_cbu.Width = 160;
+            // 
+            // Column_SaldoCaja
+            // 
+            this.Column_SaldoCaja.HeaderText = "Saldo";
+            this.Column_SaldoCaja.MinimumWidth = 6;
+            this.Column_SaldoCaja.Name = "Column_SaldoCaja";
+            this.Column_SaldoCaja.ReadOnly = true;
+            this.Column_SaldoCaja.Width = 125;
+            // 
             // Form3
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1222,8 +1222,6 @@
         private DataGridView dataGridPlazo;
         private TabPage tabPage3;
         private TabPage tabPage4;
-        private DataGridViewTextBoxColumn Column_cbu;
-        private DataGridViewTextBoxColumn Column_SaldoCaja;
         private DataGridView dataGridView4_pagos_pendientes;
         private Panel panel3;
         private Label label3;
@@ -1315,6 +1313,8 @@
         private ComboBox comBox_cbu_Traslado_Saldo;
         private Label label19;
         private Label label18;
+        private DataGridViewTextBoxColumn Column_cbu;
+        private DataGridViewTextBoxColumn Column_SaldoCaja;
     }
 
 }

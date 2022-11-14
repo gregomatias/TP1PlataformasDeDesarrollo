@@ -20,7 +20,15 @@ namespace TP1
 
         }
 
-     
+        public CajaDeAhorro(int id, string cbu, double saldo)
+        {
+            _id = id;
+            _cbu = cbu;
+            _saldo = saldo;
+
+        }
+
+
 
         public List<int> _titulares
 
@@ -64,7 +72,7 @@ namespace TP1
 
         public override string ToString()
         {
-            return "Id: " + _id + " CBU: " + _cbu + " Titulares: " + _titulares.ToString() + " Saldo: " + _saldo;
+            return "Id: " + _id + " CBU: " + _cbu  + " Saldo: " + _saldo;
         }
 
 

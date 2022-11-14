@@ -226,8 +226,7 @@ namespace TP1
             List<CajaDeAhorro> cajasReturn = new List<CajaDeAhorro>();
 
             //Creo la query que carga la lista TP2
-            string queryString = "select C.ID,C.CBU,UC.ID_USUARIO,C.SALDO from dbo.[CAJA_AHORRO] AS C " +
-                " INNER JOIN dbo.[USUARIO_CAJA_AHORRO] AS UC ON C.ID=UC.ID_CAJA_AHORRO";
+            string queryString = "select ID,CBU,SALDO from dbo.[CAJA_AHORRO];";
 
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -248,7 +247,7 @@ namespace TP1
                     while (reader.Read())
                     {
 
-                        aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDouble(3));
+                        aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetDouble(2));
                         cajasReturn.Add(aux);
                     }
                     //Luego de recorrer la query se libera la memoria:
@@ -264,8 +263,60 @@ namespace TP1
 
 
 
+
+
             return cajasReturn;
         }
+
+        public List<int> InicializaCargaTitularesEnCajaDeAhorro(int idCajaAhorro)
+        {
+            List<int> titulares = new List<int>();
+
+            //Creo la query que carga la lista TP2
+
+            string queryString = "SELECT ID_USUARIO FROM USUARIO_CAJA_AHORRO A" +
+                " JOIN CAJA_AHORRO B ON A.ID_CAJA_AHORRO=B.ID WHERE ID_CAJA_AHORRO=@idCajaAhorro;";
+
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                //Union entre la conexion y el query a ejecutar
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@idCajaAhorro", SqlDbType.Int));
+                command.Parameters["@idCajaAhorro"].Value = idCajaAhorro;
+
+                try
+                {
+                    //Abro la conexion
+                    connection.Open();
+                    //Ejecuta la query :
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    //reader.Read() se para en cada fila de la query y mira si tene datos
+                    CajaDeAhorro aux;
+                    while (reader.Read())
+                    {
+                      
+                        titulares.Add(reader.GetInt32(0));
+                    }
+                    //Luego de recorrer la query se libera la memoria:
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message);
+
+                }
+            }
+
+
+
+            return titulares;
+        }
+
+
 
 
         public List<CajaDeAhorro> buscaCajasAhorroDeUsuario(int id_usuario)
@@ -297,7 +348,7 @@ namespace TP1
                     CajaDeAhorro aux;
                     while (reader.Read())
                     {
-                        MessageBox.Show("Encontre algo: " + reader.GetString(1));
+                        //MessageBox.Show("Encontre algo: " + reader.GetString(1));
                         //0:ID,1:DNI,2:NOMBRE;3:APELLIDO,4:MAIL,5:PASSWORD,6:BLOQUEADO,7:ADMINISTRADOR,8:INTENTOS_LOGUEO
                         aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDouble(3));
                         cajasReturn.Add(aux);
@@ -317,56 +368,7 @@ namespace TP1
 
             return cajasReturn;
         }
-        /*
-        public CajaDeAhorro buscaCajasCbu(string cbu)
-        {
-            
 
-            //Creo la query que carga la lista TP2
-
-            string queryString = "select * from [CAJA_AHORRO] WHERE [CBU]=@cbu;";
-
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                CajaDeAhorro? extra;
-                //Union entre la conexion y el query a ejecutar
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.VarChar));
-                command.Parameters["@cbu"].Value = cbu;
-
-                try
-                {
-                    //Abro la conexion
-                    connection.Open();
-                    //Ejecuta la query :
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    //reader.Read() se para en cada fila de la query y mira si tene datos
-                    CajaDeAhorro aux;
-                    
-                        //0:ID,1:DNI,2:NOMBRE;3:APELLIDO,4:MAIL,5:PASSWORD,6:BLOQUEADO,7:ADMINISTRADOR,8:INTENTOS_LOGUEO
-                        aux = new CajaDeAhorro(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDouble(3));
-                        return aux;
-
-                    //Luego de recorrer la query se libera la memoria:
-                    reader.Close();
-                    connection.Close();
-                }
-                catch (Exception ex)
-                {
-
-                    MessageBox.Show(ex.Message);
-
-                }
-                return cajasReturn;
-            }
-            
-
-
-            
-        }
-        */
 
 
         public int agregarCajaAhorro(string cbu, int titular)
@@ -1562,7 +1564,7 @@ namespace TP1
             int resultadoQuery;
 
             string connectionString = Properties.Resources.stringDeConexion;
-            string queryString = "DELETE FROM [dbo].[TARJETA_CREDITO] WHERE [ID_USUARIO]=@caja;";
+            string queryString = "DELETE FROM [dbo].[MOVIMIENTO] WHERE [ID_CAJA_AHORRO]=@caja;";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {

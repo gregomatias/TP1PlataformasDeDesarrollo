@@ -94,6 +94,7 @@ namespace TP1
         private void button4_Click(object sender, EventArgs e)
         {
 
+            this.Close();
             banco.CerrarSesion();
             this.transEvento();
 
@@ -537,6 +538,7 @@ namespace TP1
                 fila = dataGridView1.Rows.Add();
                 dataGridView1.Rows[fila].Cells[0].Value = caja._cbu;
                 dataGridView1.Rows[fila].Cells[1].Value = caja._saldo;
+           
 
             }
         }
