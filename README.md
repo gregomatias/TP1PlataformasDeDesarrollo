@@ -16,11 +16,13 @@ Se implementaron 2 Solapas de Admin. Estas solo se pueden ver si se loguea con e
 -	Solapa Traslado:
 
 Boton Agregar Titular: Permite asociar una caja de ahorro a otro usuario.
+
 Boton Quitar Titular: Permite quitar una caja de ahorro a un usuario, siempre y cuando no sea el unico que la tenga.
 
 -	Solapa Usuarios:
 
 Boton Desbloquear:Permite desbloquear un usuario y resetearle el contador de iungresos.
+
 Boton Eliminar: Permite elimiar todos los objetos del usuario, a excepcion de las cajas de ahorro compartidas con otro usuario.
 
 
