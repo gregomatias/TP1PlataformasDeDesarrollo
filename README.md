@@ -10,7 +10,13 @@ General:
 Se adapto todos los metodos para que funcionen con la base de datos.
 Se Implementaron las solapas de Tarjeta de Crédito y plazo fijo y funcionalidades faltantes.
 
+En el mismo incluimos una carpeta  scriptDB/base.sql que contiene el script que crea la base de datos con registros de prueba.
+
+El usuario Admin es: Us: 123 Pass: 123
+
 Admin:
+
+
 
 Se implementaron 2 Solapas de Admin. Estas solo se pueden ver si se loguea con el dicho usuario.
 -	Solapa Traslado:
